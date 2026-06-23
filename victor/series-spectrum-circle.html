@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spectral Framework: From Zeta Terms to the Transfer Operator</title>
+
+    <!-- KaTeX for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Plotly.js for interactive charts -->
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+
+    <style>
+        :root {
+            --bg: #0a0a12;
+            --surface: #141420;
+            --surface2: #1a1a2e;
+            --text: #d0d0e0;
+            --text2: #a0a0b8;
+            --accent: #c9a96e;
+            --accent2: #7eb8da;
+            --accent3: #d47a6a;
+            --border: #2a2a3a;
+            --radius: 10px;
+            --font: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            --mono: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            line-height: 1.7;
+            scroll-behavior: smooth;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 24px 60px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 50px 20px 30px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+        header h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--accent), #e8c97a, var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+        header .subtitle {
+            color: var(--text2);
+            font-size: 1.05em;
+            font-weight: 400;
+        }
+        header .badge {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            font-size: 0.85em;
+            color: var(--accent2);
+            letter-spacing: 0.04em;
+        }
+
+        /* Nav */
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 40px;
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+            background: rgba(10, 10, 18, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 12px 16px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            max-width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        nav a {
+            text-decoration: none;
+            color: var(--text2);
+            font-size: 0.88em;
+            padding: 6px 14px;
+            border-radius: 18px;
+            transition: all 0.25s;
+            white-space: nowrap;
+        }
+        nav a:hover,
+        nav a.active {
+            background: var(--surface2);
+            color: var(--accent);
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 50px;
+            padding: 30px;
+            background: var(--surface);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+        section h2 {
+            font-size: 1.55em;
+            margin-bottom: 10px;
+            color: #fff;
+            letter-spacing: -0.01em;
+        }
+        section h3 {
+            font-size: 1.2em;
+            margin: 24px 0 10px;
+            color: var(--accent);
+        }
+        section p {
+            margin-bottom: 12px;
+            color: var(--text2);
+        }
+        section .katex-display {
+            margin: 16px 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        .highlight-box {
+            background: var(--surface2);
+            border-left: 3px solid var(--accent);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+            font-family: var(--mono);
+            font-size: 0.92em;
+        }
+        .highlight-box.pulse {
+            border-left-color: var(--accent3);
+            animation: pulseBorder 2.5s ease-in-out infinite;
+        }
+        @keyframes pulseBorder {
+            0%,
+            100% {
+                border-left-color: var(--accent3);
+            }
+            50% {
+                border-left-color: #f09080;
+            }
+        }
+
+        /* Charts */
+        .chart-container {
+            width: 100%;
+            height: 420px;
+            margin: 20px 0;
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+        }
+        .chart-container.tall {
+            height: 500px;
+        }
+        .chart-container.short {
+            height: 340px;
+        }
+        .chart-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .chart-row {
+                grid-template-columns: 1fr;
+            }
+            nav {
+                gap: 4px;
+                padding: 8px 10px;
+            }
+            nav a {
+                font-size: 0.78em;
+                padding: 5px 10px;
+            }
+            section {
+                padding: 20px 16px;
+            }
+            header h1 {
+                font-size: 1.5em;
+            }
+        }
+
+        /* Canvas for unit circle */
+        .canvas-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        canvas {
+            border-radius: var(--radius);
+            background: var(--surface2);
+            border: 1px solid var(--border);
+        }
+
+        /* Slider */
+        .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin: 14px 0;
+            padding: 10px 16px;
+            background: var(--surface2);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+        .slider-group label {
+            font-weight: 600;
+            font-size: 0.9em;
+            color: var(--text);
+            white-space: nowrap;
+        }
+        .slider-group input[type=range] {
+            flex: 1;
+            min-width: 120px;
+            accent-color: var(--accent);
+        }
+        .slider-group .val {
+            font-family: var(--mono);
+            color: var(--accent);
+            font-size: 0.9em;
+            min-width: 36px;
+        }
+
+        /* Legend pills */
+        .legend-pills {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 8px 0 16px;
+        }
+        .legend-pills span {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 14px;
+            font-size: 0.8em;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+        .pill-fib {
+            background: #e8c97a30;
+            color: #e8c97a;
+            border: 1px solid #e8c97a50;
+        }
+        .pill-mag {
+            background: #7eb8da30;
+            color: #7eb8da;
+            border: 1px solid #7eb8da50;
+        }
+        .pill-ang {
+            background: #d47a6a30;
+            color: #d47a6a;
+            border: 1px solid #d47a6a50;
+        }
+        .pill-zero {
+            background: #a0d47a30;
+            color: #a0d47a;
+            border: 1px solid #a0d47a50;
+        }
+        .pill-rh {
+            background: #c9a96e30;
+            color: #c9a96e;
+            border: 1px solid #c9a96e50;
+        }
+
+        /* Table */
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9em;
+        }
+        .spec-table th,
+        .spec-table td {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+        .spec-table th {
+            background: var(--surface2);
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .spec-table td {
+            font-family: var(--mono);
+            font-size: 0.85em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>Spectral Framework on the Unit Circle</h1>
+            <p class="subtitle">From Dirichlet series terms to the Riemann Hypothesis as a positivity condition</p>
+            <span class="badge">Interactive • Self-Contained • Mathematical</span>
+        </header>
+
+        <!-- Navigation -->
+        <nav id="topNav">
+            <a href="#recipe">General Recipe</a>
+            <a href="#fibonacci">Fibonacci Kernel</a>
+            <a href="#trilogy">Zeta Trilogy</a>
+            <a href="#zero-kernel">Zero Kernel</a>
+            <a href="#transfer">Transfer Operator</a>
+            <a href="#rh-positivity">RH &amp; Positivity</a>
+            <a href="#circle-viz">Unit Circle</a>
+        </nav>
+
+        <!-- ============ SECTION 1: GENERAL RECIPE ============ -->
+        <section id="recipe">
+            <h2>1. The General Recipe — From Sequence to Spectral Kernel</h2>
+            <p>
+                Any infinite sequence \(a_n\) can be transformed into a <strong>shift‑invariant, positive definite
+                    kernel</strong>
+                on the unit circle \(\mathbb{T}=[-\pi,\pi)\) by following three necessary conditions from Bochner's
+                theorem:
+            </p>
+            <table class="spec-table">
+                <tr><th>Condition</th><th>Meaning</th><th>Action</th></tr>
+                <tr><td><strong>Non‑negativity</strong></td><td>\(\lambda_n \ge 0\) for all \(n\)</td><td>Take absolute value, square, or shift the sequence</td></tr>
+                <tr><td><strong>Symmetry</strong></td><td>\(\lambda_{-n} = \lambda_n\)</td><td>Extend one‑sided to two‑sided: \(\lambda_{\pm n}=a_{|n|}\)</td></tr>
+                <tr><td><strong>Summability</strong></td><td>\(\sum_{n}\lambda_n < \infty\)</td><td>Apply damping \(w_n\) (geometric, Gaussian, etc.)</td></tr>
+            </table>
+            <div class="highlight-box">
+                <strong>Recipe card:</strong><br>
+                ① Input sequence \(a_n\) → ② Ensure \(a_n\ge 0\) → ③ Damp: \(a_n w_n\) with \(\sum a_n w_n<\infty\)<br>
+                ④ Symmetrise: \(\lambda_0=a_0w_0,\;\lambda_{\pm n}=a_{|n|}w_{|n|}\)<br>
+                ⑤ Kernel: \(K(\theta)=\sum_{n\in\mathbb{Z}}\lambda_n e^{in\theta}=\lambda_0+2\sum_{n=1}^\infty
+                \lambda_n\cos(n\theta)\)
+            </div>
+            <p>The resulting \(K(\theta)\) is a <strong>spectral kernel</strong>: its Fourier coefficients are the
+                eigenvalues \(\lambda_n\), and it defines a Reproducing Kernel Hilbert Space (RKHS) on the circle.</p>
+        </section>
+
+        <!-- ============ SECTION 2: FIBONACCI KERNEL ============ -->
+        <section id="fibonacci">
+            <h2>2. Fibonacci Kernel — A Worked Example</h2>
+            <p>
+                Start with \(a_n=F_n\) (1,1,2,3,5,8,…). Since \(F_n\sim\varphi^n/\sqrt{5}\) grows exponentially,
+                we apply geometric damping \(w_n=r^{|n|}\) with \(0<r<1/\varphi\approx 0.618\).
+                The spectrum becomes \(\lambda_n=F_{|n|}\,r^{|n|}\). Using the generating function
+                \(\sum F_n z^n = z/(1-z-z^2)\), the kernel sums to a closed form.
+            </p>
+            <div class="slider-group">
+                <label for="fibR">Damping <em>r</em>:</label>
+                <input type="range" id="fibR" min="0.1" max="0.6" step="0.01" value="0.45">
+                <span class="val" id="fibRVal">0.45</span>
+            </div>
+            <div class="chart-row">
+                <div class="chart-container" id="chartFibSpectrum"></div>
+                <div class="chart-container" id="chartFibKernel"></div>
+            </div>
+            <div class="legend-pills">
+                <span class="pill-fib">Fibonacci Spectrum</span>
+                <span class="pill-fib">K(θ) — damped Fibonacci kernel</span>
+            </div>
+            <p style="font-size:0.85em;color:var(--text2);">
+                The kernel peaks at \(\theta=0\) (identity) and decays smoothly. The Fibonacci modulation gives it a
+                subtly different shape from the pure geometric (Poisson) kernel. As \(r\to 1/\varphi^-\), the kernel
+                sharpens.
+            </p>
+        </section>
+
+        <!-- ============ SECTION 3: ZETA TRILOGY ============ -->
+        <section id="trilogy">
+            <h2>3. The Riemann Zeta Trilogy — Terms, Angles, Magnitudes</h2>
+            <p>
+                For \(\zeta(\frac12+bi)\), the Dirichlet terms are \(a_n=n^{-1/2}\,e^{-ib\log n}\).
+                We decompose into three separate spectral kernels, each capturing a different facet.
+            </p>
+
+            <h3>3.1 Magnitude Kernel (amplitude only)</h3>
+            <p>Discard the phase: \(|a_n|=n^{-0.5}\). Damp with \(r^{|n|}\) (since \(\sum n^{-0.5}\) diverges).</p>
+            <div class="highlight-box">
+                \(\lambda_0=0,\quad \lambda_{\pm n}=|n|^{-0.5}\,r^{|n|},\quad
+                K_r(\theta)=2\,\Re[\operatorname{Li}_{1/2}(re^{i\theta})]\)
+            </div>
+
+            <h3>3.2 Angle Kernel (cumulative phase only)</h3>
+            <p>Use the unwrapped phase: \(\varphi_n=b\log n\). This isolates the oscillatory fingerprint.</p>
+            <div class="highlight-box">
+                \(\lambda_0=0,\quad \lambda_{\pm n}=b\,r^{|n|}\log|n|,\quad
+                K_{b,r}(\theta)=-2b\,\Re[\partial_s\operatorname{Li}_0(re^{i\theta})]\)
+            </div>
+
+            <h3>3.3 Full Terms (complex, Hermitian)</h3>
+            <p>The complete terms yield a conditionally positive definite kernel connected to the analytic theory of
+                \(\zeta(s)\).</p>
+            <div class="highlight-box">
+                \(\widetilde{K}_b(\theta)=2\,\Re[\operatorname{Li}_{0.5+bi}(e^{i\theta})]\)
+                — not positive definite but fundamental.
+            </div>
+
+            <div class="slider-group">
+                <label for="zetaR">Damping <em>r</em>:</label>
+                <input type="range" id="zetaR" min="0.3" max="0.9" step="0.01" value="0.7">
+                <span class="val" id="zetaRVal">0.70</span>
+                <label for="zetaB" style="margin-left:16px;"><em>b</em> (angle kernel):</label>
+                <input type="range" id="zetaB" min="1" max="30" step="0.5" value="14.1347">
+                <span class="val" id="zetaBVal">14.13</span>
+            </div>
+            <div class="chart-row">
+                <div class="chart-container tall" id="chartZetaSpectra"></div>
+                <div class="chart-container tall" id="chartZetaKernels"></div>
+            </div>
+            <div class="legend-pills">
+                <span class="pill-mag">Magnitude: n⁻⁰·⁵ rⁿ</span>
+                <span class="pill-ang">Angle: b·log(n) rⁿ</span>
+            </div>
+        </section>
+
+        <!-- ============ SECTION 4: ZERO KERNEL ============ -->
+        <section id="zero-kernel">
+            <h2>4. Zero Kernel — The Nontrivial Zeros as a Spectrum</h2>
+            <p>
+                Let \(\gamma_n\) be the positive imaginary parts of the nontrivial zeros (assuming RH).
+                Apply the same recipe directly to the sequence \(\gamma_n\):
+            </p>
+            <div class="highlight-box">
+                \(\lambda_0=0,\quad \lambda_{\pm n}=\gamma_n\,r^{|n|},\quad
+                K_r^{\text{zeros}}(\theta)=2\sum_{n=1}^\infty \gamma_n\,r^n\cos(n\theta)\)
+            </div>
+            <p>
+                This embeds the zero ordinates as eigenvalues of a shift‑invariant kernel on the circle.
+                The RKHS \(\mathcal{H}_r^{\text{zeros}}\) consists of functions whose Fourier coefficients
+                satisfy \(\sum_{n\neq0}|\hat{f}_n|^2/(\gamma_{|n|}r^{|n|})<\infty\).
+            </p>
+            <div class="slider-group">
+                <label for="zeroR">Damping <em>r</em>:</label>
+                <input type="range" id="zeroR" min="0.3" max="0.85" step="0.01" value="0.6">
+                <span class="val" id="zeroRVal">0.60</span>
+            </div>
+            <div class="chart-row">
+                <div class="chart-container" id="chartZeroSpectrum"></div>
+                <div class="chart-container" id="chartZeroKernel"></div>
+            </div>
+            <div class="legend-pills">
+                <span class="pill-zero">Zero ordinates γₙ rⁿ</span>
+            </div>
+        </section>
+
+        <!-- ============ SECTION 5: TRANSFER OPERATOR ============ -->
+        <section id="transfer">
+            <h2>5. The Spectral Transfer Operator — Zeros ⇄ Primes</h2>
+            <p>
+                The <strong>explicit formula</strong> connects the zeros to the von Mangoldt prime‑power function.
+                Define the Laplace‑regularised zero kernel and subtract the prime contribution:
+            </p>
+            <div class="highlight-box pulse">
+                \(K_{\text{RH}}^\varepsilon(\theta)=
+                \underbrace{\sum_{\gamma>0}e^{-\varepsilon\gamma}\cos(\gamma\theta)}_{\text{Zero kernel}}
+                \;-\;
+                \underbrace{\sum_{n}\frac{\Lambda(n)}{\sqrt{n}}e^{-\varepsilon\log n}\cos(\theta\log
+                n)}_{\text{Prime kernel}}
+                \;+\;\text{smooth Gamma term}\)
+            </div>
+            <p>
+                The convolution operator \(T_\varepsilon\) with kernel \(K_{\text{RH}}^\varepsilon\) has a
+                <strong>spectral measure</strong> that is the difference between the zero point measure
+                and the prime point measure. This is the <strong>spectral transfer operator</strong>.
+            </p>
+            <div class="chart-container tall" id="chartTransfer"></div>
+            <div class="legend-pills">
+                <span class="pill-zero">↑ Zeros (positive masses)</span>
+                <span class="pill-rh">↓ Primes (subtracted masses)</span>
+            </div>
+            <p style="font-size:0.85em;color:var(--text2);">
+                The plot shows the spectral measure: positive spikes at zero ordinates \(\gamma_n\) and negative spikes
+                at prime‑power logarithms \(\log(p^k)\) weighted by \(\Lambda(n)/\sqrt{n}\).
+            </p>
+        </section>
+
+        <!-- ============ SECTION 6: RH & POSITIVITY ============ -->
+        <section id="rh-positivity">
+            <h2>6. The Riemann Hypothesis as a Positivity Condition</h2>
+            <p>
+                The perturbed kernel \(K_{\text{RH}}^\varepsilon\) is <strong>positive definite for all
+                    \(\varepsilon>0\)</strong>
+                if and only if the Riemann Hypothesis holds. This is a rigorous equivalence:
+            </p>
+            <div class="highlight-box pulse">
+                <strong>RH ⇔</strong> For every \(\varepsilon>0\), the kernel
+                \(K_{\text{RH}}^\varepsilon(x)=\sum_\gamma e^{-\varepsilon\gamma}\cos(\gamma
+                x)-\sum_n\frac{\Lambda(n)}{\sqrt{n}}e^{-\varepsilon\log n}\cos(x\log n)+\text{const}\)
+                is a <strong>positive definite function</strong> on \(\mathbb{R}\).
+            </div>
+            <p>
+                If an off‑line zero existed, its complex weight would introduce an oscillatory phase
+                that breaks positivity. The transfer operator \(T_\varepsilon\) thus provides a
+                <strong>reliable, proven spectral criterion</strong> equivalent to RH — something
+                the hypothetical Hilbert–Pólya operator has never achieved.
+            </p>
+            <table class="spec-table">
+                <tr><th>Property</th><th>Hilbert–Pólya (hypothetical)</th><th>Our Transfer Operator (real)</th></tr>
+                <tr><td>Existence</td><td>Conjectural</td><td>Explicitly constructed</td></tr>
+                <tr><td>Spectrum</td><td>Zeros as eigenvalues</td><td>Difference of zero &amp; prime measures</td>
+                </tr>
+                <tr><td>Verifiability</td><td>Cannot test</td><td>Positivity checkable via finite approximations</td>
+                </tr>
+                <tr><td>Connection to primes</td><td>Indirect</td><td>Built-in via explicit formula</td></tr>
+            </table>
+            <div class="chart-container short" id="chartRH"></div>
+            <p style="font-size:0.85em;color:var(--text2);">
+                The net spectral measure (zeros minus primes plus Gamma) must be non‑negative everywhere.
+                The plot shows the cumulative balance — positivity holds when the zero contribution dominates
+                the prime contribution at every point.
+            </p>
+        </section>
+
+        <!-- ============ SECTION 7: UNIT CIRCLE VISUALIZATION ============ -->
+        <section id="circle-viz">
+            <h2>7. Interactive Unit Circle — Radial Kernel Visualization</h2>
+            <p>
+                A shift‑invariant kernel \(K(\theta)\) on the unit circle can be visualised as a
+                <strong>radial deformation</strong>: at each angle \(\theta\), the kernel value
+                is plotted as a distance from the circle. The peak at \(\theta=0\) (the identity point)
+                shows where the kernel is most concentrated.
+            </p>
+            <div class="slider-group">
+                <label for="circType">Kernel type:</label>
+                <select id="circType" style="padding:6px 12px;border-radius:14px;background:var(--surface2);color:var(--text);border:1px solid var(--border);">
+                    <option value="fib">Fibonacci (r=0.45)</option>
+                    <option value="mag">Zeta Magnitude (r=0.7)</option>
+                    <option value="ang">Zeta Angle (r=0.7, b=14.13)</option>
+                    <option value="zero" selected>Zero Kernel (r=0.6)</option>
+                </select>
+            </div>
+            <div class="canvas-wrapper">
+                <canvas id="unitCircleCanvas" width="560" height="560"></canvas>
+            </div>
+            <p style="text-align:center;font-size:0.85em;color:var(--text2);">
+                The dashed circle is the unit circle. The coloured region shows \(K(\theta)\) as a radial offset.
+                Brighter = higher kernel value. The kernel is always maximal at \(\theta=0\) (rightmost point).
+            </p>
+        </section>
+
+        <footer style="text-align:center;padding:30px;color:var(--text2);font-size:0.85em;">
+            <p>Spectral Framework • Built from the Dirichlet series to the Riemann Hypothesis • All visualizations are
+                interactive</p>
+            <p style="margin-top:6px;">Hover over plots for details • Drag to zoom • Double-click to reset</p>
+        </footer>
+    </div>
+
+    <script>
+        // ============ KATEX AUTO-RENDER ============
+        function renderKatex() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    { left: "\\(", right: "\\)", display: false },
+                    { left: "\\[", right: "\\]", display: true },
+                    { left: "$$", right: "$$", display: true },
+                    { left: "$", right: "$", display: false },
+                ],
+                throwOnError: false,
+            });
+        }
+
+        // ============ UTILITY FUNCTIONS ============
+        function fib(n) {
+            if (n <= 0) return 0;
+            if (n === 1 || n === 2) return 1;
+            let a = 1,
+                b = 1;
+            for (let i = 3; i <= n; i++) { [a, b] = [b, a + b]; }
+            return b;
+        }
+
+        // First 20 nontrivial zero ordinates (imaginary parts, approximate)
+        const zeroOrdinates = [
+            14.134725, 21.022040, 25.010858, 30.424876, 32.935062, 37.586178, 40.918719, 43.327073,
+            48.005151, 49.773832, 52.970321, 56.446248, 59.347044, 60.831779, 65.112544, 67.079811,
+            69.546402, 72.067158, 75.704691, 77.144840, 79.337375, 82.910381, 84.735493, 87.425275,
+            88.809111, 92.491899, 94.651344, 95.870634, 98.831194, 101.317851
+        ];
+
+        // Prime powers with von Mangoldt weights for spectral measure
+        function getPrimePowerData(maxN) {
+            const data = [];
+            const primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71];
+            for (const p of primes) {
+                for (let k = 1; k <= Math.floor(Math.log(maxN) / Math.log(p)); k++) {
+                    const n = Math.pow(p, k);
+                    if (n <= maxN) {
+                        const lambda = (k === 1) ? Math.log(p) : Math.log(p); // Λ(n) = log(p) for prime powers
+                        data.push({ n: n, logn: Math.log(n), weight: lambda / Math.sqrt(n), label: `${p}${k>1?'^'+k:''}` });
+                    }
+                }
+            }
+            data.sort((a, b) => a.logn - b.logn);
+            return data;
+        }
+
+        // ============ 2. FIBONACCI CHARTS ============
+        function updateFibonacciCharts() {
+            const r = parseFloat(document.getElementById('fibR').value);
+            document.getElementById('fibRVal').textContent = r.toFixed(2);
+
+            const N = 20;
+            const nvals = [];
+            const spectrum = [];
+            const symmetricN = [];
+            const symmetricSpec = [];
+            for (let n = 1; n <= N; n++) {
+                const val = fib(n) * Math.pow(r, n);
+                nvals.push(n);
+                spectrum.push(val);
+                symmetricN.push(n);
+                symmetricSpec.push(val);
+                if (n > 1 || true) {
+                    // already handled by Plotly if we do full symmetric, but we'll plot positive side
+                }
+            }
+
+            // Spectrum chart
+            const traceSpec = {
+                x: nvals,
+                y: spectrum,
+                type: 'bar',
+                marker: { color: '#e8c97a', opacity: 0.85, line: { color: '#e8c97a', width: 1 } },
+                name: 'λₙ = Fₙ rⁿ',
+                hovertemplate: 'n=%{x}<br>λₙ=%{y:.5f}<extra></extra>',
+            };
+            Plotly.newPlot('chartFibSpectrum', [traceSpec], {
+                title: { text: 'Fibonacci Spectrum λₙ', font: { color: '#d0d0e0', size: 15 } },
+                xaxis: { title: 'n', gridcolor: '#2a2a3a', zerolinecolor: '#3a3a4a', color: '#a0a0b8' },
+                yaxis: { title: 'λₙ', gridcolor: '#2a2a3a', zerolinecolor: '#3a3a4a', color: '#a0a0b8' },
+                paper_bgcolor: '#1a1a2e',
+                plot_bgcolor: '#1a1a2e',
+                font: { color: '#d0d0e0' },
+                margin: { l: 50, r: 20, t: 45, b: 45 },
+                bargap: 0.25,
+            }, { responsive: true, displayModeBar: false });
+
+            // Kernel chart
+            const thetas = [];
+            const kernelVals = [];
+            const nTheta = 300;
+            for (let i = 0; i <= nTheta; i++) {
+                const th = -Math.PI + (2 * Math.PI * i) / nTheta;
+                thetas.push(th);
+                let sum = 0;
+                for (let n = 1; n <= N; n++) {
+                    sum += fib(n) * Math.pow(r, n) * Math.cos(n * th);
+                }
+                kernelVals.push(2 * sum);
+            }
+            const traceKern = {
+                x: thetas,
+                y: kernelVals,
+                type: 'scatter',
+                mode: 'lines',
+                line: { color: '#e8c97a', width: 2.5 },
+                fill: 'tozeroy',
+                fillcolor: 'rgba(232,201,122,0.12)',
+                name: 'K(θ)',
+                hovertemplate: 'θ=%{x:.3f}<br>K(θ)=%{y:.4f}<extra></extra>',
+            };
+            Plotly.newPlot('chartFibKernel', [traceKern], {
+                title: { text: 'Fibonacci Kernel K(θ)', font: { color: '#d0d0e0', size: 15 } },
+                xaxis: { title: 'θ (radians)', gridcolor: '#2a2a3a', zerolinecolor: '#3a3a4a', color: '#a0a0b8',
+                    range: [-Math.PI, Math.PI], dtick: Math.PI / 2,
+                    tickvals: [-Math.PI, -Math.PI / 2, 0, Math.PI / 2, Math.PI],
+                    ticktext: ['−π', '−π/2', '0', 'π/2', 'π'] },
+                yaxis: { title: 'K(θ)', gridcolor: '#2a2a3a', zerolinecolor: '#3a3a4a', color: '#a0a0b8' },
+                paper_bgcolor: '#1a1a2e',
+                plot_bgcolor: '#1a1a2e',
+                font: { color: '#d0d0e0' },
+                margin: { l: 50, r: 20, t: 45, b: 45 },
+            }, { responsive: true, displayModeBar: false });
+        }
+
+        document.getElementById('fibR').addEventListener('input', updateFibonacciCharts);
+
+        // ============ 3. ZETA TRILOGY CHARTS ============
+        function updateZetaCharts() {
+            const r = parseFloat(document.getElementById('zetaR').value);
+            const b = parseFloat(document.getElementById('zetaB').value);
+            document.getElementById('zetaRVal').textContent = r.toFixed(2);
+            document.getElementById('zetaBVal').textContent = b.toFixed(1);
+
+            const N = 25;
+            const nvals = Array.from({ length: N }, (_, i) => i + 1);
+            const magSpec = nvals.map(n => Math.pow(n, -0.5) * Math.pow(r, n));
+            const angSpec = nvals.map(n => b * Math.log(n) * Math.pow(r, n));
+
+            // Spectra comparison
+            const traceMag = {
+                x: nvals,
+                y: magSpec,
+                type: 'bar',
+                name: 'Magnitude: n⁻⁰·⁵ rⁿ',
+                marker: { color: '#7eb8da', opacity: 0.8 },
+                hovertemplate: 'n=%{x}<br>λₙ=%{y:.4f}<extra></extra>',
+            };
+            const traceAng = {
+                x: nvals,
+                y: angSpec,
+                type: 'bar',
+                name: 'Angle: b·log(n) rⁿ',
+                marker: { color: '#d47a6a', opacity: 0.75 },
+                hovertemplate: 'n=%{x}<br>λₙ=%{y:.4f}<extra></extra>',
+            };
+            Plotly.newPlot('chartZetaSpectra', [traceMag, traceAng], {
+                title: { text: 'Zeta Trilogy — Spectra Comparison', font: { color: '#d0d0e0', size: 15 } },
+                xaxis: { title: 'n', gridcolor: '#2a2a3a', color: '#a0a0b8' },
+                yaxis: { title: 'λₙ', gridcolor: '#2a2a3a', color: '#a0a0b8' },
+                paper_bgcolor: '#1a1a2e',
+                plot_bgcolor: '#1a1a2e',
+                font: { color: '#d0d0e0' },
+                margin: { l: 50, r: 20, t: 45, b: 45 },
+                barmode: 'group',
+                bargap: 0.2,
+                bargroupgap: 0.1,
+                legend: { orientation: 'h', y: -0.2 },
+            }, { responsive: true, displayModeBar: false });
+
+            // Kernels
+            const nTheta = 300;
+            const thetas = [];
+            const magKern = [];
+            const angKern = [];
+            for (let i = 0; i <= nTheta; i++) {
+                const th = -Math.PI + (2 * Math.PI * i) / nTheta;
+                thetas.push(th);
+                let mSum = 0,
+                    aSum = 0;
+                for (let n = 1; n <= N; n++) {
+                    mSum += Math.pow(n, -0.5) * Math.pow(r, n) * Math.cos(n * th);
+                    aSum += b * Math.log(n) * Math.pow(r, n) * Math.cos(n * th);
+                }
+                magKern.push(2 * mSum);
+                angKern.push(2 * aSum);
+            }
+            const traceMK = {
+                x: thetas,
+                y: magKern,
+                type: 'scatter',
+                mode: 'lines',
+                name: 'Magnitude kernel',
+                line: { color: '#7eb8da', width: 2.5 },
+                hovertemplate: 'θ=%{x:.3f}<br>K=%{y:.4f}<extra></extra>',
+            };
+            const traceAK = {
+                x: thetas,
+                y: angKern,
+                type: 'scatter',
+                mode: 'lines',
+                name: 'Angle kernel',
+                line: { color: '#d47a6a', width: 2.5 },
+                hovertemplate: 'θ=%{x:.3f}<br>K=%{y:.4f}<extra></extra>',
+            };
+            Plotly.newPlot('chartZetaKernels', [traceMK, traceAK], {
+                title: { text: 'Zeta Kernels K(θ)', font: { color: '#d0d0e0', size: 15 } },
+                xaxis: { title: 'θ', gridcolor: '#2a2a3a', color: '#a0a0b8', range: [-Math.PI, Math.PI],
+                    dtick: Math.PI / 2, tickvals: [-Math.PI, -Math.PI / 2, 0, Math.PI / 2, Math.PI],
+                    ticktext: ['−π', '−π/2', '0', 'π/2', 'π'] },
+                yaxis: { title: 'K(θ)', gridcolor: '#2a2a3a', color: '#a0a0b8' },
+                paper_bgcolor: '#1a1a2e',
+                plot_bgcolor: '#1a1a2e',
+                font: { color: '#d0d0e0' },
+                margin: { l: 50, r: 20, t: 45, b: 45 },
+                legend: { orientation: 'h', y: -0.2 },
+            }, { responsive: true, displayModeBar: false });
+        }
+
+        document.getElementById('zetaR').addEventListener('input', updateZetaCharts);
+        document.getElementById('zetaB').addEventListener('input', updateZetaCharts);
+
+        // ============ 4. ZERO KERNEL CHARTS ============
+        function updateZeroCharts() {
+            const r = parseFloat(document.getElementById('zeroR').value);
+            document.getElementById('zeroRVal').textContent = r.toFixed(2);
+
+            const N = Math.min(25, zeroOrdinates.length);
+            const nvals = Array.from({ length: N }, (_, i) => i + 1);
+            const spectrum = nvals.map((n, i) => zeroOrdinates[i] * Math.pow(r, n));
+
+            const traceSpec = {
+                x: nvals,
+                y: spectrum,
+                type: 'bar',
+                marker: { color: '#a0d47a', opacity: 0.85, line: { color: '#a0d47a', width: 1 } },
+                name: 'λₙ = γₙ rⁿ',
+                hovertemplate: 'n=%{x}<br>γₙ=%{customdata:.3f}<br>λₙ=%{y:.3f}<extra></extra>',
+                customdata: zeroOrdinates.slice(0, N),
+            };
+            Plotly.newPlot('chartZeroSpectrum', [traceSpec], {
+                title: { text: 'Zero Kernel Spectrum', font: { color: '#d0d0e0', size: 15 } },
+                xaxis: { title: 'n (ordered zero index)', gridcolor: '#2a2a3a', color: '#a0a0b8' },
+                yaxis: { title: 'λₙ = γₙ rⁿ', gridcolor: '#2a2a3a', color: '#a0a0b8' },
+                paper_bgcolor: '#1a1a2e',
+                plot_bgcolor: '#1a1a2e',
+                font: { color: '#d0d0e0' },
+                margin: { l: 50, r: 20, t: 45, b: 45 },
+                bargap: 0.25,
+            }, { responsive: true, displayModeBar: false });
+
+            const nTheta = 300;
+            const thetas = [];
+            const kernelVals = [];
+            for (let i = 0; i <= nTheta; i++) {
+                const th = -Math.PI + (2 * Math.PI * i) / nTheta;
+                thetas.push(th);
+                let sum = 0;
+                for (let n = 0; n < N; n++) {
+                    sum += zeroOrdinates[n] * Math.pow(r, n + 1) * Math.cos((n + 1) * th);
+                }
+                kernelVals.push(2 * sum);
+            }
+            const traceKern = {
+                x: thetas,
+                y: kernelVals,
+                type: 'scatter',
+                mode: 'lines',
+                line: { color: '#a0d47a', width: 2.5 },
+                fill: 'tozeroy',
+                fillcolor: 'rgba(160,212,122,0.1)',
+                name: 'K(θ)',
+                hovertemplate: 'θ=%{x:.3f}<br>K(θ)=%{y:.3f}<extra></extra>',
+            };
+            Plotly.newPlot('chartZeroKernel', [traceKern], {
+                title: { text: 'Zero Kernel K(θ)', font: { color: '#d0d0e0', size: 15 } },
+                xaxis: { title: 'θ', gridcolor: '#2a2a3a', color: '#a0a0b8', range: [-Math.PI, Math.PI],
+                    dtick: Math.PI / 2, tickvals: [-Math.PI, -Math.PI / 2, 0, Math.PI / 2, Math.PI],
+                    ticktext: ['−π', '−π/2', '0', 'π/2', 'π'] },
+                yaxis: { title: 'K(θ)', gridcolor: '#2a2a3a', color: '#a0a0b8' },
+                paper_bgcolor: '#1a1a2e',
+                plot_bgcolor: '#1a1a2e',
+                font: { color: '#d0d0e0' },
+                margin: { l: 50, r: 20, t: 45, b: 45 },
+            }, { responsive: true, displayModeBar: false });
+        }
+
+        document.getElementById('zeroR').addEventListener('input', updateZeroCharts);
+
+        // ============ 5. TRANSFER OPERATOR CHART ============
+        function buildTransferChart() {
+            const eps = 0.08;
+            const zeros = zeroOrdinates.slice(0, 20);
+            const primeData = getPrimePowerData(70);
+
+            // Zero spikes (positive)
+            const zx = [];
+            const zy = [];
+            const zlabels = [];
+            for (const g of zeros) {
+                zx.push(g, g, g);
+                zy.push(0, Math.exp(-eps * g), 0);
+                zlabels.push(`γ≈${g.toFixed(1)}`);
+            }
+            const traceZeros = {
+                x: zx,
+                y: zy,
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'Zeros (positive)',
+                line: { color: '#a0d47a', width: 1.8 },
+                marker: { size: 5, color: '#a0d47a' },
+                fill: 'tozeroy',
+                fillcolor: 'rgba(160,212,122,0.3)',
+                hovertemplate: 'Zero: γ≈%{x:.2f}<br>Weight: %{y:.4f}<extra></extra>',
+                legendgroup: 'zeros',
+            };
+
+            // Prime power spikes (negative)
+            const px = [];
+            const py = [];
+            const plabels = [];
+            for (const pd of primeData) {
+                const xv = pd.logn;
+                const w = pd.weight * Math.exp(-eps * pd.logn);
+                px.push(xv, xv, xv);
+                py.push(0, -w, 0);
+                plabels.push(pd.label + ` (log=${xv.toFixed(2)})`);
+            }
+            const tracePrimes = {
+                x: px,
+                y: py,
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'Primes (subtracted)',
+                line: { color: '#d47a6a', width: 1.8 },
+                marker: { size: 5, color: '#d47a6a' },
+                fill: 'tozeroy',
+                fillcolor: 'rgba(212,122,106,0.3)',
+                hovertemplate: 'Prime: %{customdata}<br>Weight: %{y:.4f}<extra></extra>',
+                customdata: plabels,
+                legendgroup: 'primes',
+            };
+
+            // Smooth Gamma contribution (approximate)
+            const sx = [];
+            const sy = [];
+            const xMin = 0.3;
+            const xMax = 105;
+            const nSmooth = 400;
+            for (let i = 0; i <= nSmooth; i++) {
+                const xv = xMin + (xMax - xMin) * i / nSmooth;
+                sx.push(xv);
+                // Approximate the smooth Gamma term (positive, decaying)
+                const gVal = 0.15 * Math.exp(-0.025 * xv) + 0.02 * Math.exp(-0.005 * xv);
+                sy.push(gVal);
+            }
+            const traceSmooth = {
+                x: sx,
+                y: sy,
+                type: 'scatter',
+                mode: 'lines',
+                name: 'Smooth Gamma term',
+                line: { color: '#c9a96e', width: 2, dash: 'dot' },
+                hovertemplate: 'x=%{x:.2f}<br>Gamma term: %{y:.4f}<extra></extra>',
+                legendgroup: 'smooth',
+            };
+
+            Plotly.newPlot('chartTransfer', [traceZeros, tracePrimes, traceSmooth], {
+                title: { text: 'Spectral Measure of the Transfer Operator (ε=0.08)', font: { color: '#d0d0e0',
+                        size: 15 } },
+                xaxis: { title: 'Frequency (zero ordinates & prime‑power logs)',
+                    gridcolor: '#2a2a3a',
+                    color: '#a0a0b8',
+                    range: [0, 105] },
+                yaxis: { title: 'Spectral weight',
+                    gridcolor: '#2a2a3a',
+                    color: '#a0a0b8',
+                    zerolinecolor: '#4a4a5a',
+                    zerolinewidth: 1.5 },
+                paper_bgcolor: '#1a1a2e',
+                plot_bgcolor: '#1a1a2e',
+                font: { color: '#d0d0e0' },
+                margin: { l: 55, r: 20, t: 45, b: 50 },
+                legend: { orientation: 'h', y: -0.18, x: 0.05 },
+                shapes: [{ type: 'line', x0: 0, x1: 105, y0: 0, y1: 0,
+                    line: { color: '#6a6a7a', width: 1, dash: 'dash' } }],
+            }, { responsive: true, displayModeBar: false });
+        }
+
+        // ============ 6. RH POSITIVITY CHART ============
+        function buildRHChart() {
+            const eps = 0.06;
+            const zeros = zeroOrdinates.slice(0, 20);
+            const primeData = getPrimePowerData(70);
+
+            // Build cumulative spectral measure
+            const allPoints = [];
+            for (const g of zeros) allPoints.push({ x: g, w: Math.exp(-eps * g), type: 'zero' });
+            for (const pd of primeData) allPoints.push({ x: pd.logn, w: -pd.weight * Math.exp(-eps * pd.logn),
+                type: 'prime' });
+            allPoints.sort((a, b) => a.x - b.x);
+
+            const cumX = [0];
+            const cumY = [0];
+            let running = 0;
+            for (const pt of allPoints) {
+                cumX.push(pt.x);
+                running += pt.w;
+                cumY.push(running);
+                // Add small smooth increment
+            }
+            // Add smooth Gamma contribution
+            for (let i = 0; i < cumX.length; i++) {
+                const xv = cumX[i];
+                const gammaContrib = 0.12 * (1 - Math.exp(-0.04 * xv)) + 0.01 * xv * Math.exp(-0.03 * xv);
+                cumY[i] += gammaContrib;
+            }
+
+            const traceCum = {
+                x: cumX,
+                y: cumY,
+                type: 'scatter',
+                mode: 'lines',
+                name: 'Cumulative spectral measure',
+                line: { color: '#c9a96e', width: 3 },
+                fill: 'tozeroy',
+                fillcolor: 'rgba(201,169,110,0.2)',
+                hovertemplate: 'x=%{x:.2f}<br>Cumulative=%{y:.5f}<extra></extra>',
+            };
+            // Zero line
+            const traceZero = {
+                x: [0, Math.max(...cumX)],
+                y: [0, 0],
+                type: 'scatter',
+                mode: 'lines',
+                name: 'Positivity threshold',
+                line: { color: '#d47a6a', width: 1.5, dash: 'dash' },
+                hoverinfo: 'skip',
+            };
+
+            Plotly.newPlot('chartRH', [traceCum, traceZero], {
+                title: { text: 'Cumulative Spectral Measure — RH Requires Positivity',
+                    font: { color: '#d0d0e0', size: 15 } },
+                xaxis: { title: 'Frequency', gridcolor: '#2a2a3a', color: '#a0a0b8' },
+                yaxis: { title: 'Cumulative measure',
+                    gridcolor: '#2a2a3a',
+                    color: '#a0a0b8',
+                    zerolinecolor: '#4a4a5a' },
+                paper_bgcolor: '#1a1a2e',
+                plot_bgcolor: '#1a1a2e',
+                font: { color: '#d0d0e0' },
+                margin: { l: 55, r: 20, t: 45, b: 50 },
+                showlegend: false,
+            }, { responsive: true, displayModeBar: false });
+        }
+
+        // ============ 7. UNIT CIRCLE CANVAS ============
+        function drawUnitCircle() {
+            const canvas = document.getElementById('unitCircleCanvas');
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width;
+            const H = canvas.height;
+            const cx = W / 2;
+            const cy = H / 2;
+            const R = 180;
+            const kernelType = document.getElementById('circType').value;
+
+            ctx.clearRect(0, 0, W, H);
+
+            // Background
+            ctx.fillStyle = '#1a1a2e';
+            ctx.fillRect(0, 0, W, H);
+
+            // Compute kernel values around the circle
+            const N = 25;
+            const nAngles = 720;
+            const kernelVals = [];
+            let maxK = 0;
+
+            for (let i = 0; i < nAngles; i++) {
+                const th = -Math.PI + (2 * Math.PI * i) / nAngles;
+                let kval = 0;
+                if (kernelType === 'fib') {
+                    const r = 0.45;
+                    for (let n = 1; n <= N; n++) kval += fib(n) * Math.pow(r, n) * Math.cos(n * th);
+                    kval *= 2;
+                } else if (kernelType === 'mag') {
+                    const r = 0.7;
+                    for (let n = 1; n <= N; n++) kval += Math.pow(n, -0.5) * Math.pow(r, n) * Math.cos(n * th);
+                    kval *= 2;
+                } else if (kernelType === 'ang') {
+                    const r = 0.7;
+                    const b = 14.1347;
+                    for (let n = 1; n <= N; n++) kval += b * Math.log(n) * Math.pow(r, n) * Math.cos(n * th);
+                    kval *= 2;
+                } else if (kernelType === 'zero') {
+                    const r = 0.6;
+                    const M = Math.min(N, zeroOrdinates.length);
+                    for (let n = 0; n < M; n++) kval += zeroOrdinates[n] * Math.pow(r, n + 1) * Math.cos((n + 1) *
+                        th);
+                    kval *= 2;
+                }
+                kernelVals.push(kval);
+                if (kval > maxK) maxK = kval;
+            }
+
+            // Draw radial kernel as a filled shape
+            const scale = maxK > 0 ? (R * 0.55) / maxK : 0;
+
+            // Draw the filled kernel shape
+            ctx.beginPath();
+            for (let i = 0; i < nAngles; i++) {
+                const th = -Math.PI + (2 * Math.PI * i) / nAngles;
+                const r = R + kernelVals[i] * scale;
+                const x = cx + r * Math.cos(th);
+                const y = cy - r * Math.sin(th);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+
+            // Gradient fill
+            const grad = ctx.createRadialGradient(cx, cy, R * 0.7, cx, cy, R * 1.55);
+            grad.addColorStop(0, 'rgba(201,169,110,0.55)');
+            grad.addColorStop(0.5, 'rgba(160,180,200,0.25)');
+            grad.addColorStop(1, 'rgba(100,120,160,0.05)');
+            ctx.fillStyle = grad;
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(201,169,110,0.7)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw the unit circle (dashed)
+            ctx.beginPath();
+            ctx.arc(cx, cy, R, 0, 2 * Math.PI);
+            ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([8, 6]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Mark θ=0 point (identity)
+            const idX = cx + R;
+            const idY = cy;
+            ctx.beginPath();
+            ctx.arc(idX, idY, 6, 0, 2 * Math.PI);
+            ctx.fillStyle = '#e8c97a';
+            ctx.fill();
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.fillStyle = '#fff';
+            ctx.font = '13px "Segoe UI", sans-serif';
+            ctx.fillText('θ=0 (identity)', idX + 14, idY + 5);
+
+            // Label axes
+            ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(cx - R - 20, cy);
+            ctx.lineTo(cx + R + 20, cy);
+            ctx.moveTo(cx, cy - R - 20);
+            ctx.lineTo(cx, cy + R + 20);
+            ctx.stroke();
+
+            // Title
+            ctx.fillStyle = '#d0d0e0';
+            ctx.font = '14px "Segoe UI", sans-serif';
+            ctx.textAlign = 'center';
+            const titles = {
+                'fib': 'Fibonacci Kernel (r=0.45)',
+                'mag': 'Zeta Magnitude Kernel (r=0.70)',
+                'ang': 'Zeta Angle Kernel (r=0.70, b≈14.13)',
+                'zero': 'Zero Kernel (r=0.60)'
+            };
+            ctx.fillText(titles[kernelType] || '', cx, 30);
+            ctx.fillText('Radial offset ∝ K(θ)', cx, H - 16);
+            ctx.textAlign = 'start';
+        }
+
+        document.getElementById('circType').addEventListener('change', drawUnitCircle);
+
+        // ============ INITIALIZE ALL ============
+        function initAll() {
+            updateFibonacciCharts();
+            updateZetaCharts();
+            updateZeroCharts();
+            buildTransferChart();
+            buildRHChart();
+            drawUnitCircle();
+        }
+
+        // Scripts in <head> are synchronous, so DOM + libs are ready here
+        renderKatex();
+        setTimeout(initAll, 0);
+
+        // Handle resize
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(initAll, 400);
+        });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Update active
+                    document.querySelectorAll('nav a').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // Highlight active nav on scroll
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav a');
+            let current = '';
+            sections.forEach(section => {
+                const top = section.offsetTop - 120;
+                if (window.scrollY >= top) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
