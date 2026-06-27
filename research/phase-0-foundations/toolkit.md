@@ -1,6 +1,6 @@
 # Computational Toolkit — Specification
 
-*Status: **partial**. `victor/prime-zeros.py` supplies `channels`, `sign_aware_helix`, and `quaternion_cone`. The three functions below are not yet implemented.*
+*Status: **partial**. `victor/prime-zeros.py` supplies `channels`, `sign_aware_helix`, `quaternion_cone`, and (Phase 1c) `ou_mehler` + `ou_hermite_sum`. The `fibonacci_kernel` and `eta_kernel` functions below are not yet implemented.*
 
 ---
 
@@ -27,18 +27,17 @@ Compute $K_r(\theta) = 2\,\Re\dfrac{re^{i\theta}}{1-re^{i\theta}-r^2e^{2i\theta}
 - FFT of sampled $K_r$ matches eigenvalues $\lambda_n = F_n r^n$.
 - $\|K_r\|_2^2 = \sum_n \lambda_n^2$ (Parseval).
 
-### `ou_mehler(t, x, y)`
+### `ou_mehler(t, x, y)` — **DONE**
 
-Compute the Mehler kernel $p_t(x,y) = \dfrac{1}{\sqrt{1-r^2}} \exp\!\left(\dfrac{2rxy - r^2(x^2+y^2)}{2(1-r^2)}\right)$, $r = e^{-t}$.
+Computes the Mehler kernel $p_t(x,y) = \dfrac{1}{\sqrt{1-r^2}} \exp\!\left(\dfrac{2rxy - r^2(x^2+y^2)}{2(1-r^2)}\right)$, $r = e^{-t}$. Implemented in `victor/prime-zeros.py` alongside `ou_hermite_sum(t, x, y, n_max)` (truncated Hermite bilinear series). The `mpmath` Mellin / $\Gamma(s)\zeta(s)$ check lives in `victor/ou-verify.py`.
 
-Requires `mpmath` for the Mellin / $\Gamma(s)\zeta(s)$ check.
+**Verification checks** (§7 of `project/ou-process.md` — all pass):
 
-**Verification checks** (to fill §7 of `project/ou-process.md`):
-
-- Mehler closed form vs. truncated Hermite sum $\sum_{n=0}^N e^{-nt} H_n(x) H_n(y) / n!$.
-- Heat trace $\mathrm{tr}(P_t) = 1/(e^t-1)$ vs. numerical sum.
-- Bernoulli coefficients of $t/(e^t-1)$ expansion.
-- Mellin: $\int_0^\infty t^{s-1} \mathrm{tr}(P_t)\,dt = \Gamma(s)\zeta(s)$ to 8 digits at $s=2$.
+- [x] Mehler closed form vs. truncated Hermite sum $\sum_{n=0}^N e^{-nt} He_n(x) He_n(y) / n!$ — worst $9\times10^{-12}$ (N=80).
+- [x] Heat trace $\mathrm{tr}(P_t) = 1/(1-e^t{}^{-1})$ vs. eigenvalue sum **and** Mehler diagonal integral — $5\times10^{-41}$.
+- [x] Bernoulli coefficients of $t/(e^t-1)$ expansion — exact.
+- [x] Mellin: $\int_0^\infty t^{s-1}\,\Theta(t)\,dt = \Gamma(s)\zeta(s)$, $\Theta=1/(e^t-1)$ — $1\times10^{-22}$ at $s=2,3,\tfrac32,2+3i$.
+- [x] (bonus) Intertwiner $JP_t=D_rJ$ via Poisson convolution (Lemma O6) — $5\times10^{-15}$.
 
 ### `eta_kernel(r, theta)`
 

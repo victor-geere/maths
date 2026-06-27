@@ -21,10 +21,11 @@ dependencies:
   # Visualization
   - plotly=5.24.1
 
-  # SageMath: not available as a standalone conda-forge package on osx-arm64.
-  # Install separately via pip or use the verify_with_sage MCP tool with a
-  # system-level sage installation if needed.
-  # - sagemath=10.5
+  # SageMath: installed in a SEPARATE conda env to avoid clobbering the pinned
+  # numpy/sympy/mpmath versions above (Sage drags in its own incompatible pins).
+  #   conda create -y -n sage -c conda-forge sage
+  # The MCP server's verify_with_sage tool finds it via the SAGE_BIN env var
+  # (set in .mcp.json) or by auto-detecting a sibling conda env named 'sage'.
 
   # Jupyter / Development
   - ipykernel=6.29.5

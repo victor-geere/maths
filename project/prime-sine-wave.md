@@ -161,7 +161,7 @@ against $P(4)=\sum_p p^{-4}$:
 |---|---|---|
 | $\int_0^2\Psi_2(x)^2\,dx$ | $0.0769931398$ | $P(4)=0.0769931398$ (10-digit match) |
 | $\langle\Psi_2,\sin\pi x\rangle$ | $0.0\times10^{0}$ | $0$ (Corollary, §4) |
-| $\Psi_2(0.25)$ | $0.2888929051$ | — |
+| $\Psi_2(0.25)$ | $0.2888923342$ | — |
 | $C_0=\sum_{k\ge2}\frac{\mu(k)}{k}\log\zeta(k)$ | $-0.3157\ldots$ | constant in Theorem 4(1) |
 
 These confirm Theorem 2 (Parseval), the orthogonality corollary, and the boundary

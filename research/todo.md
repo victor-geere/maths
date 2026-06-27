@@ -25,10 +25,10 @@ No open items.
 - [ ] Run §6 numerics: verify $K_r(0)$ vs. truncated sum, PD on $\theta$-grid, eigenvalues vs. FFT, $\|K_r\|_2^2$ via Parseval; fill in §6 table in `project/fibonacci-kernel.md`
 - [ ] Prove Lucas transfer multiplier: $L_n = F_{n-1} + F_{n+1}$ as bounded multiplier between Fibonacci and Lucas kernels, with explicit-formula trace identity
 
-### 1c. Ornstein–Uhlenbeck process
+### 1c. Ornstein–Uhlenbeck process — **COMPLETE**
 
-- [ ] Run §7 numerics: Mehler closed form vs. truncated Hermite sum, trace $= 1/(1-e^{-t})$, Bernoulli coefficients, $\Gamma(s)\zeta(s)$ Mellin match (use `mpmath`); fill in §7 table in `project/ou-process.md`
-- [ ] Formalise the functor $L^2(\gamma) \to L^2(\mathbb{T})$: show $\mathrm{diag}(r^{|n|})$ on $\mathbb{T}$ intertwines with $P_t|_{|n|}$ on $L^2(\gamma)$ as a bounded map *(Phase 4 gate)*
+- [x] Run §7 numerics: Mehler closed form vs. truncated Hermite sum, trace $= 1/(1-e^{-t})$, Bernoulli coefficients, $\Gamma(s)\zeta(s)$ Mellin match (`mpmath`); §7 table in `project/ou-process.md` filled. Code: `ou_mehler`/`ou_hermite_sum` in `victor/prime-zeros.py`, checks in `victor/ou-verify.py` (all pass).
+- [x] Formalise the functor $L^2(\gamma) \to L^2(\mathbb{T})$: **Lemma O6** (§4.1) — the isometry $J\colon h_n\mapsto c_n$ onto $L^2(\mathbb{T})^{\mathrm{even}}$ satisfies $JP_t=D_rJ$ with $D_r$ Poisson convolution. *(Phase 4 gate discharged.)*
 
 ---
 
@@ -64,10 +64,10 @@ No open items.
 
 ## Phase 4 — Generalisation
 
-**Blocked.** Gate conditions:
+**Blocked** (on Phase 1b only). Gate conditions:
 - [ ] Phase 1b numerics done
-- [ ] Phase 1c numerics done
-- [ ] $L^2(\gamma) \to L^2(\mathbb{T})$ functor formalised
+- [x] Phase 1c numerics done
+- [x] $L^2(\gamma) \to L^2(\mathbb{T})$ functor formalised *(Lemma O6, `project/ou-process.md` §4.1)*
 
 When unblocked:
 - [ ] Write `project/generalised-algorithm.md`: abstract inputs/outputs, operator construction, hypotheses table, spectral-triple recipe as special case
@@ -88,7 +88,7 @@ When unblocked:
 |---|---|---|
 | prime-sine-wave §6 | $\|Ψ_2\|^2 = P(4)$ to 10 digits | Done |
 | fibonacci-kernel §6 | $K_r(0)$, PD grid, eigenvalues, $\|K_r\|_2^2$ | Not done |
-| ou-process §7 | Mehler, trace, heat kernel, Mellin $\Gamma\zeta$ | Not done |
+| ou-process §7 | Mehler, trace, heat kernel, Mellin $\Gamma\zeta$ | Done |
 | eta-zeta-transfer §5 | rotation identity, extra zeros, transfer correction | Not done |
 | spectral-triple §8 | extend to 100+ zeros, vary $\varepsilon$, port to Python | Partial (HTML only) |
 | helix §6 | cone indicator on η kernel after helix lift | Not done |

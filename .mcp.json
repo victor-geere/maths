@@ -4,7 +4,10 @@
       "command": "/opt/homebrew/Caskroom/miniforge/base/envs/maths/bin/python",
       "args": [
         "/Users/victor/workspace/maths/sympy/mcp_server.py"
-      ]
+      ],
+      "env": {
+        "SAGE_BIN": "/opt/homebrew/Caskroom/miniforge/base/envs/sage/bin/sage"
+      }
     }
   }
 }

@@ -13,10 +13,11 @@
 | O3 | Semigroup $=$ geometric damping $r^n$; Mehler kernel | **Proved** |
 | O4 | Heat trace $= 1/(e^t-1)$; Bernoulli expansion | **Proved** |
 | O5 | Spectral zeta $= \zeta$; $\Gamma(s)\zeta(s) = \int t^{s-1}\Theta\,dt$ | **Proved** |
-| §7 numerics | Mehler vs. Hermite sum, trace, heat, Mellin $\Gamma\zeta$ | **Open** |
-| $L^2(\gamma) \to L^2(\mathbb{T})$ functor | Bounded intertwining map (Phase 4 prerequisite) | **Open** |
+| O6 | Intertwiner $J\colon L^2(\gamma)\to L^2(\mathbb{T})$, $JP_t=D_rJ$ (Phase 4 gate) | **Proved** |
+| §7 numerics | Mehler vs. Hermite sum, trace, heat, Mellin $\Gamma\zeta$ | **Done** |
+| $L^2(\gamma) \to L^2(\mathbb{T})$ functor | Bounded intertwining map (Phase 4 prerequisite) | **Done** (Lemma O6) |
 
-## Open actions
+## Completed
 
-- [ ] Implement `ou_mehler(t, x, y)` in toolkit (requires `mpmath`); run four checks and fill §7.
-- [ ] Formalise the index-level correspondence $\mathrm{diag}(r^{|n|})$ on $\mathbb{T}$ ↔ $P_t|_{|n|}$ on $L^2(\gamma)$ as a bounded intertwining map; write it up as a lemma before Phase 4 begins.
+- [x] `ou_mehler(t, x, y)` + `ou_hermite_sum` in [prime-zeros.py](../../victor/prime-zeros.py); five checks in [ou-verify.py](../../victor/ou-verify.py) (`mpmath`, 40 dps), all pass — see §7 table. Worst discrepancies: Mehler↔Hermite $9\times10^{-12}$, trace $5\times10^{-41}$, Bernoulli exact, Mellin $\Gamma\zeta$ $1\times10^{-22}$, intertwiner $5\times10^{-15}$.
+- [x] Formalised the correspondence $\mathrm{diag}(r^{|n|})$ on $\mathbb{T}$ ↔ $P_t|_{|n|}$ on $L^2(\gamma)$ as **Lemma O6** (§4.1 of the full note): the isometry $J\colon h_n\mapsto c_n$ onto $L^2(\mathbb{T})^{\mathrm{even}}$ intertwines $P_t$ with Poisson convolution $D_r$. **Phase 4 gate discharged.**

@@ -83,16 +83,19 @@ Status: **complete**. No open items.
 | O3 Semigroup $=$ geometric damping, Mehler kernel | **Proved** |
 | O4 Trace / heat kernel, Bernoulli expansion | **Proved** |
 | O5 Spectral zeta $= \zeta$, $\Gamma(s)\zeta(s)=\int t^{s-1}\Theta\,dt$ | **Proved** |
-| Numerics §7 | **Not done** |
-| Functor $L^2(\gamma)\to L^2(\mathbb{T})$ beyond index-level | **Open** |
+| O6 Intertwiner $J\colon L^2(\gamma)\to L^2(\mathbb{T})$, $JP_t=D_rJ$ | **Proved** |
+| Numerics §7 | **Done** |
+| Functor $L^2(\gamma)\to L^2(\mathbb{T})$ beyond index-level | **Done** (Lemma O6) |
 
-**Next actions (Phase 1c)**
-- [ ] Add `ou_mehler` to `prime-zeros.py`; verify Mehler closed form vs. truncated
-  Hermite sum, trace $= 1/(1-e^{-t})$, Bernoulli coefficients, and
-  $\Gamma(s)\zeta(s)$ Mellin numerical match (use `mpmath`). Fill in §7 table.
-- [ ] (Phase 4 prerequisite) Formalise the index-level correspondence
-  $\mathrm{diag}(r^{|n|})$ on $\mathbb{T}$ ↔ $P_t|_{|n|}$ on $L^2(\gamma)$
-  as a bounded intertwining map.
+**Phase 1c — COMPLETE**
+- [x] Added `ou_mehler` + `ou_hermite_sum` to `prime-zeros.py`; verified Mehler vs.
+  Hermite sum, trace $= 1/(1-e^{-t})$ (three ways), Bernoulli coefficients, and
+  $\Gamma(s)\zeta(s)$ Mellin match (`mpmath`, 40 dps) in `victor/ou-verify.py`. §7
+  table filled; all checks pass (worst $9\times10^{-12}$, mostly $\le10^{-22}$).
+- [x] (Phase 4 prerequisite) Formalised the correspondence
+  $\mathrm{diag}(r^{|n|})$ on $\mathbb{T}$ ↔ $P_t|_{|n|}$ on $L^2(\gamma)$ as
+  **Lemma O6** (§4.1): isometry $J\colon h_n\mapsto c_n$ onto
+  $L^2(\mathbb{T})^{\mathrm{even}}$ with $JP_t=D_rJ$ (Poisson convolution).
 
 ---
 
@@ -183,9 +186,9 @@ Target deliverable: `project/generalised-algorithm.md` containing:
 - The spectral-triple recipe as the special case.
 
 **Prerequisites before starting Phase 4**
-- Fibonacci OU numerics done (§§1b,1c above).
-- η↔ζ measure-level equality settled (§2a).
-- Functor $L^2(\gamma)\to L^2(\mathbb{T})$ formalised (§1c).
+- [ ] Fibonacci §1b numerics done; **[x]** OU §1c numerics done.
+- [ ] η↔ζ measure-level equality settled (§2a).
+- [x] Functor $L^2(\gamma)\to L^2(\mathbb{T})$ formalised (§1c, **Lemma O6**).
 
 ---
 
@@ -238,7 +241,7 @@ One row per catalogue object. Columns: object | kernel closed form | damping | s
 |---|---|---|
 | prime-sine-wave §6 | $\|Ψ_2\|^2=P(4)$ to 10 digits | **Done** |
 | fibonacci-kernel §6 | $K_r(0)$, PD grid, eigenvalues, $\|K_r\|_2^2$ | **Not done** |
-| ou-process §7 | Mehler, trace, heat, Mellin $\Gamma\zeta$ | **Not done** |
+| ou-process §7 | Mehler, trace, heat, Mellin $\Gamma\zeta$ | **Done** |
 | eta-zeta-transfer §5 | rotation identity, extra zeros, transfer correction | **Not done** |
 | spectral-triple §8 | extend to 100+ zeros, vary $\varepsilon$, port to Python | **Partial** (HTML only) |
 | helix §6 | cone indicator on η kernel | **Not done** |
