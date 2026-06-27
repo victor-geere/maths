@@ -26,7 +26,9 @@ script output against values recorded in the §6/§7 tables of each project note
 victor/
   prime-zeros.py          # main numerical script: Z/P/G channels, helix lift, cone indicator
   spectral-triple.html    # interactive heuristic manuscript (KaTeX + Plotly, self-contained)
+  series-spectrum-circle.html  # additional interactive visualisation
   requirements.txt        # numpy, matplotlib
+  notes/                  # (empty — scratch space)
 
 project/                  # one Markdown note per catalogue object
   prime-sine-wave.md      # Phase 1a — COMPLETE (T1–T4 proved, §6 numerics done)
@@ -36,7 +38,46 @@ project/                  # one Markdown note per catalogue object
   spectral-triple.md      # Phase 2b — heuristic (Thm 6.1 is a proof sketch only)
   helix-quaternion-proposal.md  # Phase 5 — exploratory/conjectural
 
-plan/project.md           # master task list with per-phase status tables
+plan/
+  project.md              # master task list with per-phase status tables
+
+research/                 # structured research notes, one folder per phase
+  index.md                # phase index with gate conditions and status
+  todo.md                 # actionable task list (derived from plan/project.md)
+  deliverables/
+    spectral-data-sheet.md  # one row per catalogue object
+  phase-0-foundations/
+    toolkit.md            # Python functions to add to prime-zeros.py
+  phase-1-rigorous-cases/
+    prime-sine-wave.md    # Phase 1a research notes
+    fibonacci-kernel.md   # Phase 1b research notes
+    ou-process.md         # Phase 1c research notes
+  phase-2-dirichlet-family/
+    eta-zeta-transfer.md  # Phase 2a research notes
+    spectral-triple.md    # Phase 2b research notes
+    dirichlet-lf.md       # Phase 2c — not started
+  phase-3-dynamical/
+    explicit-formula.md   # Phase 3a — Weil/Barner explicit formula
+    collatz.md            # Phase 3b — feasibility memo
+  phase-4-generalisation/
+    generalised-algorithm.md  # blocked until Phase 1 numerics done
+  phase-5-helix-quaternion/
+    helix-lift.md         # H1–H3 proved; H4 conjectural
+    quaternionic-module.md  # module definition open
+
+library/                  # reference library, one folder per subject area
+  content/
+    01-foundations-logic/
+    02-algebra/
+    03-number-theory/
+    ...                   # 30 subject folders total
+  index.md
+
+sympy/                    # SymPy MCP verification server
+  mcp_server.py           # MCP server exposing simplify / verify tools
+  requirements.txt
+  environment.yml
+  CLAUDE.md               # sympy-specific guidance
 ```
 
 ## Architecture: the one construction
