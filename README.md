@@ -453,8 +453,46 @@ the circle folded away.
 
 ## Getting started
 
+### 1. MCP server — `sympy-verifier` (one-time, local)
+
+The SymPy verification server runs in a conda environment. Create it once:
+
 ```bash
-# Python experiments
+# Create the conda environment (includes numpy, sympy, mpmath, plotly, …)
+/opt/homebrew/Caskroom/miniforge/base/bin/conda env create -f sympy/environment.yml
+
+# Install the MCP runtime and antlr4 parser into it
+/opt/homebrew/Caskroom/miniforge/base/bin/conda run -n maths \
+    pip install -r sympy/requirements.txt
+```
+
+The server is already registered in [`.mcp.json`](.mcp.json) and **starts automatically** when Claude Code opens the project. To test it manually:
+
+```bash
+conda run --no-capture-output -n maths python sympy/mcp_server.py
+```
+
+See [`sympy/CLAUDE.md`](sympy/CLAUDE.md) for the full verification workflow and `/sympy` skill usage.
+
+### 2. MCP server — `codebase-memory-mcp` (one-time, global)
+
+This server builds a knowledge-graph index of the repository for structural code navigation. Install it globally in Claude Code:
+
+```bash
+claude mcp add codebase-memory-mcp -- npx -y codebase-memory-mcp
+```
+
+Then index this project once inside Claude Code (or after any significant restructure):
+
+```
+index this project
+```
+
+See [DeusData/codebase-memory-mcp](https://github.com/DeusData/codebase-memory-mcp) for full documentation.
+
+### 3. Python experiments
+
+```bash
 cd victor
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
@@ -462,13 +500,14 @@ python prime-zeros.py          # prints R-range / peak; shows 3-D helix if matpl
 ```
 
 ```bash
-# Interactive manuscript — just open it in a browser (uses KaTeX + Plotly via CDN)
+# Interactive manuscripts — open in a browser (KaTeX + Plotly via CDN, no build step)
 open victor/spectral-triple.html
+open victor/series-spectrum-circle.html
 ```
 
-The Markdown notes ([project/prime-sine-wave.md](project/prime-sine-wave.md))
-render with standard LaTeX math support (e.g. on GitHub or any KaTeX/MathJax
-previewer).
+### What to work on
+
+See [`research/todo.md`](research/todo.md) for the full actionable task list, organised by phase with gate conditions.
 
 ---
 
