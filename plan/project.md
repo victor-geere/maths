@@ -55,6 +55,26 @@ remaining objects and tightens the rigour.
 
 Status: **complete**. No open items.
 
+#### 1d. Natural / zeta sine wave ([sine-wave.md](../project/sine-wave.md))
+
+The $\zeta$ sibling of 1a: weight **all** harmonics $\sin(n\pi x)$ by $n^{-s}$
+(rather than only the primes), giving the standard Riemann zeta in place of the
+prime zeta $P$.
+
+| Theorem | Status |
+|---|---|
+| T1 Domain $\sigma>\tfrac12$ | **Proved** |
+| T2 Energy $=\zeta(2\sigma)$ | **Proved** |
+| T3 Kernel $=\zeta(s+\overline{s'})$ | **Proved** |
+| T4 Boundary: simple pole $\frac1{2\sigma-1}+\gamma$; line rate $\log N$ (harmonic) | **Proved** |
+| T5 Closed form $\mathrm{Im}\,\mathrm{Li}_s(e^{i\pi x})$; $\Psi_1=\tfrac{\pi(1-x)}2$ | **Proved** |
+| Numerics §7 (10-digit match at $s=2$; $\gamma$ limit; Clausen) | **Done** |
+
+Status: **complete**. Closed form (T5) and the present fundamental mode are the
+two features absent from the prime case. As in 1a, §8 states the construction
+does **not** bear on RH (boundary forced by the pole of $\zeta$ at $1$; the zeros
+lie at $0<\sigma<\tfrac12$, never reached).
+
 #### 1b. Fibonacci kernel ([fibonacci-kernel.md](../project/fibonacci-kernel.md))
 
 | Theorem | Status |
@@ -140,12 +160,21 @@ Status: **complete**. No open items.
 
 #### 2c. General Dirichlet series and $L$-functions
 
-Status: **not started**.
+Status: **core complete**. Deliverable `project/dirichlet-series.md` written;
+numerics in `victor/dirichlet-lf-verify.py` (10-digit matches). D1–D3
+(domain / energy $L(2\sigma,\chi_0)$ / reproducing kernel
+$L(s+\overline{s'},\chi_1\bar\chi_2)$) proved unconditionally; D4 (parity ↔
+cosine/sine kernel and $\Gamma$-factor) and D5 (Gauss-sum transfer operator =
+sum of $\phi(q)$ rotations, generalising the $q=2$ η case) proved; functional
+equation and explicit formula cited with kernel-dictionary entries proved.
 
 **Next actions (Phase 2c)**
-- [ ] Write `project/dirichlet-series.md`: kernel ↔ functional-equation
-  dictionary for $L(s,\chi)$; state which parts of the spectral-triple recipe
-  go through unconditionally for Dirichlet $L$-functions.
+- [x] Write `project/dirichlet-series.md`: kernel ↔ functional-equation
+  dictionary for $L(s,\chi)$.
+- [ ] Verify D5 (rotation sum) on a $\theta$-grid for a complex character
+  (order-4 mod 5); promote the §5 transfer correction at $\{k\log p:p\mid q\}$
+  to a measure-level equality (shared with the Phase 2a η task); handle
+  imprimitive $\chi$ via the inducing primitive character.
 
 ---
 
@@ -231,7 +260,7 @@ One row per catalogue object. Columns: object | kernel closed form | damping | s
 | Riemann zeros $\gamma_n$ | $2\sum\gamma_n r^n\cos n\theta$ | $r<1$ | $\{\gamma_n r^n\}$ | prime powers via Weil |
 | Prime powers $\Lambda(n)/\sqrt{n}$ | (no closed form) | Gaussian | von Mangoldt weights | zeros via Weil |
 | Collatz | (not assessed) | — | — | — |
-| General Dirichlet $L(s,\chi)$ | (not assessed) | — | — | — |
+| General Dirichlet $L(s,\chi)$ | cosine/sine $\sum\chi(n)r^{\lvert n\rvert}e^{in\theta}$ (PD iff $\chi_0$) | $\Re s>\tfrac12$ | $\{\chi(n)n^{-2\sigma}\}$, energy $L(2\sigma,\chi_0)$ | $L(s+\overline{s'},\chi_1\bar\chi_2)$; Gauss-sum rotation transfer |
 
 ---
 
@@ -240,6 +269,7 @@ One row per catalogue object. Columns: object | kernel closed form | damping | s
 | Note | Check | Status |
 |---|---|---|
 | prime-sine-wave §6 | $\|Ψ_2\|^2=P(4)$ to 10 digits | **Done** |
+| sine-wave §7 | $\|Ψ_2\|^2=ζ(4)=π^4/90$; γ limit; Clausen closed form | **Done** |
 | fibonacci-kernel §6 | $K_r(0)$, PD grid, eigenvalues, $\|K_r\|_2^2$ | **Not done** |
 | ou-process §7 | Mehler, trace, heat, Mellin $\Gamma\zeta$ | **Done** |
 | eta-zeta-transfer §5 | rotation identity, extra zeros, transfer correction | **Not done** |
@@ -265,6 +295,7 @@ One row per catalogue object. Columns: object | kernel closed form | damping | s
 
 ```
 prime-sine-wave  ──┐
+sine-wave (ζ)     ─┤
 fibonacci-kernel  ─┤
 ou-process        ─┼──►  Phase 4 (generalised algorithm)
 eta-zeta-transfer ─┤                  │
