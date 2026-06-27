@@ -89,7 +89,7 @@ recipe below is the constructive route from a sequence to its $K$ and $T_K$.
 ## The core idea: the general recipe
 
 Given a nonnegative sequence $(a_n)_{n\ge0}$, the recipe in
-[victor/spectral-triple.html](victor/spectral-triple.html) §3 builds a
+[project/spectral-triple.md](project/spectral-triple.md) §3 builds a
 shift‑invariant positive definite kernel on the circle $\mathbb T=[-\pi,\pi)$:
 
 1. **Damping** — pick weights $w_n$ with $\sum_n a_n w_n<\infty$ (e.g. geometric
