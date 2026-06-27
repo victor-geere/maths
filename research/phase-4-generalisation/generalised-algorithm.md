@@ -189,6 +189,183 @@ content above can be drafted now, Tier-C deferred.
 
 ---
 
+## 5.1 Tier A completed — two canonical examples
+
+Both examples use the first five inputs of §2 only (sequence, growth class, symmetry,
+damping rule) and produce all five Tier A outputs without any number theory. The two
+regimes in §3.3 are each represented once.
+
+---
+
+### Example A1 — geometric regime
+
+**Input:** $a_n = 1$ (all integers), geometric damping $w_n = r^n$, $r\in(0,1)$.
+
+**Step 1 — damped sequence.**
+
+$$\lambda_n = a_n\,w_n = r^n,\quad n\ge 0;\qquad \lambda_{-n}=\lambda_n.$$
+
+**Step 2 — $\ell^1$ check (trace).**
+
+$$\mathrm{tr}(T_K)=\sum_{n\in\mathbb{Z}} r^{|n|}=1+2\sum_{n\ge1}r^n = \frac{1+r}{1-r}<\infty.\tag{A1.1}$$
+
+$T_K$ is trace-class for every $r<1$. (Numerically at $r=0.4$: $(1.4)/(0.6)=2.\overline{3}$, confirmed by direct sum.)
+
+**Step 3 — kernel (closed form).**
+
+$$K(\theta)=\sum_{n\in\mathbb{Z}}r^{|n|}e^{in\theta}=1+2\sum_{n\ge1}r^n\cos(n\theta)=\frac{1-r^2}{1-2r\cos\theta+r^2}\tag{A1.2}$$
+
+the **Poisson kernel** $P_r(\theta)$.  The geometric sum closes because
+$\sum_{n\ge0}(re^{i\theta})^n=(1-re^{i\theta})^{-1}$.
+
+**Step 4 — positive definiteness (Bochner).**
+
+$\lambda_n=r^n>0$ for all $n\in\mathbb{Z}$.  Bochner's theorem ($\hat K(n)=\lambda_n\ge0$)
+gives positive definiteness immediately, without inspecting $K$.
+
+**Step 5 — self-adjoint operator and eigenpairs.**
+
+$T_K f = K*f$ on $L^2(\mathbb{T})$.  The Fourier basis diagonalises convolution, so
+
+$$T_K\,e^{in\cdot} = r^{|n|}\,e^{in\cdot},\quad n\in\mathbb{Z}.$$
+
+Eigenvalue $r^m$ ($m\ge1$) has multiplicity 2 (eigenfunctions $e^{\pm im\cdot}$);
+eigenvalue 1 ($m=0$) has multiplicity 1.
+
+**Step 6 — Fredholm determinant.**
+
+Working over the one-sided eigenvalue list $\{r^n\}_{n\ge0}$ (each appearing once):
+
+$$D(z) = \prod_{n\ge0}(1-zr^n) = (z;\,r)_\infty \tag{A1.3}$$
+
+the **$q$-Pochhammer function**, entire in $z$ for any $|r|<1$.  For the full
+operator on $L^2(\mathbb{T})$ (each positive eigenvalue $r^n$, $n\ge1$, doubled):
+
+$$\det(I-zT_K) = (1-z)\prod_{n\ge1}(1-zr^n)^2 = \frac{(z;\,r)_\infty^2}{1-z}\,.\tag{A1.4}$$
+
+Confirmed numerically at $r=0.4$, $z=0.5$: both sides $= 0.24314\ldots$ to 15 digits.
+
+**Step 7 — spectral zeta and heat trace.**
+
+The spectral zeta $\zeta_T(s)=\sum_{n\ge0}r^{-ns}$ diverges for all $s$ when $r<1$,
+since $r^{-n}\to\infty$.  The correct generating object for this regime is $D(z)$ itself
+(the eigenvalue product), not the Mellin–Laplace transforms.  The semigroup trace
+(A1.1) is the $z=1$ moment; higher-order moments are $\mathrm{tr}(T_K^k)=\sum_n r^{nk} = 1/(1-r^k)$.
+
+**Summary (A1).**
+
+| Tier A output | Closed form | Condition |
+|---|---|---|
+| Damped sequence $\lambda_n$ | $r^n$ | $r\in(0,1)$ |
+| $\ell^1$ check / trace | $(1+r)/(1-r)$ | always |
+| Kernel $K(\theta)$ | $(1-r^2)/(1-2r\cos\theta+r^2)$ (Poisson) | always |
+| Positive definite | $\checkmark$ (all $\lambda_n>0$) | always |
+| Eigenpairs | $(r^{|n|},\,e^{in\cdot})$ | always |
+| Fredholm det $D(z)$ | $(z;r)_\infty$ (one-sided) | entire in $z$ |
+| Spectral zeta $\zeta_T(s)$ | **diverges** | — |
+| Heat trace $\mathrm{tr}(e^{-sT_K})$ | $\sum e^{-sr^n}$, no closed form | converges $\forall s>0$ |
+
+---
+
+### Example A2 — power-law regime
+
+**Input:** $a_n = n^{-1/2}$, Dirichlet damping via $\sigma$ (i.e.\ the convergent-series
+parameter plays the role of $w$), giving $\lambda_n = a_n^2 = n^{-2\sigma}$.
+This is the **natural sine wave** of [project/sine-wave.md](../../project/sine-wave.md)
+(status: Complete), so all five Tier A outputs are verified against 40-digit reference
+values in [victor/sine-wave-verify.py](../../victor/sine-wave-verify.py).
+
+**Step 1 — damped sequence.**
+
+$$\lambda_n = n^{-2\sigma},\quad n\ge 1;\qquad \sigma > \tfrac12.$$
+
+**Step 2 — $\ell^1$ check (trace).**
+
+$$\mathrm{tr}(T_K) = \sum_{n\ge1} n^{-2\sigma} = \zeta(2\sigma)<\infty\quad\text{for }\sigma>\tfrac12.\tag{A2.1}$$
+
+The simple pole of $\zeta$ at $s=1$ is exactly the boundary $\sigma=\tfrac12$ of the
+self-adjoint domain — an unavoidable, computable feature of this arithmetic type.
+
+**Step 3 — kernel (closed form).**
+
+$$K(\theta) = 2\sum_{n\ge1}n^{-2\sigma}\cos(n\theta) = 2\,\mathrm{Re}\,\mathrm{Li}_{2\sigma}(e^{i\theta})\tag{A2.2}$$
+
+the **Clausen polylogarithm**.  At $\sigma=1$: $K(\theta)=-2\log|2\sin(\theta/2)|$ (the
+Green's function of $d^2/d\theta^2$ on $\mathbb{T}$).
+
+**Step 4 — positive definiteness (Bochner).**
+
+$\lambda_n=n^{-2\sigma}>0$.  Bochner applies; the kernel is positive definite for all
+$\sigma>\tfrac12$, unconditionally.
+
+**Step 5 — self-adjoint operator and eigenpairs.**
+
+$$T_K\,e^{in\cdot} = |n|^{-2\sigma}\,e^{in\cdot},\quad n\in\mathbb{Z}\setminus\{0\}.$$
+
+($n=0$ eigenvalue is 0 — the kernel has zero mean.)
+
+**Step 6 — Fredholm determinant.**
+
+$$D(z) = \prod_{n\ge1}(1-z\,n^{-2\sigma}) \tag{A2.3}$$
+
+an entire function of order $\tfrac{1}{2\sigma}$ (exponent of convergence of $\{n^{2\sigma}\}$).
+At $\sigma=1$ it closes as a sine product:
+
+$$D(z)\big|_{\sigma=1} = \prod_{n\ge1}\!\Bigl(1-\frac{z}{n^2}\Bigr) = \frac{\sin(\pi\sqrt{z})}{\pi\sqrt{z}}\,.\tag{A2.4}$$
+
+Confirmed numerically at $z=0.7$: $\sin(\pi\sqrt{0.7})/(\pi\sqrt{0.7})=0.186773\ldots$
+vs.\ partial product to $n=3\times10^5$: diff $\sim4\times10^{-7}$ (truncation only).
+
+**Step 7 — spectral zeta.**
+
+$$\zeta_T(s) = \sum_{n\ge1}n^{-2\sigma s} = \zeta(2\sigma s),\quad \mathrm{Re}(s)>\tfrac{1}{2\sigma}.\tag{A2.5}$$
+
+This converges uniformly and is analytic in that half-plane.  Its analytic
+continuation (Tier C) is the Riemann $\zeta$ function itself; the critical line of
+$\zeta_T$ is $\mathrm{Re}(s)=\tfrac{1}{2\sigma}$.
+
+The heat trace $\mathrm{tr}(e^{-sT_K})=\sum_{n\ge1}e^{-s/n^{2\sigma}}$ diverges
+($e^{-s/n^{2\sigma}}\to1$ as $n\to\infty$).  The Mellin/Laplace machinery connects
+$\zeta_T$ to $D$ through the log-derivative:
+
+$$\log D(z) = -\sum_{k\ge1}\frac{z^k}{k}\,\zeta_T(k),\qquad |z|<1.\tag{A2.6}$$
+
+**Summary (A2).**
+
+| Tier A output | Closed form | Condition |
+|---|---|---|
+| Damped sequence $\lambda_n$ | $n^{-2\sigma}$ | $\sigma>\tfrac12$ |
+| $\ell^1$ check / trace | $\zeta(2\sigma)$ | $\sigma>\tfrac12$ |
+| Kernel $K(\theta)$ | $2\,\mathrm{Re}\,\mathrm{Li}_{2\sigma}(e^{i\theta})$ (Clausen) | always |
+| Positive definite | $\checkmark$ (all $\lambda_n>0$) | always |
+| Eigenpairs | $(n^{-2\sigma},\,e^{in\cdot})$ | always |
+| Fredholm det $D(z)$ | $\prod(1-zn^{-2\sigma})$; $\sin(\pi\sqrt z)/(\pi\sqrt z)$ at $\sigma=1$ | entire |
+| Spectral zeta $\zeta_T(s)$ | $\zeta(2\sigma s)$ | $\mathrm{Re}(s)>\tfrac{1}{2\sigma}$ |
+| Heat trace $\mathrm{tr}(e^{-sT_K})$ | **diverges** | — |
+
+---
+
+### Comparison across regimes
+
+| Property | Geometric ($r^n$) | Power-law ($n^{-2\sigma}$) |
+|---|---|---|
+| $\ell^1$ bound | $1/(1-r)$ | $\zeta(2\sigma)$ |
+| Kernel | Poisson $(1-r^2)/(1-2r\cos\theta+r^2)$ | Clausen $2\,\mathrm{Re}\,\mathrm{Li}_{2\sigma}$ |
+| Trace class | always | $\sigma>\tfrac12$ |
+| Spectral zeta | diverges | $\zeta(2\sigma s)$ |
+| Heat trace | formal series, no closed form | diverges |
+| $D(z)$ closed form | $q$-Pochhammer $(z;r)_\infty$ | $\sin$-product at $\sigma=1$ |
+| Analytic continuation (Tier C) | trivial ($D$ entire) | $\Rightarrow$ full Riemann $\zeta$ |
+
+The two regimes are **complementary**: the geometric regime has a closed-form
+kernel and determinant with no spectral zeta; the power-law regime has a
+convergent spectral zeta whose continuation is the Riemann $\zeta$, and a
+determinant that closes only at integer values of $\sigma$.  The Tier A
+computation is identical in both cases; the difference is purely in which
+generating function closes in elementary terms.
+
+---
+
 ## 6. Deliverable outline
 
 ```
