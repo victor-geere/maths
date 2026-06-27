@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "sympy-verifier": {
+      "command": "/opt/homebrew/bin/conda",
+      "args": [
+        "run",
+        "--no-capture-output",
+        "-n", "maths",
+        "python",
+        "/Users/victor/workspace/maths/sympy/mcp_server.py"
+      ]
+    }
+  }
+}
