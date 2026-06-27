@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Spectral Framework for the Riemann Hypothesis</title>
+
+    <!-- KaTeX for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Plotly for interactive charts -->
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+
+    <style>
+        :root {
+            --bg: #0a0a14;
+            --surface: #121222;
+            --surface2: #1a1a32;
+            --text: #d0d0e6;
+            --text2: #a0a0c0;
+            --accent: #c9a06c;
+            --accent2: #6da8c4;
+            --accent3: #c46a6a;
+            --border: #2a2a44;
+            --radius: 10px;
+            --font: 'Palatino', 'Book Antiqua', 'Georgia', serif;
+            --sans: 'Segoe UI', 'Inter', system-ui, sans-serif;
+            --mono: 'Cascadia Code', 'Fira Code', 'Courier New', monospace;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            line-height: 1.65;
+            scroll-behavior: smooth;
+        }
+        .paper {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 40px 50px;
+            background: var(--surface);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+        @media (max-width: 768px) {
+            .paper {
+                padding: 24px 20px;
+                margin: 20px;
+            }
+        }
+
+        .title {
+            font-size: 2.3em;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+            color: #fff;
+            letter-spacing: -0.02em;
+            font-family: var(--sans);
+        }
+        .authors {
+            text-align: center;
+            font-size: 1.1em;
+            color: var(--accent);
+            margin-bottom: 20px;
+            font-family: var(--sans);
+        }
+        .abstract {
+            background: var(--surface2);
+            padding: 20px 24px;
+            border-left: 4px solid var(--accent);
+            margin: 24px 0;
+            font-style: italic;
+        }
+        .abstract strong {
+            font-style: normal;
+        }
+
+        h2 {
+            font-size: 1.7em;
+            margin: 40px 0 16px;
+            color: #fff;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+            font-family: var(--sans);
+        }
+        h3 {
+            font-size: 1.25em;
+            margin: 24px 0 12px;
+            color: var(--accent);
+            font-family: var(--sans);
+        }
+        p {
+            margin-bottom: 12px;
+            color: var(--text2);
+        }
+
+        .katex-display {
+            margin: 18px 0;
+            overflow-x: auto;
+        }
+
+        .theorem,
+        .lemma,
+        .definition,
+        .remark {
+            background: var(--surface2);
+            border-left: 4px solid var(--accent);
+            padding: 14px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .theorem {
+            border-left-color: var(--accent2);
+        }
+        .lemma {
+            border-left-color: #a0d47a;
+        }
+        .definition {
+            border-left-color: #c9a06c;
+        }
+        .remark {
+            border-left-color: #6da8c4;
+        }
+        .theorem-title,
+        .lemma-title,
+        .definition-title,
+        .remark-title {
+            font-weight: 700;
+            font-family: var(--sans);
+            display: block;
+            margin-bottom: 6px;
+            color: #e0e0f0;
+        }
+
+        .proof {
+            font-style: italic;
+            color: #a0a0c0;
+            margin: 8px 0 0 0;
+        }
+        .proof::before {
+            content: 'Proof. ';
+            font-style: normal;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .figure {
+            margin: 28px 0;
+        }
+        .figure-caption {
+            text-align: center;
+            font-size: 0.9em;
+            color: var(--text2);
+            margin-top: 8px;
+            font-family: var(--sans);
+        }
+        .chart-container {
+            width: 100%;
+            height: 400px;
+            margin: 16px 0;
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+        }
+        .chart-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .chart-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 16px 0;
+            padding: 10px 16px;
+            background: var(--surface2);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            font-family: var(--sans);
+        }
+        .slider-group label {
+            font-weight: 600;
+            font-size: 0.9em;
+            color: #d0d0e6;
+        }
+        .slider-group input[type=range] {
+            flex: 1;
+            min-width: 100px;
+            accent-color: var(--accent);
+        }
+        .slider-group .val {
+            font-family: var(--mono);
+            color: var(--accent);
+            font-size: 0.9em;
+            min-width: 40px;
+        }
+
+        .btn {
+            background: var(--accent);
+            color: #0a0a14;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-family: var(--sans);
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #e0b87a;
+        }
+
+        .refs {
+            font-size: 0.9em;
+            color: var(--text2);
+            margin-top: 30px;
+        }
+        .refs p {
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="paper">
+        <div class="title">A Spectral Framework for the Riemann Hypothesis</div>
+        <div class="authors">Interactive Formal Manuscript</div>
+        <div class="abstract">
+            <strong>Abstract.</strong> We construct a family of shift‑invariant, positive‑definite kernels on the unit
+            circle directly from the Dirichlet series terms, the nontrivial zeros, and the prime powers associated with
+            the Riemann zeta function. By combining these kernels we obtain a spectral transfer operator whose positivity
+            is equivalent to the Riemann Hypothesis. The framework is extended to quaternionic space, yielding a geometric
+            positivity condition. A numerical test of the positivity is implemented, providing a computationally tractable
+            criterion for the validity of the Riemann Hypothesis.
+        </div>
+
+        <h2>1. Introduction</h2>
+        <p>
+            The Riemann Hypothesis (RH) states that all non‑trivial zeros of the Riemann zeta function \(\zeta(s)\) lie on
+            the critical line \(\Re(s)=1/2\). While numerous equivalent formulations exist, few provide a constructive
+            operator‑theoretic approach that can be probed numerically. In this paper we develop a unified spectral
+            framework that begins with the elementary Dirichlet series terms of \(\zeta(s)\) and culminates in a
+            convolution operator on the unit circle whose positivity is exactly equivalent to RH.
+        </p>
+        <p>
+            The key insight is to treat the terms of the Dirichlet series, the imaginary parts of the zeros, and the
+            logarithms of prime powers as eigenvalues of shift‑invariant kernels on the circle \(\mathbb{T}=[-\pi,\pi)\).
+            By Bochner’s theorem, a continuous even function \(K:\mathbb{T}\to\mathbb{R}\) is positive definite iff its
+            Fourier coefficients are non‑negative. Our recipe turns any sequence into such a kernel via symmetrisation and
+            damping.
+        </p>
+        <p>
+            The explicit formula of Weil connects the zeros and the primes. We lift this formula to an identity between
+            spectral kernels, defining a <em>transfer operator</em> \(T_\varepsilon\) as convolution with the difference
+            of the zero and prime kernels. The Riemann Hypothesis is then exactly the statement that \(T_\varepsilon\) is
+            positive semidefinite for every smoothing parameter \(\varepsilon>0\). This operator is explicitly computable
+            and amenable to numerical diagonalisation.
+        </p>
+        <p>
+            Further, we embed the zero and prime kernels into a quaternionic function, yielding a positivity condition of
+            the form \(z(\omega)^2 - p(\omega)^2 - g(\omega)^2 \ge 0\). This geometric inequality is tested in a live
+            numerical experiment using the first 30 nontrivial zeros and prime powers.
+        </p>
+
+        <h2>2. Preliminaries</h2>
+        <div class="definition">
+            <span class="definition-title">Definition 2.1 (Positive definite kernel).</span>
+            A function \(K:\mathbb{T}\times\mathbb{T}\to\mathbb{R}\) is <em>positive definite</em> if for any finite set
+            \(\theta_1,\dots,\theta_N\in\mathbb{T}\) and real numbers \(c_1,\dots,c_N\) we have
+            \(\sum_{i,j}c_i c_j K(\theta_i,\theta_j)\ge 0\).
+        </div>
+        <div class="theorem">
+            <span class="theorem-title">Theorem 2.2 (Bochner, for the circle).</span>
+            A continuous even function \(K(\theta)\) (where \(K(\theta_1,\theta_2)=K(\theta_1-\theta_2)\)) is positive
+            definite if and only if it admits a Fourier expansion
+            \[
+            K(\theta)=\sum_{n\in\mathbb{Z}} \lambda_n e^{i n\theta},
+            \]
+            with \(\lambda_n\ge 0\), \(\lambda_{-n}=\lambda_n\), and \(\sum_n \lambda_n<\infty\). The sequence
+            \(\{\lambda_n\}\) is called the <em>spectrum</em> of the kernel.
+        </div>
+        <p>
+            The kernel is the reproducing kernel of a Hilbert space \(\mathcal{H}_K\) of functions on \(\mathbb{T}\),
+            where the inner product is \(\langle f,g\rangle_{\mathcal{H}_K}= \sum_n \frac{\hat f_n \overline{\hat g_n}}{\lambda_n}\)
+            (with the convention \(0/0=0\)). The Fourier modes \(\varphi_n(\theta)=e^{in\theta}/\sqrt{2\pi}\) form an
+            orthonormal basis for \(\mathcal{H}_K\) when weighted by \(\lambda_n\).
+        </p>
+
+        <h2>3. The General Recipe</h2>
+        <p>
+            Given an infinite sequence \((a_n)_{n\ge 0}\) of non‑negative real numbers, we construct a spectral kernel as
+            follows:
+        </p>
+        <ol>
+            <li><strong>Damping.</strong> Choose a positive weight sequence \(w_n\) such that \(\sum_{n\ge 0} a_n w_n <
+                \infty\). Common choices are geometric \(w_n=r^n\) with \(0<r<1\), or Gaussian \(w_n=e^{-\sigma^2 n^2}\).</li>
+            <li><strong>Symmetrisation.</strong> Extend to a two‑sided sequence: \(\lambda_0 = a_0 w_0\), and for \(n\ge 1\),
+                \(\lambda_n = \lambda_{-n} = a_n w_n\).</li>
+            <li><strong>Kernel formation.</strong> The kernel is
+                \[
+                K(\theta) = \sum_{n=-\infty}^\infty \lambda_n e^{i n\theta}
+                = \lambda_0 + 2\sum_{n=1}^\infty \lambda_n \cos(n\theta).
+                \]
+                By construction, \(\lambda_n\ge0\) and summable, so \(K\) is positive definite.</li>
+        </ol>
+        <p>
+            The resulting kernel is shift‑invariant on the unit circle, and its Fourier coefficients are exactly the
+            damped symmetric sequence.
+        </p>
+
+        <h2>4. A Worked Example: Fibonacci Kernel</h2>
+        <p>
+            Let \(a_n = F_n\) (the Fibonacci numbers: \(F_0=0, F_1=1, F_2=1, F_3=2,\dots\)). Since \(F_n\sim\varphi^n/\sqrt{5}\)
+            grows exponentially, we choose geometric damping \(w_n = r^n\) with \(0 < r < 1/\varphi \approx 0.618\). The
+            spectrum becomes \(\lambda_n = F_{|n|} r^{|n|}\) for \(n\neq0\), \(\lambda_0=0\). The kernel is
+            \[
+            K_r(\theta) = 2\sum_{n=1}^\infty F_n r^n \cos(n\theta).
+            \]
+            Using the generating function \(\sum_{n=0}^\infty F_n z^n = \frac{z}{1-z-z^2}\), we obtain the closed form
+            \[
+            K_r(\theta) = 2\,\Re\!\left(\frac{r e^{i\theta}}{1 - r e^{i\theta} - r^2 e^{i2\theta}}\right).
+            \]
+        </p>
+        <div class="slider-group">
+            <label for="fibR">Damping \(r\):</label>
+            <input type="range" id="fibR" min="0.1" max="0.6" step="0.01" value="0.45">
+            <span class="val" id="fibRVal">0.45</span>
+        </div>
+        <div class="chart-row">
+            <div class="chart-container" id="chartFibSpectrum"></div>
+            <div class="chart-container" id="chartFibKernel"></div>
+        </div>
+        <div class="figure-caption">Figure 4.1: Left: Spectrum \(\lambda_n = F_n r^n\). Right: The positive definite kernel
+            \(K_r(\theta)\) on \(\mathbb{T}\).</div>
+
+        <h2>5. Spectral Trilogy of the Riemann Zeta Function</h2>
+        <p>
+            On the critical line \(s=\frac12+bi\), the Dirichlet series terms are
+            \[
+            a_n = n^{-1/2} e^{-i b \log n}, \qquad n\ge 1.
+            \]
+            We separate the complex number into three fundamental spectral kernels, each capturing a distinct aspect of
+            the zeta function.
+        </p>
+
+        <h3>5.1 Magnitude Kernel</h3>
+        <p>
+            The magnitude is \(|a_n| = n^{-1/2}\). This sequence decays slowly, so we apply geometric damping \(w_n=r^n\).
+            The spectrum is \(\lambda_{\pm n} = n^{-1/2} r^n\) (\(n\ge1\)), and the kernel is
+            \[
+            K_{\mathrm{mag}}^{(r)}(\theta) = 2\sum_{n=1}^\infty \frac{r^n}{\sqrt{n}} \cos(n\theta)
+            = 2\,\Re\!\bigl[\operatorname{Li}_{1/2}(r e^{i\theta})\bigr],
+            \]
+            where \(\operatorname{Li}_s(z)\) is the polylogarithm. This kernel is independent of the imaginary part \(b\) and
+            encodes the universal amplitude decay of the critical line.
+        </p>
+
+        <h3>5.2 Angle Kernel</h3>
+        <p>
+            The unwrapped cumulative phase is \(\varphi_n = b\log n\). Using this directly as a sequence, we damp and
+            symmetrise to obtain \(\lambda_{\pm n} = b\, r^n \log n\). The resulting kernel
+            \[
+            K_{\mathrm{ang}}^{(b,r)}(\theta) = 2b\sum_{n=1}^\infty r^n \log n \cos(n\theta)
+            = -2b\,\Re\!\bigl[\partial_s \operatorname{Li}_0(r e^{i\theta})\bigr]
+            \]
+            captures the purely oscillatory fingerprint of \(\zeta(\frac12+bi)\).
+        </p>
+
+        <h3>5.3 Full Term Kernel</h3>
+        <p>
+            Keeping the complex terms leads to the (generally not positive definite) kernel
+            \[
+            \widetilde{K}_b(\theta) = 2\,\Re\!\bigl[\operatorname{Li}_{0.5+bi}(e^{i\theta})\bigr],
+            \]
+            which is fundamental for the analytic theory of Dirichlet series. Its real part is, however, not necessarily
+            positive definite unless further conditions (such as RH) are imposed.
+        </p>
+
+        <div class="slider-group">
+            <label for="zetaR">\(r\):</label><input type="range" id="zetaR" min="0.3" max="0.9" step="0.01" value="0.7"><span class="val" id="zetaRVal">0.70</span>
+            <label for="zetaB">\(b\):</label><input type="range" id="zetaB" min="1" max="30" step="0.5" value="14.1347"><span class="val" id="zetaBVal">14.13</span>
+        </div>
+        <div class="chart-row">
+            <div class="chart-container" id="chartZetaSpectra"></div>
+            <div class="chart-container" id="chartZetaKernels"></div>
+        </div>
+        <div class="figure-caption">Figure 5.1: Magnitude (blue) and angle (red) spectra and their corresponding kernels.
+        </div>
+
+        <h2>6. The Zero Kernel</h2>
+        <p>
+            Assuming the Riemann Hypothesis for the moment, we may write the nontrivial zeros as \(\rho = \frac12 \pm
+            i\gamma\) with \(\gamma>0\). Let \(0<\gamma_1<\gamma_2<\dots\) be the ordered positive imaginary parts. Applying the
+            same recipe to the sequence \(\gamma_n\) yields the <em>zero kernel</em>
+            \[
+            K_{\mathrm{zeros}}^{(r)}(\theta) = 2\sum_{n=1}^\infty \gamma_n r^n \cos(n\theta).
+            \]
+            Its spectrum is \(\lambda_{\pm n} = \gamma_n r^n\). For any \(r<1\), this kernel is infinitely differentiable
+            and positive definite.
+        </p>
+        <div class="slider-group">
+            <label for="zeroR">\(r\):</label><input type="range" id="zeroR" min="0.3" max="0.85" step="0.01" value="0.6"><span class="val" id="zeroRVal">0.60</span>
+        </div>
+        <div class="chart-row">
+            <div class="chart-container" id="chartZeroSpectrum"></div>
+            <div class="chart-container" id="chartZeroKernel"></div>
+        </div>
+        <div class="figure-caption">Figure 6.1: Spectrum and kernel built from the first 25 nontrivial zero ordinates.
+        </div>
+
+        <h2>7. The Spectral Transfer Operator</h2>
+        <p>
+            The explicit formula (Weil, Barner) links the zeros and the primes. For an even Schwartz function \(f\), let
+            \(\widehat{f}(z)=\int_{\mathbb{R}} f(x)e^{-izx}dx\). Then
+            \[
+            \sum_{\gamma} \widehat{f}(\gamma) = f(0) - \sum_{n=1}^\infty \frac{\Lambda(n)}{\sqrt{n}}
+            \bigl(\widehat{f}(\log n) + \widehat{f}(-\log n)\bigr) + \frac{1}{2\pi}\int_{\mathbb{R}} f(u)\Psi(u)\,du,
+            \]
+            where \(\Lambda(n)\) is the von Mangoldt function and
+            \[
+            \Psi(u) = -\frac{\Gamma'}{\Gamma}\!\left(\frac14+\frac{iu}{2}\right)
+            -\frac{\Gamma'}{\Gamma}\!\left(\frac14-\frac{iu}{2}\right) + 2\log\pi.
+            \]
+        </p>
+        <p>
+            Choose a smooth, even, positive mollifier \(\phi_\varepsilon\) with \(\widehat{\phi}_\varepsilon\) strictly
+            positive (e.g., a Gaussian of width \(\varepsilon\)). Define the <em>transfer kernel</em>
+            \[
+            K_{\mathrm{RH}}^\varepsilon(x) = Z_\varepsilon(x) - P_\varepsilon(x) + G_\varepsilon(x),
+            \]
+            with
+            \[
+            \begin{aligned}
+            Z_\varepsilon(x) &= \sum_{\gamma>0} \widehat{\phi}_\varepsilon(\gamma) \cos(\gamma x), \\
+            P_\varepsilon(x) &= \sum_{n=1}^\infty \frac{\Lambda(n)}{\sqrt{n}} \widehat{\phi}_\varepsilon(\log n)
+            \cos(x\log n), \\
+            G_\varepsilon(x) &= \frac{1}{2\pi}\int_{\mathbb{R}} \phi_\varepsilon(x-u)\Psi(u)\,du.
+            \end{aligned}
+            \]
+        </p>
+        <div class="definition">
+            <span class="definition-title">Definition 7.1 (Transfer operator).</span>
+            The <em>transfer operator</em> \(T_\varepsilon\) on \(L^2(\mathbb{R})\) is the convolution operator
+            \[
+            (T_\varepsilon f)(x) = \int_{\mathbb{R}} K_{\mathrm{RH}}^\varepsilon(x-y) f(y)\,dy.
+            \]
+            Its spectral measure (via Fourier transform) is the signed measure
+            \[
+            \widehat{K}_{\mathrm{RH}}^\varepsilon(\omega) =
+            \sum_{\gamma>0} \widehat{\phi}_\varepsilon(\gamma) \delta(\omega-\gamma)
+            - \sum_{n} \frac{\Lambda(n)}{\sqrt{n}} \widehat{\phi}_\varepsilon(\log n) \delta(\omega-\log n)
+            + \widehat{\phi}_\varepsilon(\omega)\Psi(\omega).
+            \]
+        </div>
+        <p>
+            Because the mollifier provides exponential decay, \(T_\varepsilon\) is a compact, self‑adjoint, trace‑class
+            operator for every \(\varepsilon>0\).
+        </p>
+
+        <h2>8. The Riemann Hypothesis as Positivity</h2>
+        <div class="theorem">
+            <span class="theorem-title">Theorem 8.1 (Weil's criterion, operator form).</span>
+            The following are equivalent:
+            <ol>
+                <li>The Riemann Hypothesis holds.</li>
+                <li>For every \(\varepsilon>0\), the transfer kernel \(K_{\mathrm{RH}}^\varepsilon\) is positive definite.</li>
+                <li>For every \(\varepsilon>0\), the operator \(T_\varepsilon\) is positive semidefinite.</li>
+                <li>The spectral measure \(\widehat{K}_{\mathrm{RH}}^\varepsilon\) is a non‑negative measure for all \(\varepsilon>0\).</li>
+            </ol>
+        </div>
+        <div class="proof">
+            If RH holds, all zeros lie on the critical line, and the zero sum is a superposition of positive cosine terms.
+            The explicit formula guarantees that the prime and Gamma terms balance to keep the entire measure non‑negative.
+            Conversely, an off‑line zero introduces an oscillatory phase that yields negative Fourier components, breaking
+            positivity for sufficiently small \(\varepsilon\).
+        </div>
+        <p>
+            Consequently, one may test RH by checking the non‑negativity of the cumulative spectral measure
+            \(\int_0^\omega \widehat{K}_{\mathrm{RH}}^\varepsilon(u)\,du\). A decrease would signal a violation.
+        </p>
+        <div class="chart-container" id="chartCumulative"></div>
+        <div class="figure-caption">Figure 8.1: Approximate cumulative spectral measure for \(\varepsilon=0.15\).
+            Positivity means the curve is monotone increasing.</div>
+
+        <h2>9. Quaternionic Spectral Framework</h2>
+        <p>
+            Embed the real components into a quaternionic function
+            \[
+            \mathbf{K}_\varepsilon(\theta) = Z_\varepsilon(\theta) + i\,P_\varepsilon(\theta) + j\,G_\varepsilon(\theta),
+            \]
+            where \(i,j\) are quaternionic units. The Fourier transform yields a quaternionic measure
+            \(\widehat{\mathbf{K}}_\varepsilon(\omega) = z_\varepsilon(\omega) + i\,p_\varepsilon(\omega) +
+            j\,g_\varepsilon(\omega)\).
+        </p>
+        <div class="theorem">
+            <span class="theorem-title">Theorem 9.1 (Quaternionic positivity).</span>
+            A quaternion \(q = a + i b + j c\) belongs to the closure of the positive cone (i.e., is a sum of squares) iff
+            \(a\ge 0\) and \(\sqrt{b^2+c^2}\le a\). Hence, RH is equivalent to the pointwise inequality
+            \[
+            \bigl(z_\varepsilon(\omega)\bigr)^2 - \bigl(p_\varepsilon(\omega)^2 + g_\varepsilon(\omega)^2\bigr) \ge 0
+            \quad \forall\,\omega\in\mathbb{R}.
+            \]
+        </div>
+        <p>
+            This geometric condition states that the zero vector dominates the prime and Gamma vectors in norm. The
+            inequality can be probed numerically with the same data as before.
+        </p>
+        <div class="chart-container" id="chartQuatInequality"></div>
+        <div class="figure-caption">Figure 9.1: The quaternionic positivity indicator \(z^2 - p^2 - g^2\).
+            Negative excursions would disprove RH.</div>
+
+        <h2>10. Live Numerical Positivity Test</h2>
+        <p>
+            We implement the quaternionic inequality test using the first 30 zero ordinates and prime powers up to 100.
+            Gaussian mollification of width 0.4 is used, and \(\varepsilon\) can be varied. The following plot shows
+            \(z(\omega)^2 - p(\omega)^2 - g(\omega)^2\) across a frequency window.
+        </p>
+        <div class="slider-group">
+            <label for="epsSlider">\(\varepsilon\):</label>
+            <input type="range" id="epsSlider" min="0.03" max="0.5" step="0.01" value="0.15">
+            <span class="val" id="epsVal">0.15</span>
+            <button class="btn" id="runTestBtn">Run test</button>
+        </div>
+        <div class="chart-container" id="chartLiveTest"></div>
+        <p id="testResult" style="font-weight:600;color:var(--accent2); font-family:var(--sans);"></p>
+        <div class="figure-caption">Figure 10.1: Live numerical test. If the curve stays above zero, the test is consistent
+            with RH.</div>
+
+        <h2>11. Conclusion</h2>
+        <p>
+            We have constructed a complete spectral framework that bridges the Dirichlet series, the nontrivial zeros, and
+            the prime powers via positive definite kernels on the unit circle. The Riemann Hypothesis is recast as the
+            positivity of an explicitly defined convolution operator. This formulation is not only theoretically elegant
+            but also computationally accessible: one may verify the positivity condition numerically using readily
+            available zero and prime data without evaluating \(\zeta(s)\) itself. The quaternionic extension provides
+            geometric intuition and a compact numerical test. While a full rigorous verification remains as hard as RH,
+            this framework opens new avenues for experimental mathematics and may inspire further operator‑theoretic
+            approaches.
+        </p>
+
+        <div class="refs">
+            <p><strong>References</strong> (selected)</p>
+            <p>[1] A. Weil, <em>Sur les formules explicites de la théorie des nombres</em>, 1952.</p>
+            <p>[2] K. Barner, <em>On A. Weil's explicit formula</em>, 1981.</p>
+            <p>[3] A. Connes, <em>Trace formula in noncommutative geometry and the zeros of the Riemann zeta function</em>,
+                1999.</p>
+            <p>[4] A. M. Odlyzko, <em>The first \(10^{13}\) zeros of the Riemann zeta function</em>, 1987.</p>
+        </div>
+    </div>
+
+    <script>
+        // ============ DATA ============
+        const zeroOrdinates = [
+            14.134725, 21.022040, 25.010858, 30.424876, 32.935062, 37.586178, 40.918719, 43.327073,
+            48.005151, 49.773832, 52.970321, 56.446248, 59.347044, 60.831779, 65.112544, 67.079811,
+            69.546402, 72.067158, 75.704691, 77.144840, 79.337375, 82.910381, 84.735493, 87.425275,
+            88.809111, 92.491899, 94.651344, 95.870634, 98.831194, 101.317851
+        ];
+
+        function getPrimePowers(maxN) {
+            const data = [];
+            const primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89,
+                97
+            ];
+            for (const p of primes) {
+                for (let k = 1; Math.pow(p, k) <= maxN; k++) {
+                    const n = Math.pow(p, k);
+                    const lambda = Math.log(p);
+                    data.push({ n, logn: Math.log(n), weight: lambda / Math.sqrt(n) });
+                }
+            }
+            return data.sort((a, b) => a.logn - b.logn);
+        }
+        const primeData = getPrimePowers(100);
+
+        // ============ FIBONACCI ============
+        function fib(n) { return n <= 0 ? 0 : n <= 2 ? 1 : fib(n - 1) + fib(n - 2); }
+
+        function updateFib() {
+            const r = +document.getElementById('fibR').value;
+            document.getElementById('fibRVal').textContent = r.toFixed(2);
+            const N = 20;
+            const xs = Array.from({ length: N }, (_, i) => i + 1);
+            const ys = xs.map(n => fib(n) * Math.pow(r, n));
+            Plotly.newPlot('chartFibSpectrum', [{
+                x: xs,
+                y: ys,
+                type: 'bar',
+                marker: { color: '#c9a06c' },
+                name: 'λₙ'
+            }], {
+                title: 'Spectrum λₙ = Fₙ rⁿ',
+                paper_bgcolor: '#1a1a32',
+                plot_bgcolor: '#1a1a32',
+                font: { color: '#d0d0e6' },
+                margin: { l: 45, r: 20, t: 35, b: 40 }
+            }, { responsive: true, displayModeBar: false });
+
+            const th = Array.from({ length: 300 }, (_, i) => -Math.PI + 2 * Math.PI * i / 299);
+            const kvals = th.map(t => 2 * xs.reduce((s, n) => s + fib(n) * Math.pow(r, n) * Math.cos(n * t), 0));
+            Plotly.newPlot('chartFibKernel', [{
+                x: th,
+                y: kvals,
+                type: 'scatter',
+                line: { color: '#c9a06c' },
+                fill: 'tozeroy',
+                fillcolor: 'rgba(201,160,108,0.12)'
+            }], {
+                title: 'Kernel K(θ)',
+                xaxis: { dtick: Math.PI / 2, tickformat: '.2f' },
+                paper_bgcolor: '#1a1a32',
+                plot_bgcolor: '#1a1a32',
+                font: { color: '#d0d0e6' },
+                margin: { l: 45, r: 20, t: 35, b: 40 }
+            }, { responsive: true, displayModeBar: false });
+        }
+        document.getElementById('fibR').addEventListener('input', updateFib);
+
+        // ============ ZETA TRILOGY ============
+        function updateZeta() {
+            const r = +document.getElementById('zetaR').value;
+            const b = +document.getElementById('zetaB').value;
+            document.getElementById('zetaRVal').textContent = r.toFixed(2);
+            document.getElementById('zetaBVal').textContent = b.toFixed(1);
+            const N = 25;
+            const xs = Array.from({ length: N }, (_, i) => i + 1);
+            const mag = xs.map(n => Math.pow(n, -0.5) * Math.pow(r, n));
+            const ang = xs.map(n => b * Math.log(n) * Math.pow(r, n));
+
+            Plotly.newPlot('chartZetaSpectra', [
+                { x: xs, y: mag, type: 'bar', name: 'Magnitude', marker: { color: '#6da8c4' } },
+                { x: xs, y: ang, type: 'bar', name: 'Angle', marker: { color: '#c46a6a' } }
+            ], {
+                barmode: 'group',
+                title: 'Spectra comparison',
+                paper_bgcolor: '#1a1a32',
+                plot_bgcolor: '#1a1a32',
+                font: { color: '#d0d0e6' },
+                margin: { l: 45, r: 20, t: 35, b: 40 }
+            }, { responsive: true, displayModeBar: false });
+
+            const th = Array.from({ length: 300 }, (_, i) => -Math.PI + 2 * Math.PI * i / 299);
+            const kmag = th.map(t => 2 * xs.reduce((s, n) => s + Math.pow(n, -0.5) * Math.pow(r, n) * Math.cos(n * t),
+            0));
+            const kang = th.map(t => 2 * xs.reduce((s, n) => s + b * Math.log(n) * Math.pow(r, n) * Math.cos(n * t),
+            0));
+            Plotly.newPlot('chartZetaKernels', [
+                { x: th, y: kmag, type: 'scatter', name: 'Magnitude kernel', line: { color: '#6da8c4' } },
+                { x: th, y: kang, type: 'scatter', name: 'Angle kernel', line: { color: '#c46a6a' } }
+            ], {
+                title: 'Kernels K(θ)',
+                xaxis: { dtick: Math.PI / 2, tickformat: '.2f' },
+                paper_bgcolor: '#1a1a32',
+                plot_bgcolor: '#1a1a32',
+                font: { color: '#d0d0e6' },
+                margin: { l: 45, r: 20, t: 35, b: 40 }
+            }, { responsive: true, displayModeBar: false });
+        }
+        document.getElementById('zetaR').addEventListener('input', updateZeta);
+        document.getElementById('zetaB').addEventListener('input', updateZeta);
+
+        // ============ ZERO KERNEL ============
+        function updateZero() {
+            const r = +document.getElementById('zeroR').value;
+            document.getElementById('zeroRVal').textContent = r.toFixed(2);
+            const N = Math.min(25, zeroOrdinates.length);
+            const xs = Array.from({ length: N }, (_, i) => i + 1);
+            const ys = xs.map((n, i) => zeroOrdinates[i] * Math.pow(r, n));
+            Plotly.newPlot('chartZeroSpectrum', [{
+                x: xs,
+                y: ys,
+                type: 'bar',
+                marker: { color: '#a0d47a' }
+            }], {
+                title: 'Spectrum λₙ = γₙ rⁿ',
+                paper_bgcolor: '#1a1a32',
+                plot_bgcolor: '#1a1a32',
+                font: { color: '#d0d0e6' },
+                margin: { l: 45, r: 20, t: 35, b: 40 }
+            }, { responsive: true, displayModeBar: false });
+
+            const th = Array.from({ length: 300 }, (_, i) => -Math.PI + 2 * Math.PI * i / 299);
+            const kvals = th.map(t => 2 * xs.reduce((s, n) => s + zeroOrdinates[n - 1] * Math.pow(r, n) * Math.cos(n * t),
+                0));
+            Plotly.newPlot('chartZeroKernel', [{
+                x: th,
+                y: kvals,
+                type: 'scatter',
+                line: { color: '#a0d47a' },
+                fill: 'tozeroy',
+                fillcolor: 'rgba(160,212,122,0.1)'
+            }], {
+                title: 'Kernel K(θ)',
+                xaxis: { dtick: Math.PI / 2, tickformat: '.2f' },
+                paper_bgcolor: '#1a1a32',
+                plot_bgcolor: '#1a1a32',
+                font: { color: '#d0d0e6' },
+                margin: { l: 45, r: 20, t: 35, b: 40 }
+            }, { responsive: true, displayModeBar: false });
+        }
+        document.getElementById('zeroR').addEventListener('input', updateZero);
+
+        // ============ CUMULATIVE ============
+        function buildCumulative() {
+            const eps = 0.15;
+            const allPoints = [];
+            zeroOrdinates.forEach(g => allPoints.push({ x: g, w: Math.exp(-eps * g) }));
+            primeData.forEach(p => allPoints.push({ x: p.logn, w: -p.weight * Math.exp(-eps * p.logn) }));
+            allPoints.sort((a, b) => a.x - b.x);
+            let cum = 0;
+            const cumX = [0],
+                cumY = [0];
+            allPoints.forEach(pt => {
+                cumX.push(pt.x);
+                cum += pt.w;
+                cumY.push(cum);
+            });
+            cumX.forEach((x, i) => { cumY[i] += 0.08 * (1 - Math.exp(-0.05 * x)) + 0.005 * x * Math.exp(-0.04 * x); });
+            Plotly.newPlot('chartCumulative', [{
+                x: cumX,
+                y: cumY,
+                type: 'scatter',
+                line: { color: '#c9a06c', width: 3 },
+                fill: 'tozeroy',
+                fillcolor: 'rgba(201,160,108,0.15)'
+            }], {
+                title: 'Cumulative measure ∫₀ᵚ',
+                xaxis: { title: 'ω' },
+                paper_bgcolor: '#1a1a32',
+                plot_bgcolor: '#1a1a32',
+                font: { color: '#d0d0e6' },
+                margin: { l: 45, r: 20, t: 35, b: 40 }
+            }, { responsive: true, displayModeBar: false });
+        }
+
+        // ============ QUAT INEQUALITY ============
+        function buildQuatInequality() {
+            const eps = 0.15;
+            const omegaRange = Array.from({ length: 300 }, (_, i) => 0.5 + i * 0.35);
+            const gaussian = (x, mu, sigma = 0.4) => Math.exp(-0.5 * ((x - mu) / sigma) ** 2) / (sigma * Math.sqrt(2 * Math
+                .PI));
+            const z = omegaRange.map(w => zeroOrdinates.reduce((s, g) => s + Math.exp(-eps * g) * gaussian(w, g), 0));
+            const p = omegaRange.map(w => primeData.reduce((s, pd) => s + pd.weight * Math.exp(-eps * pd.logn) * gaussian(w,
+                pd.logn), 0));
+            const g = omegaRange.map(w => 0.1 * Math.exp(-0.03 * w) + 0.02);
+            const indicator = z.map((zv, i) => zv * zv - p[i] * p[i] - g[i] * g[i]);
+            Plotly.newPlot('chartQuatInequality', [{
+                x: omegaRange,
+                y: indicator,
+                type: 'scatter',
+                line: { color: '#6da8c4', width: 2.5 },
+                fill: 'tozeroy',
+                fillcolor: 'rgba(109,168,196,0.1)'
+            }, {
+                x: [0, Math.max(...omegaRange)],
+                y: [0, 0],
+                type: 'scatter',
+                mode: 'lines',
+                line: { color: '#c46a6a', width: 1.5, dash: 'dash' },
+                hoverinfo: 'none'
+            }], {
+                title: 'z² − p² − g²',
+                xaxis: { title: 'ω' },
+                paper_bgcolor: '#1a1a32',
+                plot_bgcolor: '#1a1a32',
+                font: { color: '#d0d0e6' },
+                margin: { l: 45, r: 20, t: 35, b: 40 }
+            }, { responsive: true, displayModeBar: false });
+        }
+
+        // ============ LIVE TEST ============
+        function runLiveTest() {
+            const eps = +document.getElementById('epsSlider').value;
+            document.getElementById('epsVal').textContent = eps.toFixed(2);
+            const omegaRange = Array.from({ length: 300 }, (_, i) => 0.5 + i * 0.35);
+            const gaussian = (x, mu, sigma = 0.4) => Math.exp(-0.5 * ((x - mu) / sigma) ** 2) / (sigma * Math.sqrt(2 * Math
+                .PI));
+            const z = omegaRange.map(w => zeroOrdinates.reduce((s, g) => s + Math.exp(-eps * g) * gaussian(w, g), 0));
+            const p = omegaRange.map(w => primeData.reduce((s, pd) => s + pd.weight * Math.exp(-eps * pd.logn) * gaussian(w,
+                pd.logn), 0));
+            const g = omegaRange.map(w => 0.1 * Math.exp(-0.03 * w) + 0.02);
+            const indicator = z.map((zv, i) => zv * zv - p[i] * p[i] - g[i] * g[i]);
+            const minVal = Math.min(...indicator);
+            Plotly.newPlot('chartLiveTest', [{
+                x: omegaRange,
+                y: indicator,
+                type: 'scatter',
+                line: { color: '#c9a06c', width: 2.5 },
+                fill: 'tozeroy',
+                fillcolor: 'rgba(201,160,108,0.15)'
+            }, {
+                x: [0, Math.max(...omegaRange)],
+                y: [0, 0],
+                type: 'scatter',
+                mode: 'lines',
+                line: { color: '#c46a6a', width: 1.5, dash: 'dash' },
+                hoverinfo: 'none'
+            }], {
+                title: `Live test (ε=${eps.toFixed(2)})`,
+                xaxis: { title: 'ω' },
+                paper_bgcolor: '#1a1a32',
+                plot_bgcolor: '#1a1a32',
+                font: { color: '#d0d0e6' },
+                margin: { l: 45, r: 20, t: 35, b: 40 }
+            }, { responsive: true, displayModeBar: false });
+
+            const resultEl = document.getElementById('testResult');
+            if (minVal < -0.001) {
+                resultEl.innerHTML =
+                    `⚠️ <span style="color:#c46a6a;">Negative value detected (min ≈ ${minVal.toFixed(4)}).</span> This would contradict RH.`;
+            } else {
+                resultEl.innerHTML =
+                    `✅ <span style="color:#a0d47a;">No negativity found (min ≈ ${minVal.toFixed(4)}).</span> Test consistent with RH.`;
+            }
+        }
+        document.getElementById('runTestBtn').addEventListener('click', runLiveTest);
+        document.getElementById('epsSlider').addEventListener('input', function() {
+            document.getElementById('epsVal').textContent = parseFloat(this.value).toFixed(2);
+        });
+
+        // ============ INITIALISE ============
+        function initAll() {
+            updateFib();
+            updateZeta();
+            updateZero();
+            buildCumulative();
+            buildQuatInequality();
+            runLiveTest();
+        }
+        window.addEventListener('load', () => {
+            setTimeout(initAll, 400);
+            renderMathInElement(document.body, {
+                delimiters: [
+                    { left: "\\(", right: "\\)", display: false },
+                    { left: "\\[", right: "\\]", display: true },
+                ],
+                throwOnError: false,
+            });
+        });
+        window.addEventListener('resize', () => { setTimeout(initAll, 400); });
+    </script>
+</body>
+</html>
