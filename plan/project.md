@@ -91,7 +91,7 @@ Status: **complete**. No open items.
   Hermite sum, trace $= 1/(1-e^{-t})$, Bernoulli coefficients, and
   $\Gamma(s)\zeta(s)$ Mellin numerical match (use `mpmath`). Fill in §7 table.
 - [ ] (Phase 4 prerequisite) Formalise the index-level correspondence
-  $\operatorname{diag}(r^{|n|})$ on $\mathbb{T}$ ↔ $P_t|_{|n|}$ on $L^2(\gamma)$
+  $\mathrm{diag}(r^{|n|})$ on $\mathbb{T}$ ↔ $P_t|_{|n|}$ on $L^2(\gamma)$
   as a bounded intertwining map.
 
 ---
@@ -223,7 +223,7 @@ One row per catalogue object. Columns: object | kernel closed form | damping | s
 | Fibonacci $F_n$ | $2\,\Re\frac{re^{i\theta}}{1-re^{i\theta}-r^2e^{2i\theta}}$ | $r<1/\varphi$ | $\{F_n r^n\}$ | Lucas (open) |
 | Prime sine wave $p^{-s}$ | none (no closed form) | $\Re s>\tfrac12$ | $\{p^{-2\sigma}\}$ | — |
 | OU / integers $\mathbb{N}$ | Mehler: $\frac{1}{\sqrt{1-r^2}}e^{(2rxy-r^2(x^2+y^2))/2(1-r^2)}$ | $r=e^{-t}<1$ | $\{r^n\}=\{e^{-nt}\}$ | spectral zeta $=\zeta$ |
-| Zeta magnitude $n^{-1/2}$ | $2\,\Re\operatorname{Li}_{1/2}(re^{i\theta})$ | $r<1$ | $\{n^{-1/2}r^n\}$ | zeros via Weil |
+| Zeta magnitude $n^{-1/2}$ | $2\,\Re\mathrm{Li}_{1/2}(re^{i\theta})$ | $r<1$ | $\{n^{-1/2}r^n\}$ | zeros via Weil |
 | Dirichlet eta (alternating) | $-K^\zeta_r(\theta+\pi)$ | $r<1$ | alternating signs | $\zeta$ via rotation by $\pi$ |
 | Riemann zeros $\gamma_n$ | $2\sum\gamma_n r^n\cos n\theta$ | $r<1$ | $\{\gamma_n r^n\}$ | prime powers via Weil |
 | Prime powers $\Lambda(n)/\sqrt{n}$ | (no closed form) | Gaussian | von Mangoldt weights | zeros via Weil |
