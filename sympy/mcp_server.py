@@ -14,6 +14,8 @@ Start: conda run --no-capture-output -n maths python sympy/mcp_server.py
 from __future__ import annotations
 
 import json
+import os
+import shutil
 import subprocess
 from typing import Any
 
@@ -22,6 +24,34 @@ from sympy import latex, simplify, sympify
 from mcp.server.fastmcp import FastMCP
 
 mcp = FastMCP("sympy-verifier")
+
+
+def _resolve_sage_bin() -> str | None:
+    """Locate the Sage executable.
+
+    The MCP server runs inside the pinned ``maths`` conda env, which does not
+    contain Sage (Sage's heavy dependency tree lives in its own ``sage`` env).
+    Resolution order:
+      1. ``SAGE_BIN`` env var (absolute path), if set and executable.
+      2. ``sage`` on PATH.
+      3. A sibling conda env named ``sage`` next to the current env.
+    Returns the path, or None if not found.
+    """
+    candidate = os.environ.get("SAGE_BIN")
+    if candidate and os.access(candidate, os.X_OK):
+        return candidate
+
+    on_path = shutil.which("sage")
+    if on_path:
+        return on_path
+
+    # Sibling conda env: .../envs/<current>/bin/python -> .../envs/sage/bin/sage
+    envs_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.sys.executable)))
+    sibling = os.path.join(envs_dir, "sage", "bin", "sage")
+    if os.access(sibling, os.X_OK):
+        return sibling
+
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -249,9 +279,20 @@ def verify_with_sage(
     Returns:
         {"output": str, "error": str|None}
     """
+    sage_bin = _resolve_sage_bin()
+    if sage_bin is None:
+        return {
+            "output": None,
+            "error": (
+                "sage executable not found. Install it with "
+                "`conda create -y -n sage -c conda-forge sage`, then either put it "
+                "on PATH or set the SAGE_BIN env var to its absolute path "
+                "(e.g. .../envs/sage/bin/sage)."
+            ),
+        }
     try:
         result = subprocess.run(
-            ["sage", "-c", code],
+            [sage_bin, "-c", code],
             capture_output=True,
             text=True,
             timeout=timeout,
@@ -263,7 +304,7 @@ def verify_with_sage(
     except FileNotFoundError:
         return {
             "output": None,
-            "error": "sage command not found — is SageMath installed and the 'maths' conda env active?",
+            "error": f"sage executable not found at resolved path: {sage_bin}",
         }
     except subprocess.TimeoutExpired:
         return {"output": None, "error": f"sage execution timed out after {timeout}s"}

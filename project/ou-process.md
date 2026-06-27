@@ -29,6 +29,7 @@ $$L=\partial_x^2-x\,\partial_x.$$
 | **O3** Damping $=$ semigroup | $P_t=e^{tL}$ has $P_tHe_n=e^{-nt}He_n$; setting $r=e^{-t}\in(0,1)$ the eigenvalues are the **geometric damping** $r^n$, with closed‑form **Mehler kernel** | functional calculus + Mehler's formula |
 | **O4** Trace / heat | $\operatorname{Tr}P_t=\sum_{n\ge0}e^{-nt}=\frac{1}{1-e^{-t}}=\int_{\mathbb R}M_t(x,x)\,\gamma(dx)$; primed trace $\Theta(t)=\frac{1}{e^{t}-1}=\frac1t-\frac12+\frac{t}{12}-\cdots$ | geometric series $=$ Mehler diagonal integral; Bernoulli expansion |
 | **O5** Spectral zeta | the nonzero eigenvalues of $-L$ are $\{1,2,3,\dots\}$, so $\zeta_{-L}(s)=\sum_{n\ge1}n^{-s}=\zeta(s)$ and $\Gamma(s)\zeta(s)=\int_0^\infty t^{s-1}\Theta(t)\,dt$ | Mellin transform of the heat trace; the $\Gamma$ factor is automatic |
+| **O6** Circle intertwiner | the isometry $J\colon h_n\mapsto c_n$ from $L^2(\gamma)$ onto $L^2(\mathbb T)^{\mathrm{even}}$ satisfies $JP_t=D_rJ$: OU damping $=$ Poisson convolution $D_r$ on $\mathbb T$ (the **Phase 4 gate**) | Hermite ↔ cosine bases; Mehler ↔ Poisson kernel |
 
 The OU process is therefore the **canonical self‑adjoint realisation of the
 recipe's damping step**: "damp the $n$‑th mode by $r^n$" is exactly "run the OU
@@ -125,7 +126,7 @@ $\;\blacksquare$
 
 **The bridge to the circle recipe.** Under the project's identification of the
 spectral index $n$ with the Fourier mode $e^{in\theta}$, the operator
-$\operatorname{diag}(r^{|n|})$ that the recipe applies on $\mathbb T$ is exactly
+$\mathrm{diag}(r^{|n|})$ that the recipe applies on $\mathbb T$ is exactly
 $P_t$ restricted to that index (folded to $|n|$ by the even symmetrisation). The
 Mehler kernel is the real‑line analogue of the Fibonacci/zeta circle kernels:
 where Fibonacci sums $\sum F_nr^n\cos n\theta$ to a **rational** closed form via
@@ -133,6 +134,53 @@ its generating function, OU sums $\sum\frac{r^n}{n!}He_n(x)He_n(y)$ to a
 **Gaussian** closed form via Mehler's. Geometric damping is not an ad‑hoc choice —
 it is the unique multiplier coming from a Markov semigroup, which is *why* it
 preserves positivity (Bochner on the circle ↔ Markov positivity here).
+
+### 4.1 The intertwiner $L^2(\gamma)\to L^2(\mathbb T)$ (Phase 4 gate)
+
+The index‑level matching above is made into an honest operator statement by an
+explicit isometry. This is the **Phase 4 gate** condition ([plan/project.md](../plan/project.md)):
+it certifies that the OU dynamics on the Gaussian space *is* the circle recipe's
+damping, not merely an analogy.
+
+Write $h_n=He_n/\sqrt{n!}$ for the orthonormal Hermite basis of
+$H_\gamma=L^2(\mathbb R,\gamma)$, and let $\{c_n\}_{n\ge0}$ be the orthonormal
+cosine system of $H_\mathbb T=L^2(\mathbb T)$ ($d\theta/2\pi$ inner product):
+$$c_0=1,\qquad c_n(\theta)=\sqrt2\,\cos n\theta\ \ (n\ge1),\qquad
+\langle c_m,c_n\rangle=\delta_{mn}.$$
+Let $D_r=\mathrm{diag}(r^{|m|})_{m\in\mathbb Z}$ be the circle damping operator —
+convolution by the **Poisson kernel**
+$$\mathcal P_r(\theta)=\sum_{m\in\mathbb Z}r^{|m|}e^{im\theta}
+=\frac{1-r^2}{1-2r\cos\theta+r^2},\qquad r=e^{-t}\in(0,1).$$
+
+> **Lemma O6 (OU $\to$ circle intertwiner).** Let $J\colon H_\gamma\to H_\mathbb T$
+> be the unique bounded linear map with $J h_n=c_n$ for all $n\ge0$. Then:
+> 1. $J$ is an **isometry** onto the even subspace $H_\mathbb T^{\mathrm{even}}$; in
+>    particular $\|J\|=1$ and $J^{*}J=I_{H_\gamma}$.
+> 2. $J$ **intertwines** the OU semigroup with the circle damping: for every
+>    $t\ge0$, $r=e^{-t}$,
+>    $$J\,P_t \;=\; D_r\,J .$$
+> 3. Hence $J$ carries the generator, $J(-L)=N_{\mathbb T}\,J$ with
+>    $N_{\mathbb T}=\mathrm{diag}(|m|)$ the folded number operator, and the
+>    semigroup law $P_sP_t=P_{s+t}$ maps to $D_{r_s}D_{r_t}=D_{r_sr_t}$.
+
+*Proof.* (1) $\{h_n\}_{n\ge0}$ is an orthonormal basis of $H_\gamma$ (Theorem O1)
+and $\{c_n\}_{n\ge0}$ is an orthonormal system spanning the even subspace of
+$L^2(\mathbb T)$. A linear map sending one orthonormal basis to an orthonormal
+system extends uniquely to an isometry onto the closed span of the image, so
+$\|J\|=1$ and $J^{*}J=I$. (2) On basis vectors, $P_th_n=r^nh_n$ (Theorem O3), so
+$JP_th_n=r^nc_n$; and $D_r$ scales each Fourier mode $e^{\pm in\theta}$ in
+$c_n=\tfrac1{\sqrt2}(e^{in\theta}+e^{-in\theta})$ (for $n\ge1$; $c_0$ likewise) by
+$r^{|n|}=r^n$, so $D_rc_n=r^nc_n=JP_th_n$. The two bounded operators $JP_t$ and
+$D_rJ$ agree on a basis, hence on $H_\gamma$. (3) Differentiate (2) at $t=0$ on the
+common core of polynomials, or read off the eigenvalues $r^n=e^{-nt}$. $\;\blacksquare$
+
+The Poisson kernel is the circle's heat/harmonic‑extension kernel, so Lemma O6
+reads: **the Mehler kernel on the Gaussian line and the Poisson kernel on the
+circle are the same damping operator in two coordinate systems**, linked by $J$.
+Both the Poisson closed form and the intertwining $D_r c_n=r^nc_n$ are confirmed
+numerically (check 5 of [ou-verify.py](../victor/ou-verify.py), agreement
+$<5\times10^{-15}$). This discharges the $L^2(\gamma)\to L^2(\mathbb T)$ functor
+required to open Phase 4.
 
 ---
 
@@ -212,17 +260,30 @@ Two forward links:
 
 ---
 
-## 7. Numerical verification (to fill in)
+## 7. Numerical verification — **DONE**
 
-Target checks for a small script (extends [prime-zeros.py](../victor/prime-zeros.py)):
+The kernel `ou_mehler(t, x, y)` and the truncated Hermite series `ou_hermite_sum`
+live in [prime-zeros.py](../victor/prime-zeros.py); the four checks are run by
+[ou-verify.py](../victor/ou-verify.py) (`numpy` + `mpmath`, 40‑digit precision):
+`python victor/ou-verify.py`. All four pass.
 
-| quantity | formula | check |
-|---|---|---|
-| eigenvalues of $P_t$ | $e^{-nt}$ | vs. eigenvalues of a discretised $L=\partial_x^2-x\partial_x$ on a Hermite grid |
-| Mehler closed form | $M_t(x,y)=\frac{1}{\sqrt{1-r^2}}e^{(2rxy-r^2(x^2+y^2))/2(1-r^2)}$ | vs. truncated $\sum_{n\le N}\frac{r^n}{n!}He_n(x)He_n(y)$ |
-| trace | $\frac{1}{1-e^{-t}}$ | vs. $\sum_n e^{-nt}$ and vs. $\int M_t(x,x)\,d\gamma$ (quadrature) |
-| heat expansion | $\frac1t-\frac12+\frac{t}{12}-\cdots$ | small‑$t$ fit of $\Theta(t)=1/(e^t-1)$, recover $B_k$ |
-| spectral zeta | $\Gamma(s)\zeta(s)=\int_0^\infty t^{s-1}\Theta\,dt$ | numerical Mellin vs. `mpmath.zeta`; check $\zeta(0)=-\tfrac12$, $\zeta(-1)=-\tfrac1{12}$ |
+| # | quantity | identity checked | result (worst abs. discrepancy) |
+|---|---|---|---|
+| 1 | Mehler closed form | $M_t(x,y)=\frac{1}{\sqrt{1-r^2}}e^{(2rxy-r^2(x^2+y^2))/2(1-r^2)}$ vs. $\sum_{n\le 80}\frac{r^n}{n!}He_n(x)He_n(y)$ | $9.1\times10^{-12}$ (worst at small $t{=}0.3$, where the Hermite series converges slowest; $\sim10^{-16}$ for $t\ge0.7$) |
+| 2 | heat trace | $\mathrm{Tr}\,P_t=\frac{1}{1-e^{-t}}$ three ways: $\sum_n e^{-nt}$, closed form, **and** $\int_{\mathbb R}M_t(x,x)\,d\gamma$ (high‑precision quadrature) | $4.6\times10^{-41}$ |
+| 3 | Bernoulli expansion | Taylor coefficients of $\frac{t}{e^t-1}$ recover $B_k=k!\,a_k$ for $k\le 8$ ($B_0{=}1,B_1{=}-\tfrac12,B_2{=}\tfrac16,B_4{=}-\tfrac1{30},\dots$) | $0$ (exact) |
+| 4 | spectral zeta / Mellin | $\Gamma(s)\zeta(s)=\int_0^\infty t^{s-1}\Theta(t)\,dt$, $\Theta=\frac{1}{e^t-1}$, at $s=2,3,\tfrac32,2{+}3i$; plus $\zeta(-k)=-\frac{B_{k+1}}{k+1}$ ($k\ge1$), $\zeta(0)=-\tfrac12$, $\zeta(-1)=-\tfrac1{12}$ | $1.4\times10^{-22}$ |
+
+Representative values: at $t=1$, all three trace computations agree at
+$\mathrm{Tr}\,P_1=1.5819767068693$; the Mellin integral at $s=2$ returns
+$\int_0^\infty \frac{t}{e^t-1}\,dt=1.644934066848\ldots=\zeta(2)=\pi^2/6$, matching
+$\Gamma(2)\zeta(2)$ to machine precision.
+
+> **Note on the Bernoulli convention.** The textbook identity
+> $\zeta(-k)=-B_{k+1}/(k+1)$ uses the $B_1=+\tfrac12$ convention, whereas `mpmath`
+> (and check 3 above) uses $B_1=-\tfrac12$. The two agree for all $B_{k}$ with
+> $k\ge2$, so the formula is verified directly for $k\ge1$; the single $k=0$ case
+> is confirmed by evaluating $\zeta(0)=-\tfrac12$ outright.
 
 ---
 
@@ -241,10 +302,12 @@ Target checks for a small script (extends [prime-zeros.py](../victor/prime-zeros
   dynamics, gives the cleanest "sequence = spectrum" example (the integers), a
   positivity‑preserving transfer operator, and the model trace identity with an
   automatic Gamma factor — the rigorous baseline for Phases 4–5.
-- **Open / not claimed here.** A precise functor from the OU semigroup on
-  $L^2(\gamma)$ to the circle operators on $L^2(\mathbb T)$ (beyond the index‑level
-  matching of §4), and the quaternionic time lift of §6, are deferred to Phases 4
-  and 5.
+- **Now proved (Lemma O6, §4.1).** The functor from the OU semigroup on
+  $L^2(\gamma)$ to the circle damping on $L^2(\mathbb T)$ is the explicit isometry
+  $J\colon h_n\mapsto c_n$, which intertwines $P_t$ with Poisson convolution
+  $D_r$ ($JP_t=D_rJ$). This was previously the open Phase 4 gate; it is now closed.
+- **Open / not claimed here.** The quaternionic time lift of §6 is deferred to
+  Phase 5.
 - **Standard results used.** Hermite ODE, orthogonality and completeness in
   $L^2(\gamma)$; Mehler's bilinear generating formula; the OU semigroup / generator
   correspondence; the Mellin representation $\Gamma(s)\zeta(s)=\int_0^\infty

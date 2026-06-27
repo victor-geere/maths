@@ -93,6 +93,50 @@ def quaternion_cone(Z, P, G):
     return Z ** 2 - (P ** 2 + G ** 2)
 
 
+# --- Ornstein-Uhlenbeck / Mehler kernel (project/ou-process.md, Phase 1c) ------
+
+
+def ou_mehler(t, x, y):
+    """Mehler kernel M_t(x, y) of the OU semigroup P_t = e^{tL} (Theorem O3).
+
+    Closed form, valid for t > 0 with r = e^{-t} in (0, 1):
+
+        M_t(x, y) = (1 - r^2)^{-1/2} exp( (2 r x y - r^2 (x^2 + y^2)) / (2 (1 - r^2)) ).
+
+    This is the density of the OU transition kernel against the Gaussian gamma,
+    reproducing P_t f(x) = \\int M_t(x, y) f(y) gamma(dy) with P_t He_n = r^n He_n.
+    Accepts scalar or numpy-array x, y (broadcasting).
+    """
+    r = np.exp(-t)
+    r2 = r * r
+    return np.exp((2 * r * x * y - r2 * (x ** 2 + y ** 2)) / (2 * (1 - r2))) / np.sqrt(1 - r2)
+
+
+def ou_hermite_sum(t, x, y, n_max):
+    """Truncated Mehler bilinear series sum_{n<=N} (r^n / n!) He_n(x) He_n(y).
+
+    Probabilists' Hermite polynomials He_n (numpy.polynomial.hermite_e), evaluated
+    via their three-term recurrence. Converges to ou_mehler(t, x, y) as n_max -> oo
+    (Mehler's formula). Used as the independent cross-check of the closed form.
+    """
+    r = np.exp(-t)
+    x = np.asarray(x, dtype=float)
+    y = np.asarray(y, dtype=float)
+    total = np.zeros(np.broadcast(x, y).shape)
+    # He_0 = 1, He_1 = z, He_{n+1}(z) = z He_n(z) - n He_{n-1}(z).
+    hx_prev, hx_cur = np.ones_like(x), x.copy()
+    hy_prev, hy_cur = np.ones_like(y), y.copy()
+    rn, fact = 1.0, 1.0          # r^n and n! for the current n
+    total = total + rn / fact * hx_prev * hy_prev   # n = 0 term
+    for n in range(1, n_max + 1):
+        rn *= r
+        fact *= n
+        total = total + rn / fact * hx_cur * hy_cur
+        hx_prev, hx_cur = hx_cur, x * hx_cur - n * hx_prev
+        hy_prev, hy_cur = hy_cur, y * hy_cur - n * hy_prev
+    return total
+
+
 # --- Build the curves ---------------------------------------------------
 
 eps = 0.05
