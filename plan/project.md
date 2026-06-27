@@ -145,16 +145,22 @@ lie at $0<\sigma<\tfrac12$, never reached).
 |---|---|
 | Zero kernel positive definite (unconditional) | **Proved** |
 | Transfer kernel $K^\varepsilon_{\mathrm{RH}}$ defined and trace-class | **Proved** |
-| Theorem 6.1: RH ↔ positivity of $T_\varepsilon$ | **Heuristic** (proof sketch only) |
-| Quaternionic positivity Theorem 7.1 | **Heuristic** |
-| Numerical test (30 zeros, primes ≤ 100) | **Done** (in HTML) |
+| Transfer trace identity (Weil formula, $\sigma=\tfrac12$) | **Verified** (~40 digits, exact zeros) |
+| Theorem 6.1: RH ↔ positivity of $T_\varepsilon$ (= Weil's criterion) | **Conditional** (Weil 1952; sketch) |
+| Weil functional $W(\phi)\ge0$ from arithmetic side | **Verified** (RH-consistent) |
+| Real-part role: off-line $\beta\ne\tfrac12$ lowers $W$ | **Verified** (closed form) |
+| Quaternionic positivity Theorem 7.1 (raw geometric cone) | **Refuted as faithful** (normalization-dependent) |
+| Numerical test (exact zeros, primes, $\Gamma$ factor) | **Done** ([spectral-triple-verify.py](../victor/spectral-triple-verify.py)) |
 | Effective bound: verification up to $\omega=T$ → no zeros below $T$ | **Open** |
 | Mollifier → closed-form kernel | **Open** |
 | $T_\varepsilon$ spectrum as $\varepsilon\to0$ | **Open** |
 
 **Next actions (Phase 2b)**
+- [x] Implement the transfer operator between primes and zeros ($\sigma=\tfrac12$);
+  verify the trace identity numerically (`victor/spectral-triple-verify.py`).
 - [ ] Upgrade proof sketch of Theorem 6.1 to a full proof (or a precise citation
-  to Weil/Barner + a statement of what remains to verify).
+  to Weil/Barner + a statement of what remains to verify); the unconditional part
+  (trace identity) is now verified, the RH-equivalent part is Weil's criterion.
 - [ ] Add the effective-bound question to the open-questions list and survey the
   literature (Bombieri–Lagarias zero-free regions via explicit formulas).
 
@@ -273,7 +279,7 @@ One row per catalogue object. Columns: object | kernel closed form | damping | s
 | fibonacci-kernel §6 | $K_r(0)$, PD grid, eigenvalues, $\|K_r\|_2^2$ | **Not done** |
 | ou-process §7 | Mehler, trace, heat, Mellin $\Gamma\zeta$ | **Done** |
 | eta-zeta-transfer §5 | rotation identity, extra zeros, transfer correction | **Not done** |
-| spectral-triple §8 | extend to 100+ zeros, vary $\varepsilon$, port to Python | **Partial** (HTML only) |
+| spectral-triple §8 | transfer trace identity vs exact zeros; Weil functional $\ge0$; real-part role | **Done** (`spectral-triple-verify.py`) |
 | helix §6 | cone indicator on η kernel | **Not done** |
 
 ---

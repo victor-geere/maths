@@ -180,26 +180,42 @@ vectors in norm** at every frequency.
 
 ---
 
-## 8. Numerical Positivity Test
+## 8. Numerical Implementation
 
-Implementation uses:
+The transfer operator and its trace identity are implemented and verified in
+[victor/spectral-triple-verify.py](../victor/spectral-triple-verify.py), against
+**exact** zero ordinates from `mpmath.zetazero` (not table approximations). Four
+checks, $\sigma=\tfrac12$ throughout:
 
-- First 30 zero ordinates (Odlyzko's tables).
-- Prime powers up to $N=100$ with weights $\Lambda(n)/\sqrt{n}$.
-- Gaussian mollifier of width $\sigma=0.4$.
-- Mollification parameter $\varepsilon\in[0.03,0.5]$ (slider-controlled in the
-  HTML).
+| # | Check | Status | Worst discrepancy |
+|---|---|---|---|
+| 1 | Transfer identity (§5): ZERO side $=$ PRIME $+$ archimedean side | **proven**, unconditional | $\sim3\times10^{-41}$ |
+| 2 | Weil functional $W(\phi)\ge0$ from the arithmetic side alone | $\ge0$, RH-consistent | matches zeros to $\sim4\times10^{-41}$ |
+| 3 | Real-part sensitivity: off-line $\beta\ne\tfrac12$ gives $W$-contribution $<0$ | **proven** (closed form) | $\sim2\times10^{-44}$ |
+| 4 | Raw geometric cone $z^2-(p^2+g^2)$ (`prime-zeros.py` channels) | **not faithful** | — |
 
-The live test computes $z(\omega)^2-p(\omega)^2-g(\omega)^2$ across
-$\omega\in[0.5,105]$ at 300 sample points. For every tested $\varepsilon$, the
-indicator remains non-negative, consistent with RH.
+The verified normalization of the trace identity (test function $\widehat f(r)=
+e^{-\alpha r^2}$, transform $f(u)=\tfrac{1}{2\sqrt{\pi\alpha}}e^{-u^2/4\alpha}$) is
+
+$$\sum_\gamma \widehat f(\gamma)=2\,\widehat f\!\bigl(\tfrac{i}{2}\bigr)-2\sum_{n\ge2}\frac{\Lambda(n)}{\sqrt n}\,f(\log n)+\frac{1}{2\pi}\int_{-\infty}^{\infty}\widehat f(r)\,\Re\,\psi\!\bigl(\tfrac14+\tfrac{ir}{2}\bigr)\,dr-f(0)\log\pi,$$
+
+with $\psi=\Gamma'/\Gamma$ and the sum over all nontrivial zeros $\rho=\tfrac12+i\gamma$.
+
+**Honest caveat on the geometric cone.** The earlier claim that the raw indicator
+$z(\omega)^2-p(\omega)^2-g(\omega)^2$ "remains non-negative" does **not** hold under
+the `prime-zeros.py` channel normalization: the prime channel is a dense pile-up of
+overlapping bumps, so $P\gg Z$ and the indicator is strongly negative (min $\approx
+-36$ on $\omega\in[0,60]$). This is **not** a counterexample to RH — it only shows
+the crude geometric cone is normalization-dependent and is *not* a faithful
+positivity criterion. The rigorous positivity object is the Weil functional
+(check 2), which is $\ge0$.
 
 | Quantity | Role |
 |---|---|
-| $z(\omega)$ | zero-sum mollified spectral density |
-| $p(\omega)$ | prime-power mollified spectral density |
-| $g(\omega)$ | Gamma-factor smooth background |
-| $z^2-p^2-g^2$ | quaternionic positivity indicator (≥0 ⟺ RH locally) |
+| $\sum_\gamma \widehat f(\gamma)$ | ZERO side of the trace identity (imaginary parts) |
+| $2\sum_n \Lambda(n)n^{-1/2}f(\log n)$ | PRIME side at real part $\tfrac12$ |
+| $W(\phi)=\sum_\gamma|\widehat\phi(\gamma)|^2$ | Weil functional; $\ge0\Leftrightarrow$ RH (Weil's criterion) |
+| $z^2-p^2-g^2$ | crude geometric indicator — normalization-dependent, not faithful |
 
 ---
 
