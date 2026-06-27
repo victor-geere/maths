@@ -19,18 +19,111 @@ special case.
 
 ---
 
+## Layout
+
+```
+maths/
+├── victor/                         # Python experiments + interactive manuscripts
+│   ├── prime-zeros.py              # Z/P/G channels, helix lift, quaternion cone
+│   ├── spectral-triple.html        # interactive manuscript (KaTeX + Plotly, self-contained)
+│   ├── series-spectrum-circle.html # additional interactive visualisation
+│   └── requirements.txt            # numpy, matplotlib
+│
+├── project/                        # one Markdown note per catalogue object
+│   ├── prime-sine-wave.md          # Phase 1a — proven (T1–T4)
+│   ├── fibonacci-kernel.md         # Phase 1b — proven (F1–F4)
+│   ├── ou-process.md               # Phase 1c — proven (O1–O5)
+│   ├── eta-zeta-transfer.md        # Phase 2a — proven (E1–E4)
+│   ├── spectral-triple.md          # Phase 2b — heuristic
+│   └── helix-quaternion-proposal.md # Phase 5 — exploratory/conjectural
+│
+├── research/                       # structured research notes, one folder per phase
+│   ├── index.md                    # phase index with gate conditions and status
+│   ├── todo.md                     # actionable task list
+│   ├── deliverables/
+│   │   └── spectral-data-sheet.md  # one row per catalogue object
+│   ├── phase-0-foundations/        # toolkit and recipe consolidation
+│   ├── phase-1-rigorous-cases/     # Fibonacci, OU, prime sine wave
+│   ├── phase-2-dirichlet-family/   # η, ζ, Dirichlet L-functions
+│   ├── phase-3-dynamical/          # Weil explicit formula, Collatz
+│   ├── phase-4-generalisation/     # generalised algorithm (blocked on Phase 1)
+│   └── phase-5-helix-quaternion/   # helix lift, quaternionic module
+│
+├── plan/
+│   └── project.md                  # master task list with per-phase status tables
+│
+├── library/                        # reference library, 21 subject folders
+│   ├── index.md
+│   └── content/
+│       ├── 01-foundations-logic/
+│       ├── 02-algebra/
+│       ├── 03-number-theory/
+│       ├── ...                     # through 21-measure-theory-integration/
+│       └── 20-harmonic-analysis-fourier-theory/
+│
+├── sympy/                          # SymPy MCP verification server
+│   ├── mcp_server.py               # exposes simplify / verify / check_zero tools
+│   ├── requirements.txt
+│   ├── environment.yml
+│   └── CLAUDE.md
+│
+├── .mcp.json                       # MCP server configuration (codebase-memory + sympy)
+├── CLAUDE.md                       # Claude Code guidance for this repo
+└── README.md
+```
+
+### MCP servers
+
+| Server | Source | Purpose |
+|---|---|---|
+| `codebase-memory-mcp` | [DeusData/codebase-memory-mcp](https://github.com/DeusData/codebase-memory-mcp) | Knowledge-graph index for code navigation |
+| `sympy-verifier` | `./sympy/mcp_server.py` | Symbolic verification of mathematical claims |
+
+---
+
 ## Repository contents
+
+### Project notes (`project/`)
 
 | File | What it is | Status |
 |---|---|---|
-| [victor/spectral-triple.html](victor/spectral-triple.html) | Interactive manuscript: *A Spectral Framework for the Riemann Hypothesis*. Contains the **general recipe** (damping → symmetrisation → kernel), worked kernels (Fibonacci, zeta "trilogy", zeros), the transfer operator, Weil‑criterion positivity, a quaternionic reformulation, and live numerical tests. | Exploratory / heuristic |
-| [project/prime-sine-wave.md](project/prime-sine-wave.md) | Rigorous Hilbert‑space note. Four **unconditional** theorems (T1–T4) on the prime sine wave $\Psi_s=\sum_p p^{-s}\sin(p\pi x)$ in $L^2[0,2]$: domain, energy $=P(2\sigma)$, reproducing kernel $=P(s+\overline{s'})$, boundary blow‑up at the critical line. | Proven (with honest scope §7) |
-| [project/fibonacci-kernel.md](project/fibonacci-kernel.md) | Phase‑1 worked case. The Fibonacci kernel via the recipe: rational closed form, spectrum, mass — all unconditional. The template proof pattern for linear recurrences. | Proven |
-| [project/ou-process.md](project/ou-process.md) | Phase‑1 worked case. The Ornstein–Uhlenbeck process as the **engine behind damping**: generator $L=\partial_x^2-x\partial_x$ self‑adjoint on $L^2(\gamma)$ with spectrum $-\mathbb N$ (Hermite), semigroup $=$ Mehler kernel $=$ geometric damping $r^n$, heat trace $1/(e^t-1)$ whose Mellin transform $\Gamma(s)\zeta(s)$ exhibits the spectral zeta $\zeta$ and the archimedean Gamma factor. | Proven |
-| [project/eta-zeta-transfer.md](project/eta-zeta-transfer.md) | Phase‑2 worked case. The η↔ζ transfer operator: the multiplier $1-2^{1-s}$ as an alternating‑sign twist / rotation by $\pi$; shared critical‑strip zeros. | Proven (RH‑level claims flagged) |
-| [project/helix-quaternion-proposal.md](project/helix-quaternion-proposal.md) | Phase‑5 proposal. When positivity fails, lift the circle to a helix (sign = half‑turn, negativity = winding past $2\pi$) and make $j$ the self‑adjoint generator of time. Eta micro‑example. | Exploratory / conjectural |
+| [project/prime-sine-wave.md](project/prime-sine-wave.md) | Phase 1a. Four **unconditional** theorems (T1–T4) on the prime sine wave $\Psi_s=\sum_p p^{-s}\sin(p\pi x)$ in $L^2[0,2]$: domain, energy $=P(2\sigma)$, reproducing kernel $=P(s+\overline{s'})$, boundary blow‑up at the critical line. Template for all subsequent notes. | Proven |
+| [project/fibonacci-kernel.md](project/fibonacci-kernel.md) | Phase 1b. The Fibonacci kernel via the recipe: rational closed form, spectrum, mass — all unconditional. Template proof pattern for linear recurrences. | Proven |
+| [project/ou-process.md](project/ou-process.md) | Phase 1c. The Ornstein–Uhlenbeck process as the **engine behind damping**: generator $L=\partial_x^2-x\partial_x$ self‑adjoint on $L^2(\gamma)$, semigroup $=$ Mehler kernel $=$ geometric damping $r^n$, heat trace whose Mellin transform is $\Gamma(s)\zeta(s)$. | Proven |
+| [project/eta-zeta-transfer.md](project/eta-zeta-transfer.md) | Phase 2a. The η↔ζ transfer operator: the multiplier $1-2^{1-s}$ as an alternating‑sign twist / rotation by $\pi$; shared critical‑strip zeros. | Proven (RH‑level claims flagged) |
+| [project/spectral-triple.md](project/spectral-triple.md) | Phase 2b. Markdown companion to `spectral-triple.html`. Constructs the spectral transfer operator $T_\varepsilon$ from zeta zeros, primes, and Dirichlet terms; positivity of $T_\varepsilon$ is equivalent to RH. Quaternionic reformulation included. | Heuristic |
+| [project/helix-quaternion-proposal.md](project/helix-quaternion-proposal.md) | Phase 5. When positivity fails, lift the circle to a helix (sign = half‑turn, negativity = winding past $2\pi$) and make $j$ the self‑adjoint generator of time. Eta micro‑example. | Exploratory / conjectural |
+
+### Numerical code and interactive visualisations (`victor/`)
+
+| File | What it is | Status |
+|---|---|---|
 | [victor/prime-zeros.py](victor/prime-zeros.py) | NumPy experiment: separates the explicit‑formula channels $Z,P,G$, builds the signal $R=Z-P+G$, the **sign‑aware helix** lift, the spectral quaternion $Z-iP+jG$ and its cone indicator $Z^2-(P^2+G^2)$. | Working code |
+| [victor/spectral-triple.html](victor/spectral-triple.html) | Interactive manuscript: *A Spectral Framework for the Riemann Hypothesis*. General recipe (damping → symmetrisation → kernel), worked kernels (Fibonacci, zeta "trilogy", zeros), Weil‑criterion positivity, quaternionic reformulation, live numerical tests. KaTeX + Plotly, self‑contained. | Exploratory / heuristic |
+| [victor/series-spectrum-circle.html](victor/series-spectrum-circle.html) | Interactive visualisation: zeta Dirichlet series terms mapped onto the circle as a spectrum. KaTeX + Plotly, self‑contained. | Exploratory |
 | [victor/requirements.txt](victor/requirements.txt) | Python dependencies (`numpy`, `matplotlib`). | — |
+
+### Research notes (`research/`)
+
+Structured working notes, one subfolder per phase. Each phase folder contains an `index.md` plus per-topic notes.
+
+| Folder | Contents |
+|---|---|
+| [research/phase-0-foundations/](research/phase-0-foundations/) | Toolkit design; Python functions to add to `prime-zeros.py` |
+| [research/phase-1-rigorous-cases/](research/phase-1-rigorous-cases/) | Working notes for prime sine wave, Fibonacci kernel, OU process |
+| [research/phase-2-dirichlet-family/](research/phase-2-dirichlet-family/) | η↔ζ transfer, spectral triple, Dirichlet L‑functions |
+| [research/phase-3-dynamical/](research/phase-3-dynamical/) | Weil/Barner explicit formula, Collatz feasibility |
+| [research/phase-4-generalisation/](research/phase-4-generalisation/) | Generalised algorithm (blocked until Phase 1 numerics done) |
+| [research/phase-5-helix-quaternion/](research/phase-5-helix-quaternion/) | Helix lift (H1–H3 proved, H4 conjectural), quaternionic Hilbert module |
+| [research/deliverables/spectral-data-sheet.md](research/deliverables/spectral-data-sheet.md) | Spectral data sheet: one row per catalogue object |
+| [research/todo.md](research/todo.md) | Actionable task list derived from `plan/project.md` |
+
+### Plan and tooling
+
+| File | What it is |
+|---|---|
+| [plan/project.md](plan/project.md) | Master task list with per-phase status tables; maps to the 16-item GitHub project board |
+| [sympy/mcp_server.py](sympy/mcp_server.py) | SymPy MCP verification server — exposes `simplify`, `verify_equation`, `check_zero`, `evaluate_at` tools for symbolic checking of mathematical claims |
 
 > **Tone of the project.** These notes deliberately separate what is *proven*
 > from what is *exploratory*. The prime‑sine‑wave note proves theorems and

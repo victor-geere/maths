@@ -1035,6 +1035,65 @@ A three-level taxonomy of mathematics. Each leaf links to a note in `content/`; 
 
 ---
 
+## 31. Frontier Maths
+
+### 31.1 Analytic Number Theory Frontiers
+#### Zeros & Explicit Formulas
+- `[ ]` [Riemann Hypothesis — Statement & Status](content/31-frontier-maths/31.1-analytic-number-theory-frontiers/riemann-hypothesis.md)
+- `[ ]` [Zero-Free Regions & Density Estimates](content/31-frontier-maths/31.1-analytic-number-theory-frontiers/zero-free-regions.md)
+- `[ ]` [Weil–Barner Explicit Formula](content/31-frontier-maths/31.1-analytic-number-theory-frontiers/weil-explicit-formula.md)
+- `[ ]` [Montgomery's Pair Correlation Conjecture](content/31-frontier-maths/31.1-analytic-number-theory-frontiers/pair-correlation.md)
+- `[ ]` [Hilbert–Pólya Spectral Interpretation](content/31-frontier-maths/31.1-analytic-number-theory-frontiers/hilbert-polya.md)
+
+#### Prime Distribution
+- `[ ]` [Hardy–Littlewood Prime Constellations](content/31-frontier-maths/31.1-analytic-number-theory-frontiers/prime-constellations.md)
+- `[ ]` [Bounded Gaps Between Primes (Zhang–Maynard)](content/31-frontier-maths/31.1-analytic-number-theory-frontiers/bounded-gaps.md)
+- `[ ]` [Chebotarev Density Theorem](content/31-frontier-maths/31.1-analytic-number-theory-frontiers/chebotarev.md)
+- `[ ]` [Effective Bombieri–Vinogradov Theorem](content/31-frontier-maths/31.1-analytic-number-theory-frontiers/bombieri-vinogradov.md)
+
+#### Higher L-functions
+- `[ ]` [Birch–Swinnerton-Dyer Conjecture](content/31-frontier-maths/31.1-analytic-number-theory-frontiers/bsd-conjecture.md)
+- `[ ]` [Selberg Class & Axioms](content/31-frontier-maths/31.1-analytic-number-theory-frontiers/selberg-class.md)
+- `[ ]` [Random Matrix Theory & L-function Statistics](content/31-frontier-maths/31.1-analytic-number-theory-frontiers/rmt-l-functions.md)
+- `[ ]` [ABC Conjecture & Inter-universal Teichmüller Theory](content/31-frontier-maths/31.1-analytic-number-theory-frontiers/abc-conjecture.md)
+
+### 31.2 The Langlands Program
+#### Local Theory
+- `[ ]` [Local Langlands Correspondence](content/31-frontier-maths/31.2-langlands-program/local-langlands.md)
+- `[ ]` [Weil–Deligne Representations](content/31-frontier-maths/31.2-langlands-program/weil-deligne.md)
+- `[ ]` [L-packets & Local Factors](content/31-frontier-maths/31.2-langlands-program/l-packets.md)
+
+#### Global Theory
+- `[ ]` [Automorphic Forms & Representations](content/31-frontier-maths/31.2-langlands-program/automorphic-forms.md)
+- `[ ]` [Functoriality & Transfer](content/31-frontier-maths/31.2-langlands-program/functoriality.md)
+- `[ ]` [Trace Formula (Arthur–Selberg)](content/31-frontier-maths/31.2-langlands-program/trace-formula.md)
+- `[ ]` [Endoscopy & Stabilisation](content/31-frontier-maths/31.2-langlands-program/endoscopy.md)
+
+#### Geometric Langlands
+- `[ ]` [Geometric Langlands Correspondence](content/31-frontier-maths/31.2-langlands-program/geometric-langlands.md)
+- `[ ]` [D-modules & Perverse Sheaves](content/31-frontier-maths/31.2-langlands-program/d-modules-perverse-sheaves.md)
+- `[ ]` [Kapustin–Witten & Electric–Magnetic Duality](content/31-frontier-maths/31.2-langlands-program/kapustin-witten.md)
+
+### 31.3 Non-commutative Geometry & Spectral Methods
+#### Spectral Triples
+- `[ ]` [Connes' Spectral Triples — Definition & Examples](content/31-frontier-maths/31.3-noncommutative-geometry/spectral-triples.md)
+- `[ ]` [Dirac Operators & Spectral Geometry](content/31-frontier-maths/31.3-noncommutative-geometry/dirac-operators.md)
+- `[ ]` [Spectral Action Principle](content/31-frontier-maths/31.3-noncommutative-geometry/spectral-action.md)
+- `[ ]` [K-theory & Cyclic Cohomology](content/31-frontier-maths/31.3-noncommutative-geometry/k-theory-cyclic-cohomology.md)
+
+#### Number Theory via Non-commutative Geometry
+- `[ ]` [Bost–Connes Quantum Statistical System](content/31-frontier-maths/31.3-noncommutative-geometry/bost-connes.md)
+- `[ ]` [Connes–Marcolli Approach to RH](content/31-frontier-maths/31.3-noncommutative-geometry/connes-marcolli-rh.md)
+- `[ ]` [Adèles, Idèles & Non-commutative Spaces](content/31-frontier-maths/31.3-noncommutative-geometry/adeles-ideles.md)
+- `[ ]` [Weil Cohomology & the Weil Conjectures](content/31-frontier-maths/31.3-noncommutative-geometry/weil-cohomology.md)
+
+#### S-spectrum & Quaternionic Spectral Theory
+- `[ ]` [Slice-Regular Functions](content/31-frontier-maths/31.3-noncommutative-geometry/slice-regular-functions.md)
+- `[ ]` [S-spectrum & Quaternionic Resolvent](content/31-frontier-maths/31.3-noncommutative-geometry/s-spectrum.md)
+- `[ ]` [Spectral Theorem for Quaternionic Operators](content/31-frontier-maths/31.3-noncommutative-geometry/quaternionic-spectral-theorem.md)
+
+---
+
 ## Legend
 
 | Symbol | Meaning |
