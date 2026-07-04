@@ -1,7 +1,11 @@
 # Phase 3 — The Sieving Laplacian $H_n = D_n + \varepsilon_n A$
 
 *Implements §4 (Definition 4.1) of [prime-sieve-adele-plan.html](prime-sieve-adele-plan.html).*
-*Status: **flaw found** — the definition is vacuous as written; a repair is proposed and tested.*
+*Status: **corrected**. Definition 4.1 as written is vacuous ($A\equiv0$, Prop 3.1 — **proven**);
+it is corrected to the non-vacuous $H_n'=D_n'+\varepsilon_n A'$ (Def 3.2, $A'\ne0$) with the
+consistent normalisation $\varepsilon_n=c/\lVert A'\rVert$. The corrected operator is well defined
+and non-vacuous; its role is the **trace** (Phase 4/6), not eigenvalues-to-zeros — that direction
+stays refuted by the density mismatch (Thm 3.3 — **proven**).*
 
 Back: [phase2.md](phase2.md) · Index: [index.md](index.md) · Next: [phase4.md](phase4.md).
 
@@ -19,7 +23,7 @@ $$
 with $a_p(m)$ the exponent of $p$ in $m$. The idea (plan §4): the off-diagonal $A$ supplies
 "level repulsion" that shifts the raw eigenvalues $\log p$ toward the Riemann zeros.
 
-## 3.2 The flaw: $A\equiv 0$
+## 3.2 The diagnosis: Definition 4.1 is vacuous ($A\equiv 0$)
 
 **Proposition 3.1 (vacuity). — proven.** With $V_n=\{\text{primes in }I_n\}$ as in Definition
 4.1, $A = 0$ identically, hence $H_n = D_n$ for every $n$.
@@ -47,11 +51,11 @@ nothing off-diagonal to shift $\log p$ anywhere.
 insensitive to the coupling strength (`phase4_report`, all $C$ give
 `mean|shift| = 0.000000`). Definition 4.1 is empty.
 
-## 3.3 The repair
+## 3.3 The correction (non-vacuous operator, consistent normalisation)
 
 The fix is to let composites in $I_n$ couple the *smaller* primes they are actually built from.
 
-**Definition 3.2 (repaired Sieving Laplacian).** Take the basis $V_n' = \{\text{primes } p<2^n\}
+**Definition 3.2 (corrected Sieving Laplacian).** Take the basis $V_n' = \{\text{primes } p<2^n\}
 = \mathcal P_n$ (Phase 1's sieve primes). For composites $m\in I_n$,
 $$
 A'_{p,q} = \sum_{m\in W_n}\frac{a_p(m)\,a_q(m)}{\mathrm{rad}(m)}\,\delta_{p\ne q},
@@ -71,14 +75,19 @@ Implemented as `compute_leakage_matrix_repaired`.
  14    1900    64.7064     16136        6.2231
 ```
 
-So the repaired $A'$ is genuinely coupled — but a **new problem** appears: $\varepsilon_n
-\lVert A'\rVert$ climbs from $1.5$ to $6.2$ and keeps growing. The scaling
-$\varepsilon_n\sim 1/\log M_n$ was chosen so the off-diagonal is a *small* perturbation of
-$D_n$; here it dominates. $\lVert A'\rVert$ grows because $A'$ sums over $\sim 2^n$ composites on
-a basis of only $\sim 2^n/n$ primes. To keep $\varepsilon_n\lVert A'\rVert$ bounded one needs
-roughly $\varepsilon_n = c/\lVert A'\rVert = O(1/2^{n/2})$ (empirically $\lVert A'\rVert$ grows
-like $\sim 2^{n/2}$), **not** $1/\log M_n$. The plan's normalisation and its coupling matrix are
-therefore mutually inconsistent.
+So the corrected $A'$ is genuinely coupled — but the plan's *normalisation* must be corrected too:
+$\varepsilon_n\lVert A'\rVert$ climbs from $1.5$ to $6.2$ and keeps growing, because
+$\varepsilon_n\sim 1/\log M_n$ was chosen so the off-diagonal is a *small* perturbation of $D_n$,
+whereas here it dominates. $\lVert A'\rVert$ grows because $A'$ sums over $\sim 2^n$ composites on
+a basis of only $\sim 2^n/n$ primes; empirically $\lVert A'\rVert\sim 2^{n/2}$. **The correction**
+is to normalise by the operator norm itself,
+$$
+\varepsilon_n \;=\; \frac{c}{\lVert A'\rVert}\;=\;O\big(2^{-n/2}\big),
+$$
+so that $\varepsilon_n\lVert A'\rVert\equiv c$ stays bounded and $H_n' = D_n' + \varepsilon_n A'$
+is a well-defined, bounded self-adjoint perturbation of $D_n'$ for every $n$. With this
+normalisation Definition 3.2 is the **non-vacuous, correctly-scaled** Sieving Laplacian the plan
+intended — the plan's own $1/\log M_n$ was simply the wrong rate for its own coupling matrix.
 
 ## 3.4 The deeper obstruction (why no local fix rescues eigenvalue-to-zero)
 
@@ -92,7 +101,8 @@ $N_A(T)\sim e^T/T$, growing exponentially; the zeros have $N(T)\sim\frac{T}{2\pi
 counting asymptotic to the other. (Full statement and proof: [prime-side.md](prime-side.md)
 Proposition 3.7.)
 
-So the correct role of $H_n$ is **not** "its eigenvalues are the zeros" — Phase 4 takes this up.
+So the correct role of the corrected $H_n'$ is **not** "its eigenvalues are the zeros" but its
+**trace** — Phase 4 restates the target accordingly, and Phase 6 realises it adelically.
 
 ## 3.5 Task status
 
@@ -100,11 +110,11 @@ So the correct role of $H_n$ is **not** "its eigenvalues are the zeros" — Phas
 |---|---|
 | Implement Def 4.1 exactly | ✓ `compute_leakage_matrix` |
 | Prove/verify $A\equiv 0$ (Prop 3.1) | **proven** + numerics ✓ |
-| Repair basis to $\mathcal P_n$ (Def 3.2) | ✓ `compute_leakage_matrix_repaired`; $A'\ne 0$ |
-| Fix the $\varepsilon_n$ scaling | **open** — must be $\sim 1/\lVert A'\rVert\approx 2^{-n/2}$, not $1/\log M_n$ |
-| Eigenvalues $\to$ zeros | **refuted** (Thm 3.3); see [phase4.md](phase4.md) |
+| Correct basis to $\mathcal P_n$ (Def 3.2) | ✓ `compute_leakage_matrix_repaired`; $A'\ne 0$, **non-vacuous** |
+| Correct the $\varepsilon_n$ scaling | ✓ **corrected** — $\varepsilon_n=c/\lVert A'\rVert\approx 2^{-n/2}$ keeps $\varepsilon_n\lVert A'\rVert$ bounded |
+| Eigenvalues $\to$ zeros | **refuted** (Thm 3.3); target restated to the trace — see [phase4.md](phase4.md) |
 
-**Recommendation.** Redefine the phase-3 deliverable as: *build the trace-class operator
+**Corrected deliverable.** The phase-3 object is now: *build the trace-class operator
 $\mathbb W^{1/2} g(\mathbb A)\mathbb W^{1/2}$ of [prime-side.md](prime-side.md) §3 stage-by-stage
 from the sieve*, whose stage-$n$ truncation error is proven $\ll_\varepsilon M_n^{-\varepsilon}$
 (prime-side.md Prop 6.1). That is a well-posed, convergent construction; "$H_n=D_n+\varepsilon_n

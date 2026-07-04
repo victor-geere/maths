@@ -5,7 +5,7 @@ directly on $X=\mathbb{A}_\mathbb{Q}/\mathbb{Q}^\times$ à la Connes, instead of
 on a Hilbert space of prime positions.*
 *Status: **proven** trace identity (imported), **implemented and verified** numerically here.*
 
-Back: [phase5.md](phase5.md) · Index: [index.md](index.md).
+Back: [phase5.md](phase5.md) · Index: [index.md](index.md) · Next: [phase7.md](phase7.md).
 
 ## 6.1 Why the finite-matrix approach was the wrong vehicle
 

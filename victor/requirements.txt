@@ -2,3 +2,5 @@ numpy
 matplotlib
 mpmath
 streamlit
+sympy
+scipy

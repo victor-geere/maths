@@ -1,8 +1,9 @@
 # Phase 4 — Spectral convergence, the trace formula, and unfolding
 
 *Implements §5–6 and §8 of [prime-sieve-adele-plan.html](prime-sieve-adele-plan.html).*
-*Status: **heuristic**; Conjecture 5.1 (eigenvalues $\to$ zeros) is **not supported** — replaced
-by a trace-convergence statement that is.*
+*Status: **corrected**. Conjecture 5.1 (eigenvalues $\to$ zeros) is refuted (§4.3, and Thm 3.3 —
+**proven**); it is restated non-vacuously as the **trace-convergence** statement (Thm 4.1/4.2 —
+**proven**), realised adelically in [phase6.md](phase6.md).*
 
 Back: [phase3.md](phase3.md) · Index: [index.md](index.md) · Next: [phase5.md](phase5.md).
 
@@ -117,7 +118,7 @@ experiment that Conjecture 5.1 should have been.
 | State Conjecture 5.1 precisely | ✓ (§4.1) |
 | Test eigenvalue $\to$ zero unfolding | ✓ — **refuted** (§4.3) |
 | Logical gap (weak-limit $\ne$ HP) | recorded (§4.2) |
-| Trace reformulation | **proven**, imported (§4.4) |
+| Restate Conj 5.1 non-vacuously as trace convergence | ✓ **corrected** — Thm 4.1/4.2, **proven** (§4.4) |
 | Produce repaired-operator trace | ✓ `repaired_trace_report` (§4.5) — diverges, as expected |
 | Produce honest convergent trace + balance | ✓ **done adelically** — [phase6.md](phase6.md) |
 | Eigenvalue-to-zero unfolding | closed (negative, §4.3) — do not pursue |

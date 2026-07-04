@@ -45,7 +45,7 @@ victor/
     prime-kernel.html / prime-sieve.html / hermite-biehler.html / research-findings.html / *-errata.html
   adele/                  # Prime sieve on the adèle class space (Connes trace formula)
     index.md              # implementation index — 6 phases, per-phase status
-    phase1.md … phase6.md # staged notes; phase6 is the working construction (trace verified to 1e-36)
+    phase1.md … phase7.md # staged notes; phase6 is the working construction (trace verified to 1e-36); phase7 locates the zero-side gap
     prime-side.md         # (copy of the barry-keating prime-side package, measured against)
     sieve_operator.py     # Phases 1,3,4: sieve, H_n, the vacuity flaw, repaired trace
     adele_trace.py        # Phase 6: adelic place-by-place Weil trace + zero/prime balance
@@ -174,12 +174,14 @@ Not on the original 16-item board; added in the current branch. Status per note:
 |---|---|---|
 | Composite-generator sieve; equidistribution of normalised primes | `barry-keating/research-findings.md`, `adele/phase1.md` | **proven** (numerics confirm) |
 | Unconditional prime-side package (RKHS + von Mangoldt weights + operator-trace explicit formula) | `barry-keating/prime-side.md` | **proven**, but boundary/positivity claims are **RH-equivalent**, not a proof |
-| Finite "Sieving Laplacian" $H_n=D_n+\varepsilon_n A$ | `adele/phase3.md` | **flaw found** — $A\equiv0$, vacuous; repair has wrong spectral density |
-| Eigenvalues $\to$ zeros (Conjecture 5.1) | `adele/phase4.md` | **refuted** — contradicted by a theorem *and* numerics |
+| Finite "Sieving Laplacian" $H_n=D_n+\varepsilon_n A$ | `adele/phase3.md` | **corrected** — Def 4.1 vacuous ($A\equiv0$, proven), corrected to the non-vacuous $H_n'=D_n'+\varepsilon_n A'$ with $\varepsilon_n=c/\lVert A'\rVert$; its role is the *trace*, not eigenvalues |
+| Conjecture 5.1 (eigenvalues $\to$ zeros), restated | `adele/phase4.md` | **corrected** — eigenvalue→zero **refuted** (density mismatch, proven); restated as the **proven** trace-convergence statement (Thm 4.1/4.2) |
 | Adèle place-by-place Weil trace (Connes) | `adele/phase6.md`, `adele/adele_trace.py` | **proven** trace identity (imported), verified to $10^{-36}$ |
+| Zero-side analysis: what a non-Weil equivalence needs; circularity of "sieve bridge $+$ Weil" | `adele/phase7.md` | frontier — the surviving equivalence (Cor 5.4) is **proven** but **RH-equivalent** |
 
 Open items on this track: define the quaternionic/adelic operator rigorously; state and test the
-truncation-rate bound $O(M_n^{-1/2})$; keep the salvaged results separate from the refuted ones.
+truncation-rate bound $O(M_n^{-1/2})$; keep the corrected trace target (Phases 3–4, 6) distinct
+from the refuted eigenvalue→zero claim.
 
 ## Rigour convention
 
