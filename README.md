@@ -17,6 +17,19 @@ linking it to a "dual" sequence. The general recipe in
 [victor/spectral-triple.html](victor/spectral-triple.html) is the prototype
 special case.
 
+The workspace runs **two complementary tracks**. The first (above) is the
+circle-kernel recipe and its catalogue of sequences. The second, in
+[victor/barry-keating/](victor/barry-keating/) and
+[victor/adele/](victor/adele/), attacks the **Hilbert–Pólya** problem from the
+prime side: it builds the arithmetic side of the Guinand–Weil explicit formula
+as a genuine operator trace and — following Connes — realises it place by place
+on the adèle class space $X=\mathbb A_\mathbb Q/\mathbb Q^\times$, reproducing
+the trace numerically to $10^{-36}$. This track *reproduces* the explicit
+formula; it does **not** decide RH, and says so at every step. An unconditional
+proof of RH is a **permitted outcome** of the project — but only at the full bar
+set out in [Rigour and guardrails](#rigour-and-guardrails) below; nothing here
+currently meets it, and every note states that RH remains open.
+
 ---
 
 ## Layout
@@ -27,7 +40,19 @@ maths/
 │   ├── prime-zeros.py              # Z/P/G channels, helix lift, quaternion cone
 │   ├── spectral-triple.html        # interactive manuscript (KaTeX + Plotly, self-contained)
 │   ├── series-spectrum-circle.html # additional interactive visualisation
-│   └── requirements.txt            # numpy, matplotlib
+│   ├── requirements.txt            # numpy, matplotlib, mpmath, streamlit
+│   ├── barry-keating/              # Hilbert–Pólya "prime side" track (unconditional package)
+│   │   ├── prime-side.md           # RKHS + von Mangoldt weights + operator-trace explicit formula
+│   │   ├── research-findings.md    # the verified foundation (proven / conditional / RH-equivalent)
+│   │   └── worksheet.md            # audit trail: review, refutations, salvage
+│   ├── adele/                      # prime sieve on the adèle class space (Connes trace formula)
+│   │   ├── index.md                # implementation index, 6 phases with status
+│   │   ├── phase1.md … phase6.md   # phase6 = working construction (trace verified to 1e-36)
+│   │   ├── sieve_operator.py       # sieve, H_n, the vacuity flaw, repaired trace
+│   │   └── adele_trace.py          # adelic place-by-place Weil trace + zero/prime balance
+│   └── flawed/                     # graveyard: a refuted RH-proof attempt, kept as audit trail
+│
+├── leo/                            # (empty — scratch space)
 │
 ├── project/                        # one Markdown note per catalogue object
 │   ├── prime-sine-wave.md          # Phase 1a — proven (T1–T4)
@@ -52,13 +77,13 @@ maths/
 ├── plan/
 │   └── project.md                  # master task list with per-phase status tables
 │
-├── library/                        # reference library, 21 subject folders
+├── library/                        # reference library, 30 subject folders
 │   ├── index.md
 │   └── content/
 │       ├── 01-foundations-logic/
 │       ├── 02-algebra/
 │       ├── 03-number-theory/
-│       ├── ...                     # through 21-measure-theory-integration/
+│       ├── ...                     # through 30-mathematical-biology-medicine/
 │       └── 20-harmonic-analysis-fourier-theory/
 │
 ├── sympy/                          # SymPy MCP verification server
@@ -101,7 +126,24 @@ maths/
 | [victor/prime-zeros.py](victor/prime-zeros.py) | NumPy experiment: separates the explicit‑formula channels $Z,P,G$, builds the signal $R=Z-P+G$, the **sign‑aware helix** lift, the spectral quaternion $Z-iP+jG$ and its cone indicator $Z^2-(P^2+G^2)$. | Working code |
 | [victor/spectral-triple.html](victor/spectral-triple.html) | Interactive manuscript: *A Spectral Framework for the Riemann Hypothesis*. General recipe (damping → symmetrisation → kernel), worked kernels (Fibonacci, zeta "trilogy", zeros), Weil‑criterion positivity, quaternionic reformulation, live numerical tests. KaTeX + Plotly, self‑contained. | Exploratory / heuristic |
 | [victor/series-spectrum-circle.html](victor/series-spectrum-circle.html) | Interactive visualisation: zeta Dirichlet series terms mapped onto the circle as a spectrum. KaTeX + Plotly, self‑contained. | Exploratory |
-| [victor/requirements.txt](victor/requirements.txt) | Python dependencies (`numpy`, `matplotlib`). | — |
+| [victor/requirements.txt](victor/requirements.txt) | Python dependencies (`numpy`, `matplotlib`, `mpmath`, `streamlit`). | — |
+
+### Hilbert–Pólya / adèle track (`victor/barry-keating/`, `victor/adele/`)
+
+A second line of attack: build the arithmetic side of the Guinand–Weil explicit formula as a
+genuine operator trace, then realise it on the adèle class space à la Connes. Every claim is tagged
+per the rigour convention; the standout is a *reproduction* of the explicit‑formula trace, not a
+decision of RH.
+
+| File | What it is | Status |
+|---|---|---|
+| [victor/barry-keating/prime-side.md](victor/barry-keating/prime-side.md) | The unconditional "prime side" package: RKHS with von Mangoldt weights, closed‑form kernel $K_\Lambda(\lambda,\mu)=-\tfrac{\zeta'}{\zeta}(1-i(\lambda-\bar\mu))$, self‑adjoint translation‑flow generator, arithmetic side as an operator trace, boundary law. | Proven (boundary/positivity claims are RH‑equivalent) |
+| [victor/barry-keating/research-findings.md](victor/barry-keating/research-findings.md) | The verified foundation: only what is proven from the Berry–Keating series review, restated self‑containedly and tagged proven / conditional / RH‑equivalent. | Proven foundation |
+| [victor/barry-keating/worksheet.md](victor/barry-keating/worksheet.md) | Audit trail — review, refutations, salvage log for the nine source documents. | — |
+| [victor/adele/index.md](victor/adele/index.md) | Implementation index: the sieve‑on‑adèles program in six staged, testable phases with per‑phase status and a candid critical review. | Mixed (see phases) |
+| [victor/adele/phase3.md](victor/adele/phase3.md) | The finite "Sieving Laplacian" $H_n=D_n+\varepsilon_n A$ — found **vacuous** ($A\equiv0$) by running it; repair has the wrong spectral density. | Flaw found |
+| [victor/adele/phase6.md](victor/adele/phase6.md) · [adele_trace.py](victor/adele/adele_trace.py) | **The working construction:** the Weil trace assembled place‑by‑place on $X=\mathbb A_\mathbb Q/\mathbb Q^\times$; geometric side balances the zero side to $10^{-36}$ with a proven $O(M_n^{-1/2})$ rate. | Proven + verified |
+| [victor/flawed/](victor/flawed/) | Graveyard: the discarded `barry-keating-hp-*` series that claimed a proof of RH, kept as an audit trail of why it fails. | Refuted |
 
 ### Research notes (`research/`)
 
@@ -129,7 +171,49 @@ Structured working notes, one subfolder per phase. Each phase folder contains an
 > from what is *exploratory*. The prime‑sine‑wave note proves theorems and
 > explicitly disclaims any bearing on RH; the spectral‑triple manuscript is a
 > heuristic framework whose central positivity claim is *equivalent to* RH and
-> therefore as hard as RH. New work should keep that distinction sharp.
+> therefore as hard as RH; the [barry-keating](victor/barry-keating/) prime‑side
+> package is unconditional but lands on RH‑*equivalent* positivity, and the
+> [adèle](victor/adele/) track *reproduces* the explicit‑formula trace without
+> deciding RH. New work should keep that distinction sharp.
+
+---
+
+## Rigour and guardrails
+
+Every result carries one of four tags, and the distinction is maintained strictly:
+
+- **proven** — complete proof in the note, or a classical result with citation.
+- **conditional** — depends on RH or another named hypothesis, stated explicitly.
+- **RH‑equivalent** — proven *equivalent* to RH (Weil / Hermite–Biehler positivity,
+  Connes' global trace formula). These mark the **frontier**; an RH‑equivalent
+  restatement is not a step toward a proof and is never presented as one.
+- **heuristic / exploratory** — conjecture or numerical evidence only.
+
+**Scope discipline.** A framework is called "RH‑equivalent" only when it is provably
+tied to the zeros — never when a mere coincidence of abscissae, a prime‑zeta
+singularity, or a density/trace match is dressed up as a criterion (see
+[prime‑sine‑wave §7](project/prime-sine-wave.md)). Numerical experiments are evidence,
+not proof, and are reported as such. The [victor/flawed/](victor/flawed/) folder is
+kept on purpose: it holds a `barry-keating-hp-*` series that *claimed* a proof of RH
+and was refuted at three independent, provable points — the standing example of the
+guardrail doing its job.
+
+**Declaring RH proven — a permitted outcome, at the full bar.** An unconditional proof
+of RH is exactly what this project is allowed to reach; the door is open and the bar
+does not move. RH may be tagged **proven** only when *all* of the following hold:
+
+1. every link in the chain is itself **proven** — nothing conditional, nothing
+   heuristic, and no RH‑equivalent restatement substituting for the conclusion;
+2. the chain terminates in a statement about the location of the nontrivial zeros
+   $\rho=\tfrac12+i\gamma$ themselves — not merely positivity of a kernel, a singularity
+   of the prime zeta, or a density/trace match;
+3. the argument survives independent verification — symbolic (via the `sympy-verifier`
+   MCP server) and numerical — and an adversarial read‑through aimed at finding the gap.
+
+Until all three hold, RH stays tagged **open**, as every current note states it is. This
+convention *opens the door to a proof; it does not lower the threshold for claiming one.*
+If a genuine proof is assembled, it is stated plainly and unhedged; short of that, the
+project never hints that it is "close".
 
 ---
 
@@ -333,12 +417,17 @@ first step implemented in [victor/prime-zeros.py](victor/prime-zeros.py).
 
 ### Guardrails (scope discipline)
 
-- Mark every result as **proven**, **conditional** (state the hypothesis), or
-  **heuristic/exploratory**.
+The full statement is in [Rigour and guardrails](#rigour-and-guardrails) above. In brief:
+
+- Mark every result **proven**, **conditional** (state the hypothesis),
+  **RH‑equivalent** (frontier, not a stepping stone), or **heuristic/exploratory**.
 - Never let a coincidence of abscissae masquerade as a criterion (see
   prime‑sine‑wave §7): a framework is only "RH‑equivalent" if it is provably
   tied to the zeros, not merely to the prime zeta singularity.
 - Numerical experiments are evidence, not proof; report them as such.
+- An unconditional RH proof is a permitted outcome, but only at the full bar
+  (every link **proven**, terminating in the zeros' location, independently
+  verified). Short of that bar, RH stays **open**.
 
 ---
 
@@ -497,12 +586,17 @@ cd victor
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 python prime-zeros.py          # prints R-range / peak; shows 3-D helix if matplotlib is present
+
+# Hilbert–Pólya / adèle track (uses mpmath, already in requirements.txt)
+python adele/sieve_operator.py # Phases 1,3,4: sieve, H_n, the vacuity flaw, repaired trace
+python adele/adele_trace.py    # Phase 6: adelic place-by-place Weil trace + zero/prime balance
 ```
 
 ```bash
 # Interactive manuscripts — open in a browser (KaTeX + Plotly via CDN, no build step)
 open victor/spectral-triple.html
 open victor/series-spectrum-circle.html
+open victor/adele/prime-sieve-adele.html
 ```
 
 ### What to work on
@@ -515,7 +609,9 @@ See [`research/todo.md`](research/todo.md) for the full actionable task list, or
 
 - A. Weil, *Sur les formules explicites de la théorie des nombres*, 1952.
 - K. Barner, *On A. Weil's explicit formula*, 1981.
-- A. Connes, *Trace formula in noncommutative geometry and the zeros of the Riemann zeta function*, 1999.
+- A. Connes, *Trace formula in noncommutative geometry and the zeros of the Riemann zeta function*, 1999 — the adèle‑class‑space trace formula behind the Phase‑6 construction.
+- M. V. Berry and J. P. Keating, *$H = xp$ and the Riemann zeros*, 1999; *The Riemann zeros and eigenvalue asymptotics*, SIAM Review 1999 — the Hilbert–Pólya heuristic the `barry-keating/` track works from.
+- The Hermite–Biehler theorem and de Branges spaces — the positivity criterion the prime‑side boundary law lands on (RH‑equivalent).
 - A. M. Odlyzko, *The first $10^{13}$ zeros of the Riemann zeta function*, 1987.
 - Nyman–Beurling–Báez‑Duarte criterion (an $L^2$ RH‑equivalent framework), as noted in [project/prime-sine-wave.md](project/prime-sine-wave.md) §7.
 - Riesz–Fischer theorem; Mertens' theorems; the prime zeta function $P(z)=\sum_{k\ge1}\tfrac{\mu(k)}{k}\log\zeta(kz)$.

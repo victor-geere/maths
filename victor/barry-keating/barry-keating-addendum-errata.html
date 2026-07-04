@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Addendum and Errata: The Arithmetic Berry–Keating Series</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Georgia, "Times New Roman", serif;
+            max-width: 1080px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.75;
+            color: #000;
+            background: #fff;
+        }
+        h1,h2,h3,h4 { font-family: "Helvetica Neue", Arial, sans-serif; color:#000; }
+        h1 { text-align:center; font-size:1.8em; margin-bottom:0.2em; }
+        .lemma {
+            background: #f8f8ff; padding:16px; border-left:5px solid #003399;
+            margin:22px 0;
+        }
+        .proof { margin-left: 20px; margin-bottom: 20px; }
+        .boxed { border: 1px solid #999; padding: 14px; margin: 20px 0; background: #fafafa; }
+        .err   { background:#fff5f5; padding:14px; border-left:5px solid #b30000; margin:18px 0; }
+        .fix   { background:#f0fff4; padding:14px; border-left:5px solid #1a7f37; margin:18px 0; }
+        .note  { background:#fef9e7; padding:14px; border-left:4px solid #b8860b; margin:18px 0; }
+        table { border-collapse: collapse; width:100%; margin:20px 0; }
+        th, td { border:1px solid #aaa; padding:7px; text-align:left; vertical-align:top; }
+        code, pre { background:#f5f5f5; border:1px solid #ccc; border-radius:4px; }
+        pre { padding:12px; overflow-x:auto; }
+        .tag { font-family:"Helvetica Neue",Arial,sans-serif; font-size:0.78em; font-weight:bold;
+               padding:1px 7px; border-radius:9px; white-space:nowrap; }
+        .t-proven { background:#e6f4ea; color:#1a7f37; border:1px solid #1a7f37; }
+        .t-cond   { background:#fff8e1; color:#8a6d00; border:1px solid #b8860b; }
+        .t-open   { background:#fdecea; color:#b30000; border:1px solid #b30000; }
+        .t-fatal  { background:#b30000; color:#fff; }
+        .t-major  { background:#e07000; color:#fff; }
+        .t-minor  { background:#777;    color:#fff; }
+        .small { font-size:0.9em; color:#444; }
+    </style>
+</head>
+<body>
+
+<h1>Addendum and Errata<br>The Arithmetic Berry–Keating Series</h1>
+<p style="text-align:center;"><em>Review, corrections, and completed proofs — 3 July 2026</em></p>
+
+<div class="note">
+<strong>Protocol.</strong> This document reviews the nine documents of the series and alters none of
+them; all claims are referenced by (file, section, display). Companion working notes, with all
+derivations and the full numerical logs, are in <a href="worksheet.md"><code>worksheet.md</code></a>.
+Rigour tags follow the repository convention:
+<span class="tag t-proven">proven</span> — complete proof here or in the cited source;
+<span class="tag t-cond">conditional</span> — depends on a named hypothesis;
+<span class="tag t-open">open / RH-equivalent</span> — not established by anyone.
+Errata severity: <span class="tag t-fatal">fatal</span> breaks the chain;
+<span class="tag t-major">major</span> claim false or unsupported as stated;
+<span class="tag t-minor">minor</span> fixable slip.
+</div>
+
+<h2>0. Summary of findings</h2>
+<p>The series (<code>barry-keating-hamiltonian-sieve.html</code>, <code>barry-keating-completing.html</code>,
+<code>barry-keating-hp-1.html</code> … <code>hp-7.html</code>) claims, in hp-3 and again in hp-7, a complete
+proof of the Riemann Hypothesis. <strong>The claim is incorrect.</strong> Three independent,
+elementary obstructions (§1: Lemmas L1–L3) each break the chain before it starts:</p>
+<ol>
+  <li><strong>L1.</strong> Every eigenvalue of every finite-stage operator \(H_n^{\mathrm{osc}}\) lies in a fixed
+      triangle of diameter \(<1.2\) near the origin; the eigenvalues can never approach the Riemann
+      zeros \(\gamma_1 = 14.13\ldots,\;\gamma_2 = 21.02\ldots\), under any hypothesis.</li>
+  <li><strong>L2.</strong> The "de Branges kernel of \(\Xi\)" used throughout is <em>identically zero</em>,
+      because \(\Xi\) is a real entire function; a real entire function is never a de Branges
+      structure function. The "limiting de Branges space" of the series is \(\{0\}\).</li>
+  <li><strong>L3.</strong> The finite prime kernels \(K_n\) converge to \(0\) on the strip
+      \(|\mathrm{Im}(\lambda-\bar\mu)|<1\) and diverge below it; there is no nonzero limit kernel.</li>
+</ol>
+<p>Beyond these, the two numerical showcases are unreproducible from the listed code: the
+eigenvalue table of <code>completing.html</code> §4 is contradicted by running its own script
+(actual max error \(30.2\) at \(N=120\), claimed \(0.0436\); appendix N.1), and the GUE
+"unfolding" of hp-6 §2 maps <em>any</em> spectrum to exactly equal spacings (appendix N.2).</p>
+<p>What survives is genuinely worth keeping, and this addendum completes it: the sieve lemma
+(A.1), the equidistribution of \(\{p/M_n\}\) with a corrected proof (A.2), the exact spectral
+theory of the Berry–Keating generator (A.3), the Guinand–Weil explicit formula in a normalisation
+verified here to \(10^{-31}\) (A.4), the honest content of the moment argument together with a
+proof that the moment strategy cannot detect reality of zeros (A.5), and the honest de Branges
+statement: a Hermite–Biehler positivity criterion <em>equivalent</em> to RH (A.6). Sections A.7–A.9
+give the accurate status of the adelic, spectral-triple and GUE claims with literature. Section 5
+states precisely the wall every route of this series runs into.
+<strong>Nothing in the series, and nothing in this addendum, proves the Riemann Hypothesis; it
+remains open.</strong></p>
+
+<h2>1. Three master obstructions</h2>
+
+<div class="lemma">
+<h4>Lemma L1 (spectral confinement of the compressions). <span class="tag t-proven">proven</span></h4>
+<p>Work in the corrected model of Erratum E1, in which
+\(\{e_p\}_{p\le M_n}\) is orthonormal (circle of circumference \(M_n\)) and
+\(\widehat H_n e_p = (p/M_n + i/2)\,e_p\), so \(\widehat H_n\) is normal with spectrum in the
+segment \(S = [0,1]+\tfrac i2\). Let \(V:\mathcal H_n \to \mathbb C^{N}\) be any linear contraction
+(\(\|V\|\le 1\)) — in particular the oscillator embedding
+\((V_n)_{m,p} = \langle \psi_m, U e_p\rangle\) of sieve §5.3 / completing §3.2, which is
+(projection) ∘ (unitary) ∘ (inclusion). Then every eigenvalue \(\lambda\) of
+\(H^{\mathrm{osc}} = V \widehat H_n V^{*}\) lies in the triangle
+\[
+T \;=\; \mathrm{conv}\{\,0,\; \tfrac i2,\; 1+\tfrac i2\,\},
+\qquad\text{so } |\lambda| \le \tfrac{\sqrt5}{2} < 1.12 .
+\]</p>
+</div>
+<div class="proof">
+<p><strong>Proof.</strong> Let \(H^{\mathrm{osc}}v = \lambda v\) with \(\|v\| = 1\), and set
+\(u = V^{*}v\), so \(\|u\|\le1\). Then
+\(\lambda = \langle v, V\widehat H_n V^{*} v\rangle = \langle u, \widehat H_n u\rangle\).
+If \(u = 0\), \(\lambda = 0 \in T\). Otherwise
+\(\lambda = \|u\|^2 \langle \hat u, \widehat H_n \hat u\rangle\) with \(\hat u = u/\|u\|\), and
+since the numerical range of a normal operator is the closed convex hull of its spectrum,
+\(\langle\hat u, \widehat H_n \hat u\rangle \in S\). Hence
+\(\lambda \in \{ t w : t\in[0,1],\, w \in S\} = T\). \(\blacksquare\)</p>
+<p class="small">Under the documents' literal reading on \([0,1)\) the \(e_p\) are far from
+orthonormal (Gram \(\langle e_p,e_q\rangle = e^{\pi i(p-q)/M_n}\,\mathrm{sinc}(\pi(p-q)/M_n)\approx 1\)
+for \(|p-q|\ll M_n\)) and the claimed eigenvalue relation fails before L1 is even needed; see E1.</p>
+</div>
+
+<div class="err">
+<strong>Consequences of L1.</strong>
+(i) Sieve Theorem 6.1 is false <em>even assuming RH</em>: no eigenvalue of \(H_n^{\mathrm{osc}}\)
+can leave \(|\lambda| < 1.12\), while \(\gamma_1 = 14.1347\ldots\).
+(ii) Sieve Theorem 7.1 and completing Theorem 3.1 are false: all \(N_n\) roots of
+\(\Xi_n(\lambda) = \det(\lambda I - H_n^{\mathrm{osc}})\) lie in \(T\), so for \(|\lambda|\ge2\),
+\(|\Xi_n(\lambda)| \ge (|\lambda| - \tfrac{\sqrt5}{2})^{N_n} \to \infty\) while
+\(\Xi(\lambda)\) is finite; no locally uniform convergence is possible.
+(iii) hp-1 Lemma 2.1 fails at the single point \(\lambda = -1\): the trace side has real part
+\(\le -\tfrac{4}{17}N_n \to -\infty\) (each \(w_j = -1-\lambda_j\) has
+\(\mathrm{Re}\,w_j \in [-2,-1]\), \(|w_j|^2 \le \tfrac{17}{4}\)), while the right-hand side is
+bounded by \(1 + o(1)\) in modulus.
+</div>
+
+<div class="lemma">
+<h4>Lemma L2 (the claimed kernel vanishes identically). <span class="tag t-proven">proven</span></h4>
+<p>\(\Xi(\lambda) = \xi(\tfrac12 + i\lambda)\) is real entire:
+\(\overline{\Xi(\bar\lambda)} = \Xi(\lambda)\). Consequently the kernel used in sieve §10.2,
+completing Lemma 2.2, hp-3 §§1,3 and hp-5 §1,
+\[
+K_\Xi(\lambda,\mu) \;=\;
+\frac{\Xi(\lambda)\overline{\Xi(\bar\mu)} - \overline{\Xi(\bar\lambda)}\Xi(\mu)}{2\pi i(\bar\mu - \lambda)},
+\]
+is identically zero, and the associated "de Branges space" is \(\{0\}\). Moreover no real entire
+function \(E\) is a de Branges structure function, since reality forces
+\(|E(x-iy)| = |E(x+iy)|\) for all \(x,y\), contradicting the required strict inequality
+\(|E(x-iy)| < |E(x+iy)|\;(y>0)\).</p>
+</div>
+<div class="proof">
+<p><strong>Proof.</strong> Reality of \(\xi\)'s Maclaurin coefficients on the critical line is
+classical (e.g. Titchmarsh §2.1: \(\Xi\) is the Riemann \(\Xi\)-function, real and even). Then
+\(\overline{\Xi(\bar\mu)} = \Xi(\mu)\) and \(\overline{\Xi(\bar\lambda)} = \Xi(\lambda)\), so the
+numerator is \(\Xi(\lambda)\Xi(\mu) - \Xi(\lambda)\Xi(\mu) = 0\). For the second claim,
+\(|E(x-iy)| = |\overline{E(x-iy)}| = |E(\overline{x-iy})|^{\,\overline{\phantom{x}}} = |E(x+iy)|\).
+\(\blacksquare\)</p>
+<p class="small">Numerical confirmation (appendix N.4): the numerator is \(<10^{-31}\) at generic
+complex points where \(|\Xi| \approx 0.48\). Note also that the displayed formula misquotes
+de Branges: the correct reproducing kernel is the <em>sesquilinear</em>
+\(K(w,z) = \big[E(z)\overline{E(w)} - E^{*}(z)\overline{E^{*}(w)}\big]\, i/\big(2\pi(z-\bar w)\big)\),
+\(E^{*}(z) := \overline{E(\bar z)}\) — which also degenerates when \(E^{*} = E\). The honest
+de Branges statement for \(\Xi\) is Proposition A.6 below, and it is equivalent to RH.</p>
+</div>
+
+<div class="lemma">
+<h4>Lemma L3 (the prime kernels have no nonzero limit). <span class="tag t-proven">proven</span></h4>
+<p>Let \(K_n(\lambda,\mu) = \frac{1}{k_n}\sum_{p\le M_n} p^{-1+i(\lambda-\bar\mu)}\) and write
+\(u = \lambda - \bar\mu\). Then, as \(n\to\infty\):
+(a) uniformly on \(\{\mathrm{Im}\,u \ge -1+\varepsilon\}\cap\{|u|\le R\}\), \(K_n \to 0\);
+(b) for \(\mathrm{Im}\,u < -1\), \(|K_n| \to \infty\).
+In particular sieve Theorem 10.1 and completing Theorem 2.1 are false, and on the strip the limit
+kernel is \(0 = K_\Xi\): the "identification \(K_\infty = K_\Xi\)" is the true but vacuous
+statement \(0 = 0\).</p>
+</div>
+<div class="proof">
+<p><strong>Proof.</strong> \(|p^{iu}| = p^{-\mathrm{Im}\,u}\). For \(\mathrm{Im}\,u \ge 0\):
+\(\sum_{p\le M} p^{-1-\mathrm{Im}\,u} \le \sum_{p \le M} p^{-1} = \log\log M + O(1)\), and
+\(k_n \sim M/\log M\), so \(|K_n| \ll (\log M \log\log M)/M\). For
+\(\mathrm{Im}\,u = -\delta\), \(0<\delta<1\): by Chebyshev bounds and partial summation
+\(\sum_{p\le M} p^{-1+\delta} \asymp M^{\delta}/(\delta\log M)\), so
+\(|K_n| \asymp M^{\delta-1}/\delta \to 0\), uniformly for \(\delta \le 1-\varepsilon\). For
+\(\delta > 1\) the same estimate gives \(|K_n| \asymp M^{\delta-1} \to \infty\).
+\(\blacksquare\)</p>
+<p class="small">The specific error in the documents' Hilbert–Schmidt argument: the bound
+"\(\iint_\Omega p^{i\lambda}q^{-i\bar\mu}\,d\lambda\,d\mu = O(1/\log(p/q))\)" is false on complex
+domains, where \(|p^{i\lambda}|\) grows like \(p^{|\mathrm{Im}\lambda|}\); there is also an
+expansion of \(|\sum_p(\cdot)|^2\) without cross terms. Sieve §10.2 Step 1 itself concedes that
+the pointwise limit does not exist, then reintroduces the same kernel two displays later.
+Numerics: appendix N.3.</p>
+</div>
+
+<h2>2. Errata catalogue</h2>
+<p>Locations refer to the section/display where the claim is made. Full derivations for every
+entry are in <a href="worksheet.md"><code>worksheet.md</code></a> §3.</p>
+
+<table>
+<tr><th>#</th><th>Location</th><th>Erratum</th><th>Severity</th></tr>
+<tr><td>E1</td><td>sieve §5.1; hp-1 §1</td>
+<td>"\(\widehat H_n f(\xi) = (\xi+i/2)f(\xi)\) … eigenvalues \(p/M_n+i/2\)": multiplication by
+\(\xi\) has no eigenvectors and does not preserve \(\mathcal H_n\); the \(e_p\) are eigenvectors of
+\(\frac{M_n}{2\pi i}\partial_\xi + \frac i2\). The \(e_p\) are orthonormal on
+\(\mathbb R/M_n\mathbb Z\), not on \([0,1)\) as written. Even after both fixes the operator is
+normal with complex spectrum in a unit box — not a Hilbert–Pólya candidate.</td>
+<td><span class="tag t-major">major</span></td></tr>
+<tr><td>E2</td><td>sieve Thm 5.1</td>
+<td>Strong resolvent convergence to the Berry–Keating operator: no identification of the spaces is
+defined, the spectra are incompatible (\([0,1]+i/2\) vs \(\mathbb R\)), and no proof is given.
+Correct spectral theory: A.3.</td>
+<td><span class="tag t-major">major</span></td></tr>
+<tr><td>E3</td><td>sieve Thm 6.1</td>
+<td>"Assuming RH, eigenvalues of \(H_n^{\mathrm{osc}}\) converge to \(\{\gamma_j\}\)": false even
+under RH, by Lemma L1.</td>
+<td><span class="tag t-fatal">fatal</span></td></tr>
+<tr><td>E4</td><td>sieve Thm 7.1; completing Thm 3.1</td>
+<td>\(\Xi_n \to \Xi\) locally uniformly: impossible by L1. The completing proof further equates
+\(\exp\int_0^1\log\!\big(1-(\xi{+}i/2)/\lambda\big)d\xi\) (zero-free for \(|\lambda|>1.12\)) with
+the Hadamard product of \(\Xi\) (zeros \(\pm\gamma_j\)).</td>
+<td><span class="tag t-fatal">fatal</span></td></tr>
+<tr><td>E5</td><td>sieve §10.1–10.2; completing Thm 2.1</td>
+<td>Hilbert–Schmidt convergence of \(K_n\) to a nonzero kernel: false by L3 (divergence for
+\(\mathrm{Im}(\lambda-\bar\mu)<-1\), zero limit inside the strip); oscillatory-integral bound
+false on complex domains; \(|\sum|^2\) expanded without cross terms; contradicts the document's
+own Step 1.</td>
+<td><span class="tag t-fatal">fatal</span></td></tr>
+<tr><td>E6</td><td>sieve §10.2 Steps 2–3; completing Lem 2.2; hp-3 §1</td>
+<td>"\(K_\infty = K_\Xi\), the de Branges kernel of \(\Xi\)": \(K_\Xi \equiv 0\) (L2). The
+appeal to "uniqueness of the de Branges kernel for a given zero set" is also false: with
+\(E = A - iB\), replacing \(B\) by \(B + tA\) changes the space but not the zeros of \(A\).</td>
+<td><span class="tag t-fatal">fatal</span></td></tr>
+<tr><td>E7</td><td>sieve §10.3; completing §2.3</td>
+<td>Multiplication operator on the (empty) space: vacuous. Even in a genuine \(\mathcal H(E)\):
+the self-adjoint extensions of \(M_z\) have <em>different, interlacing</em> spectra (zero sets of
+\(\cos\theta\,A + \sin\theta\,B\)), not all equal to the zeros of \(\Xi\); and "RH \(\iff\) some
+self-adjoint extension has purely real spectrum" is empty — every self-adjoint operator has real
+spectrum.</td>
+<td><span class="tag t-major">major</span></td></tr>
+<tr><td>E8</td><td>hp-1 Lemma 2.1</td>
+<td>Trace identity: an \(N_n\times N_n\) resolvent trace has \(N_n\) poles of total residue
+\(N_n\); the right side has \(k_n \gg N_n\) poles of total residue \(1\). Refuted at
+\(\lambda = -1\) (L1, consequence (iii)). The claimed decay
+\(\epsilon_{p,q} \ll e^{-c|\log p - \log q|^2}\) is vacuous for the
+\(\asymp (M_n/\log M_n)^2\) pairs \(p,q \in (M_n/2, M_n]\), where
+\(|\log p - \log q| \le \log 2\).</td>
+<td><span class="tag t-fatal">fatal</span></td></tr>
+<tr><td>E9</td><td>hp-1 Lemma 3.1</td>
+<td>"Explicit formula with remainder" is malformed: for fixed compactly supported \(\Phi\) the
+left side is eventually independent of \(n\), the displayed right side is not; the
+Vinogradov–Korobov error is inserted at the wrong strength. Correct statement, with verified
+normalisation: A.4.</td>
+<td><span class="tag t-major">major</span></td></tr>
+<tr><td>E10</td><td>hp-1 Lemma 3.2</td>
+<td>\(\frac1{k_n}\sum_p (\lambda - p/M_n - i/2)^{-1} \approx \sum_\rho (\lambda-\gamma)^{-1}\):
+the poles lie in \([0,1]+i/2\) versus at the \(\gamma_j\); at \(\lambda = i\) the left side tends
+to \(\int_0^1 \frac{dt}{i/2 - t} = -0.8047 - 1.1071i\) while the right side equals
+\(-0.0462i\) and is <em>purely imaginary unconditionally</em> (zeros occur in
+\(\pm\gamma,\pm\bar\gamma\) quadruples). No error term can repair a wrong real part. The "proof"
+cites Goldston–Gonek and Chandee without a derivation.</td>
+<td><span class="tag t-fatal">fatal</span></td></tr>
+<tr><td>E11</td><td>hp-1 §5, Thm 4.1</td>
+<td>The claimed \(10^{-6}\) agreement at \(N=400\) is unverifiable (no code or data), impossible
+by L1, and Theorem 4.1 rests on E8 + E10.</td>
+<td><span class="tag t-major">major</span></td></tr>
+<tr><td>E12</td><td>hp-2 §§3–5</td>
+<td>The scaled moments diverge (measured: \(\mu_2^{(n)} = 3.3,\,23,\,207\) at
+\(M = 2^{16},2^{20},2^{24}\); claimed limit \((2\pi)^2/3 = 13.16\)); "odd moments vanish" is
+impossible for sums of positive terms \((p/M_n)^{2k+1}\); and the strategy
+"determinacy + real moments \(\Rightarrow\) real support" is a non sequitur: \(\delta_0\) and
+the uniform measure on the unit circle have identical moments \(\int z^k\,d\nu = \delta_{k,0}\).
+The Carleman computation itself is correct but applied to an unproved bound (and is trivial under
+the document's own compact-support claim). See A.5.</td>
+<td><span class="tag t-fatal">fatal</span></td></tr>
+<tr><td>E13</td><td>hp-3 (entire document)</td>
+<td>Theorem 3.1 asserts that the real entire function \(\Xi\) is a de Branges function —
+impossible (L2), independently of where the zeros are. Lemma 2.1 applied to \(\Xi\) is absurd
+(\(\arg\Xi(t) \in \{0,\pi\}\), so \(\varphi' = 0\) off the zeros). The premise kernels converge
+to \(0\). The claimed proof of RH therefore establishes nothing. Honest counterpart: A.6.</td>
+<td><span class="tag t-fatal">fatal</span></td></tr>
+<tr><td>E14</td><td>hp-4 §4.1, Lem 5.2, Thm 6.1</td>
+<td>"\(D_K\) has pure point spectrum = zeros" is precisely the open content of Connes' program
+(A.7), asserted without proof. "\(N(T)\) grows faster than any polynomial" is false
+(\(N(T) \sim \frac{T}{2\pi}\log T\)). \(\sum_j \gamma_j^{-p} < \infty \iff p > 1\), and on the
+absolutely continuous part \(|D|^{-p}\) is not even compact. \(\mathrm{Tr}|D|^{-s}\) is Voros'
+<em>secondary</em> zeta function (its information sits in poles), not \(\xi(s)\); and the trace
+of a restricted tensor product does not factor over places as claimed.</td>
+<td><span class="tag t-major">major</span></td></tr>
+<tr><td>E15</td><td>hp-5 §2.1, Def 3.1, Thm 4.1, §5</td>
+<td>The Mellin computation in Theorem 4.1 is a correct formal intertwining — with
+<em>multiplication by \(\lambda\) on \(L^2(\mathbb R)\)</em> (Mellin–Plancherel): purely
+absolutely continuous spectrum \(\mathbb R\), no discrete zeros. The target
+"\(\mathscr H_\infty\)" is \(\{0\}\) (L2). \(\mathcal W\mathbf 1_K\) diverges at the archimedean
+place; with a Gaussian one obtains Tate's identity
+\(\mathcal W(\mathrm{gauss}\otimes\mathbf 1_{\widehat{\mathbb Z}})(\lambda) = \Lambda(\tfrac12+i\lambda)\)
+— an \(L^2\)-function identity, not a reproducing-kernel one. §2.1's transform is unitary from
+\(L^2(dx)\), not \(L^2(dx/x)\), as normalised (see A.3).</td>
+<td><span class="tag t-major">major</span></td></tr>
+<tr><td>E16</td><td>hp-6 §§2–4</td>
+<td>Premise false (its matrix does not approximate the zeros; appendix N.1). The unfolding code
+returns <code>ranks/(N+1)</code>: every spectrum yields identical spacings (appendix N.2), so the
+claimed "excellent fit to GUE" cannot be produced by the listed code. Montgomery's theorem is
+misstated (wrong transform, missing diagonal term, wrong \(|\alpha|>1\) behaviour; it is
+conditional on RH with Fourier support restricted to \([-1,1]\)); \(\mathbb E[\cdot]\) appears
+with no probability space; full GUE statistics for the zeros are conjectural. Honest status and
+replacement numerics: A.9.</td>
+<td><span class="tag t-fatal">fatal</span></td></tr>
+<tr><td>E17</td><td>hp-7 §§2–4</td>
+<td>\(\varphi_0 \equiv 1 \notin L^2(C_{\mathbb Q})\) (the class group has infinite Haar volume);
+discrete Hecke translations have no "infinitesimal generator" — \(D\) generates the
+\(\mathbb R_{>0}\) flow; and the spectrum of that flow on the \(K\)-invariant subspace is
+absolutely continuous \(= \mathbb R\), so "the Riemann zeros are the spectrum" repeats E15's non
+sequitur. The Tate/class-field exposition is standard; every RH-relevant claim in the document is
+unsupported, and the "completion of the program" inherits E13.</td>
+<td><span class="tag t-major">major</span></td></tr>
+<tr><td>E18</td><td>completing §3.2, §5</td>
+<td>"\((Uf)(x) = \frac1{\sqrt{2\pi}}\int_0^1 f(\xi)\, x^{-i\log x}\,d\xi\)": the integrand does not
+depend on \(\xi\); the displayed "transform" is rank one (typo garble, not recoverable as
+printed). "The unique \(\mathcal{PT}\)-symmetric extension selects the \(\Xi\) zero set":
+\(\mathcal{PT}\)-symmetry only forces conjugation-symmetric spectra; unbroken symmetry is exactly
+what would need proof.</td>
+<td><span class="tag t-minor">minor</span> / <span class="tag t-major">major</span></td></tr>
+<tr><td>E19</td><td>completing §4 (output table)</td>
+<td>The printed convergence table is <strong>not produced by the listed code</strong>. Verbatim
+execution gives max error \(37.8 \to 30.2\) for \(N = 40 \to 120\) (claimed \(0.43 \to 0.044\)),
+first positive-imaginary eigenvalue \(0.8433\) (claimed \(14.18\)), eigenvalues of modulus up to
+\(2.4\times10^3\), and 116 of 120 eigenvalues with \(|\mathrm{Re}\,\lambda| > 1\). Appendix N.1.
+The same matrix appears in sieve §8 and hp-6 §2.</td>
+<td><span class="tag t-fatal">fatal</span></td></tr>
+</table>
+
+<div class="err">
+<strong>Internal contradictions across the series.</strong>
+(C1) hp-1 §1: eigenvalues \(= p/M_n + i/2\) (a unit box) vs hp-2 §§1–2 and completing §4:
+eigenvalues \(\approx \gamma_j \in [14,50]\).
+(C2) sieve abstract: spectrum identified with zeros "<em>conditionally on RH</em>" vs hp-3/hp-7:
+"RH is proved".
+(C3) sieve §10.2 Step 1 concedes no pointwise kernel limit exists; completing Thm 2.1 claims
+Hilbert–Schmidt convergence of the same kernel.
+(C4) \(K_\Xi\) is called "positive definite with the same zeros as \(\Xi\)" while being \(\equiv 0\).
+(C5) hp-6's code comments concede the matrix is not Hermitian; the program's goal is a
+self-adjoint operator.
+</div>
+
+<h2>3. Addendum: completed and corrected results</h2>
+
+<h3>A.1 The sieve lemma <span class="tag t-proven">proven</span></h3>
+<div class="lemma">
+<h4>Lemma A.1 (sieve §2.1 / completing §1.1, completed).</h4>
+<p>Let \(I_n = [2^n, 2^{n+1}-1]\), let \(\mathcal P_n\) be the primes \(<2^n\), and let
+\(G_n\) be the set of \(x\in I_n\) expressible as \(x = p_1p_2\cdots p_k\) with
+\(p_i \in \mathcal P_n\) <em>(repetitions allowed)</em> and \(k\ge2\). Then \(G_n\) is exactly the
+set of composite numbers in \(I_n\).</p>
+</div>
+<div class="proof">
+<p><strong>Proof.</strong> A product of \(k\ge2\) primes is composite, so
+\(G_n \subseteq \{\text{composites}\}\). Conversely let \(x\in I_n\) be composite and let
+\(x = q_1\cdots q_k\) (\(k\ge2\), primes with multiplicity). Each \(q_i\) satisfies
+\(q_i = x/m\) for the integer \(m = \prod_{j\ne i}q_j \ge 2\), hence
+\(q_i \le x/2 < 2^{n+1}/2 = 2^n\), i.e. \(q_i \in \mathcal P_n\). \(\blacksquare\)</p>
+<p class="small">Repetitions are necessary (\(4 = 2\cdot2 \in I_2\)); the original statement
+should be read with multisets. By induction the primes below \(2^{n}\) are available at stage
+\(n\), so the recursion is well-founded. This is the one fully correct structural claim of the
+base document.</p>
+</div>
+
+<h3>A.2 Equidistribution of the normalised primes, with a corrected proof <span class="tag t-proven">proven</span></h3>
+<div class="lemma">
+<h4>Lemma A.2 (sieve Lemma 3.1 / completing Lemma 1.1, corrected).</h4>
+<p>For each fixed \(k\in\mathbb Z\setminus\{0\}\),
+\[
+\widehat\mu_n(k) = \frac1{k_n}\sum_{p\le M_n} e^{2\pi i k p/M_n} \;=\; O_k\!\Big(\frac1{\log M_n}\Big)
+\longrightarrow 0,
+\]
+and \(\widehat\mu_n(0)=1\); hence \(\mu_n \to\) Lebesgue measure weak-*.</p>
+</div>
+<div class="proof">
+<p><strong>Proof.</strong> Write \(S = \sum_{p\le M}e(kp/M) = \int_{2^-}^{M} e(kt/M)\,d\pi(t)\)
+and \(\pi(t) = \mathrm{Li}(t) + E(t)\) with \(E(t) \ll t\,e^{-c\sqrt{\log t}}\) (de la Vallée
+Poussin). The error part contributes, after integrating by parts,
+\(\ll (1+|k|)\,M e^{-c\sqrt{\log M}}\). For the main part substitute \(t = Ms\):
+\(\int_{2/M}^{1} e(ks)\,\frac{M\,ds}{\log(Ms)}\). The range \(s \le M^{-1/2}\) contributes
+\(O(\sqrt M)\). On \(s \ge M^{-1/2}\), where \(|\log s| \le \tfrac12\log M\), expand
+\(\frac1{\log(Ms)} = \frac1{\log M}\big(1 - \frac{\log s}{\log M} + O\big(\tfrac{\log^2 s}{\log^2 M}\big)\big)\).
+Since \(\int_0^1 e(ks)\,ds = 0\) for \(k \in \mathbb Z\setminus\{0\}\), the first term contributes
+\(O(\sqrt M)\); the second is \(\ll_k M/\log^2 M\) (as \(\int_0^1|\log s|\,ds = 1\)); the third is
+\(\ll M/\log^3 M\). Altogether \(S \ll_k M/\log^2 M\), and dividing by
+\(k_n \sim M/\log M\) gives the claim. Weyl's criterion (trigonometric polynomials are dense in
+\(C(\mathbb T)\), total masses are \(1\)) yields weak-* convergence. \(\blacksquare\)</p>
+</div>
+<div class="err">
+<strong>Erratum in the cited proof.</strong> Both documents derive this from "Vinogradov's bound
+\(\sum_{p\le x} e(\alpha p) \ll_A x/\log^A x\) for \(0<|\alpha|\le\tfrac12\)". No such bound holds
+for all such \(\alpha\): at \(\alpha = \tfrac13\), by the prime number theorem in arithmetic
+progressions and the Ramanujan sum \(c_3(1)=\mu(3)\),
+\(\sum_{p\le x} e(p/3) \sim -\tfrac12\,x/\log x\). Vinogradov-type savings require \(\alpha\) on a
+minor arc; the frequencies \(k/M_n\) here are major-arc rationals, and the correct route is the
+PNT + partial summation argument above — which is fortunately all the lemma needs.
+</div>
+
+<h3>A.3 The Berry–Keating generator, exactly <span class="tag t-proven">proven</span></h3>
+<div class="lemma">
+<h4>Proposition A.3 (replaces sieve §5/Thm 5.1's picture; fixes hp-5 §2.1).</h4>
+<p>On \(L^2(\mathbb R_+, dx)\) the operator \(H = -i\big(x\frac{d}{dx} + \tfrac12\big)\) is
+essentially self-adjoint on \(C_c^\infty(0,\infty)\). The map
+\((U_1 f)(u) = e^{u/2} f(e^u)\) is unitary onto \(L^2(\mathbb R, du)\) and
+\(U_1 H U_1^{-1} = -i\,\frac{d}{du}\). Consequently \(H\) has purely absolutely continuous,
+simple spectrum equal to \(\mathbb R\), and the normalised Mellin transform
+\[
+(\mathcal M f)(\lambda) = \frac1{\sqrt{2\pi}}\int_0^\infty f(x)\,x^{-\frac12 - i\lambda}\,dx
+\]
+is unitary from \(L^2(\mathbb R_+, dx)\) onto \(L^2(\mathbb R, d\lambda)\) with
+\(\mathcal M H \mathcal M^{-1} = \) multiplication by \(\lambda\).</p>
+</div>
+<div class="proof">
+<p><strong>Proof.</strong> Unitarity of \(U_1\):
+\(\int_{\mathbb R}|e^{u/2}f(e^u)|^2du = \int_0^\infty |f(x)|^2\,dx\). Conjugation: with
+\(f(x) = x^{-1/2}g(\log x)\) one computes \(x f'(x) + \tfrac12 f(x) = x^{-1/2}g'(\log x)\), so
+\(U_1(Hf) = -ig'\). The operator \(-i\,d/du\) on \(C_c^\infty(\mathbb R)\) has deficiency indices
+\((0,0)\) — the equations \(-i\psi' = \pm i\psi\) have solutions \(e^{\mp u}\notin L^2(\mathbb R)\)
+— hence is essentially self-adjoint, with Fourier transform giving multiplication by \(\lambda\):
+purely absolutely continuous simple spectrum \(\mathbb R\). Unitary conjugation transports all
+statements; \(\mathcal M = \mathcal F U_1\) is the stated Mellin transform. \(\blacksquare\)</p>
+<p class="small"><strong>Remarks.</strong> (i) The ubiquitous "\(+i/2\)" of the series is the
+Jacobian of \(L^2(dx) \leftrightarrow L^2(dx/x)\), nothing else: on \(L^2(dx/x)\) the generator
+is \(-ix\partial_x\) and the Mellin kernel is \(x^{-i\lambda}\,dx/x\). hp-5 §2.1 mixes the two
+normalisations (its kernel is unitary from \(L^2(dx)\), not \(L^2(dx/x)\)). (ii) <em>The spectrum
+is a continuum.</em> Any claim of discrete spectrum — let alone at the Riemann zeros — requires
+changing the Hilbert space or boundary conditions (Berry–Keating's Planck-cell regularisation is
+semiclassical counting, not a self-adjoint realisation; Sierra–Rodríguez-Laguna's
+\(x(p + \ell_p^2/p)\) achieves a discrete spectrum matching only the <em>smooth</em> zero count;
+Connes' construction changes the space to the adele class quotient). This is where the entire
+difficulty of Hilbert–Pólya lives, and no finite-rank compression of the continuum can create it
+(Lemma L1).</p>
+</div>
+
+<h3>A.4 The Guinand–Weil explicit formula, stated and verified <span class="tag t-proven">proven (classical)</span></h3>
+<div class="boxed">
+<h4>Theorem A.4 (Guinand 1948; Weil 1952; Barner 1981; Iwaniec–Kowalski Thm 5.12).</h4>
+<p>Let \(h\) be even, holomorphic on \(|\mathrm{Im}\,z| \le \tfrac12+\delta\), with
+\(h(z) \ll (1+|z|)^{-2-\delta}\) there, and let
+\(g(u) = \frac1{2\pi}\int_{\mathbb R} h(r)e^{-iur}\,dr\). Then, with \(\rho = \tfrac12 + i\gamma_\rho\)
+running over the nontrivial zeros of \(\zeta\) (with multiplicity),
+\[
+\sum_\rho h(\gamma_\rho)
+= h\big(\tfrac i2\big) + h\big(-\tfrac i2\big)
+- g(0)\log\pi
++ \frac1{2\pi}\int_{\mathbb R} h(r)\,\mathrm{Re}\,\psi\big(\tfrac14 + \tfrac{ir}2\big)\,dr
+- 2\sum_{n\ge2} \frac{\Lambda(n)}{\sqrt n}\, g(\log n),
+\]
+where \(\psi = \Gamma'/\Gamma\). The identity is unconditional.</p>
+</div>
+<div class="proof">
+<p><strong>Derivation sketch and verification.</strong> Integrate
+\(h\big({-i(s-\tfrac12)}\big)\,\tfrac{\xi'}{\xi}(s)\) over a rectangle containing the critical
+strip; residues at the zeros give the left side; \(\xi = \tfrac12 s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)\)
+splits the right side into the pole terms \(h(\pm i/2)\), the archimedean digamma term with the
+\(-\log\pi\) contribution, and the prime side via
+\(-\zeta'/\zeta(s) = \sum \Lambda(n)n^{-s}\). Full details in Iwaniec–Kowalski, Thm 5.12. The
+normalisation above was verified in 30-digit arithmetic with
+\(h(r) = e^{-(r/6)^2}\), \(g(u) = \frac{3}{\sqrt\pi}e^{-9u^2}\): both sides equal
+\(0.0077863602482884239503\ldots\), difference \(9.4\times10^{-32}\) (appendix N.5).</p>
+<p class="small">This — a <em>distributional trace identity</em>, not an operator equality — is
+the true bridge between primes and zeros that hp-1 §3 gestures at. Its positivity form is
+exactly the wall of §5 below.</p>
+</div>
+
+<h3>A.5 What is true in Task 2, and why the moment strategy cannot work <span class="tag t-proven">proven</span></h3>
+<div class="lemma">
+<h4>Proposition A.5.1 (unconditional distribution of scaled ordinates).</h4>
+<p>Let \(0<\gamma_1\le\gamma_2\le\cdots\) be the ordinates of the nontrivial zeros in the upper
+half-strip (no hypothesis on their real parts). Then the empirical measures of
+\(\{\gamma_j/\gamma_N\}_{j\le N}\) converge weak-* to the uniform distribution on \([0,1]\); the
+symmetrised measures converge to uniform on \([-1,1]\), with even moments
+\(m_{2k} = \frac1{2k+1}\), odd moments \(0\). The moment sequence satisfies Carleman's condition
+trivially (\(m_{2k}\le1\)) and is determinate.</p>
+</div>
+<div class="proof">
+<p><strong>Proof.</strong> Riemann–von Mangoldt (unconditional):
+\(N(T) = \frac{T}{2\pi}\log\frac{T}{2\pi e} + \frac78 + O(\log T)\). For fixed \(t\in(0,1]\),
+\[
+\frac{\#\{j\le N: \gamma_j \le t\gamma_N\}}{N} = \frac{N(t\gamma_N)}{N(\gamma_N)}
+= t\Big(1 + \frac{\log t}{\log(\gamma_N/2\pi e)}\Big) + O\Big(\frac{\log\gamma_N}{N}\Big) \to t .
+\]
+Convergence of distribution functions at every point gives weak-* convergence; moments follow by
+bounded convergence. Determinacy: compactly supported measures are determined by their moments
+(Weierstrass), and Carleman holds a fortiori. \(\blacksquare\)</p>
+<p class="small">The \(1/\log\) distortion explains the slow numerics (measured
+\(\frac1N\sum(\gamma_j/\gamma_N)^2 = 0.443\) at \(N=40\) vs limit \(1/3\); appendix N.6). With
+hp-2's normalisation \(S_n = N/\log N\) the same statement holds with limit uniform on
+\([0,2\pi]\) — their claimed limiting moments were the right guess attached to a divergent
+quantity (E12).</p>
+</div>
+<div class="lemma">
+<h4>Proposition A.5.2 (moments cannot see reality of support).</h4>
+<p>There exist conjugation-symmetric probability measures \(\nu_1,\nu_2\) on \(\mathbb C\) with
+\(\int z^k d\nu_1 = \int z^k d\nu_2\) for all \(k\ge0\), such that \(\nu_1\) is supported on
+\(\mathbb R\) and \(\nu_2\) charges no point of \(\mathbb R\): take \(\nu_1 = \delta_0\) and
+\(\nu_2 = \) the uniform measure on the unit circle, whose moments are both
+\(\delta_{k,0}\). Consequently no theorem of the form "the holomorphic moment sequence
+\(\frac1N\mathrm{Tr}\,(H_n^{\mathrm{osc}})^k\) is real and determinate, therefore the limiting
+support is real" can be valid, and hp-2 §5 is irreparable as a strategy. What does force real
+spectra is symmetry of the operator (\(\langle Hu,v\rangle = \langle u,Hv\rangle\)) — i.e.
+self-adjointness, the original Hilbert–Pólya requirement.</p>
+</div>
+
+<h3>A.6 The honest de Branges statement: a positivity criterion equivalent to RH <span class="tag t-proven">proven equivalence</span></h3>
+<div class="boxed">
+<h4>Proposition A.6 (replaces hp-3).</h4>
+<p>For \(h>0\) let \(E_h(z) = \Xi(z + ih)\), \(E_h^{*}(z) = \overline{E_h(\bar z)} = \Xi(z-ih)\),
+and let
+\[
+K_h(w,z) = \frac{i\,\big[E_h(z)\overline{E_h(w)} - E_h^{*}(z)\overline{E_h^{*}(w)}\big]}{2\pi\,(z - \bar w)} .
+\]
+The following are equivalent.</p>
+<ol>
+<li>The Riemann Hypothesis (all zeros of \(\Xi\) are real).</li>
+<li>For every \(h>0\), \(E_h\) is a Hermite–Biehler function:
+    \(|E_h^{*}(z)| < |E_h(z)|\) for all \(z\in\mathbb C^+\).</li>
+<li>For every \(h>0\), the kernel \(K_h\) is positive semi-definite on
+    \(\mathbb C^+\times\mathbb C^+\).</li>
+</ol>
+</div>
+<div class="proof">
+<p><strong>Proof.</strong> We use the unconditional even Hadamard product: \(\Xi\) is even, real,
+of order \(1\), \(\Xi(0) = \xi(\tfrac12)\ne0\), with zeros \(\{\pm\gamma_j\}\) (listed with
+multiplicity, \(|\mathrm{Im}\,\gamma_j|<\tfrac12\), \(\sum|\gamma_j|^{-2}<\infty\)); pairing the
+genus-one factors of \(\pm\gamma_j\) and using evenness to kill the exponential,
+\(\Xi(z) = \Xi(0)\prod_j\big(1 - z^2/\gamma_j^2\big)\) (Titchmarsh §2.12).</p>
+<p><em>(1) ⟹ (2).</em> With all \(\gamma_j>0\) real, for \(z = x+iy\), \(y>0\):
+\[
+\left|\frac{E_h^{*}(z)}{E_h(z)}\right|
+= \prod_j \frac{|\gamma_j - z + ih|\,|\gamma_j + z - ih|}{|\gamma_j - z - ih|\,|\gamma_j + z + ih|},
+\]
+and \(|\gamma - z + ih|^2 = (\gamma - x)^2 + (h-y)^2 < (\gamma-x)^2 + (h+y)^2 = |\gamma - z - ih|^2\),
+likewise for the second pair; every factor is \(<1\) and the product converges, so the ratio is
+\(<1\). (Zeros of \(E_h\) sit at \(\gamma_j - ih \notin \mathbb C^+\).)</p>
+<p><em>(2) ⟹ (3).</em> Let \(\varphi = E_h^{*}/E_h\), holomorphic on \(\mathbb C^+\) with
+\(|\varphi| < 1\) by (2). The Szegő kernel \(S(w,z) = \frac{i}{2\pi(z-\bar w)}\) is positive
+definite on \(\mathbb C^+\) (reproducing kernel of \(H^2\)), and for a Schur function \(\varphi\)
+the Pick-type kernel \((1 - \varphi(z)\overline{\varphi(w)})\,S(w,z)\) is positive semi-definite
+(multiplication by \(\varphi\) is a contraction on \(H^2\), so
+\(\langle (I - M_\varphi M_\varphi^{*}) S_w, S_z\rangle\) is a Gram-type kernel). Multiplying by
+\(E_h(z)\overline{E_h(w)}\) — a congruence — gives exactly \(K_h \succeq 0\).</p>
+<p><em>(3) ⟹ (1).</em> The diagonal of \(K_h\) gives
+\(|\Xi(z-ih)| \le |\Xi(z+ih)|\) for all \(\mathrm{Im}\,z>0\); equivalently: if \(w\) is a zero of
+\(\Xi\) with \(\mathrm{Im}\,w > h\), then \(w - 2ih\) is also a zero (take \(z = w - ih\); the
+majorant vanishes). Suppose RH fails: by conjugation symmetry pick a zero \(\gamma_0\) with
+\(c = \mathrm{Im}\,\gamma_0 > 0\). Fix \(K\in\mathbb N\) and take \(h = c/(2K)\): applying the step
+\(K\) times produces zeros at \(\gamma_0 - 2ijh\), i.e. with imaginary parts
+\(c(1 - j/K)\) for \(j = 0,1,\dots,K\) (the step is legitimate while
+\(c(1-j/K) > h\), i.e. \(j \le K-1\)). Letting \(K\) run, \(\Xi\) acquires zeros with imaginary
+parts dense in \([0,c]\) on the vertical segment through \(\mathrm{Re}\,\gamma_0\) — impossible
+for a nonzero entire function, whose zeros are isolated. Hence all zeros are real.
+\(\blacksquare\)</p>
+<p class="small"><strong>Reading.</strong> This is what hp-3 could legitimately have proved — and
+it shows the positivity of a de Branges-type kernel attached to \(\Xi\) is not a stepping stone to
+RH: it <em>is</em> RH. Any argument that "the limit of positive finite kernels is positive,
+hence RH" must fail, and does: the finite kernels of the series converge to \(0\) (L3). For
+genuine, rigorous de Branges-space realisations connected to \(\zeta\), see Burnol's Sonine
+spaces and Lagarias' survey (references).</p>
+</div>
+
+<h3>A.7 Status of the adelic claims (Tasks 4, 5, 7) <span class="tag t-cond">status map</span></h3>
+<div class="fix">
+<p><strong>Proven (by others), correctly stated.</strong>
+(i) <em>Tate:</em> Mellin–Plancherel on \(C_{\mathbb Q}\); for the basic \(K\)-invariant vector
+with Gaussian archimedean component, the zeta integral is
+\(\Lambda(\tfrac12+i\lambda) = \pi^{-s/2}\Gamma(s/2)\zeta(s)\big|_{s=\frac12+i\lambda}\) — an
+\(L^2\) identity (this fixes hp-5 §5, whose \(\mathbf 1_K\)-integral diverges).
+(ii) <em>Connes (1999):</em> the <em>semi-local</em> trace formula: for each finite set of places
+\(S\), the scaling action on the \(S\)-adelic quotient satisfies a Guillemin-type trace formula
+whose geometric side is precisely the corresponding part of Weil's explicit formula; and an
+unconditional <em>absorption-spectrum</em> interpretation of the zeros in Sobolev-conditioned
+function spaces.
+(iii) <em>Meyer (2005):</em> an unconditional spectral realisation of <em>all</em> zeros, with
+multiplicity, by the flow on nuclear function spaces over the adele class space — a space
+deliberately without Hilbert-space positivity, which is why no reality conclusion follows. This is
+the correct version of hp-4 §4.1's assertion, and it demonstrates exactly what is missing.
+(iv) <em>Connes–Consani (2021–):</em> Weil positivity at the archimedean place via the quantised
+calculus; ζ-cycles/prolate-operator realisations of low zeros.</p>
+<p><strong>Open, and equivalent to RH.</strong> The <em>global</em> trace formula in the Hilbert
+space setting — equivalently Weil positivity (§5). hp-4 §4.1's "\(D_K\) has pure point spectrum
+equal to the zeros, compact resolvent" asserts this open statement as established.</p>
+<p><strong>Corrections of record (E14).</strong> \(N(T) = \frac{T}{2\pi}\log\frac{T}{2\pi e} + \frac78 + O(\log T)\)
+is polynomially bounded; \(\sum_j\gamma_j^{-p}\) converges iff \(p>1\); on the continuous
+subspace \(|D|^{-p}\) is not compact for any \(p\); and the trace of the zero spectrum,
+\(Z(s) = \sum_{\gamma>0}\gamma^{-s}\), is Voros' <em>secondary zeta function</em> — meromorphic
+with a double-pole structure at \(s=1\) inherited from \(N(T)\) — not \(\xi(s)\): a spectral zeta
+function encodes its spectrum in <em>poles</em>, whereas \(\xi\) carries the zeros as
+<em>zeros</em>. hp-4 Theorem 6.1 conflates the two categories.</p>
+</div>
+
+<h3>A.8 Weil's positivity criterion — the exact statement of the wall <span class="tag t-proven">proven equivalence (classical)</span></h3>
+<div class="boxed">
+<h4>Theorem A.8 (Weil 1952; cf. Bombieri 2000).</h4>
+<p>For \(g \in C_c^\infty(\mathbb R)\) let \(\hat g(r) = \int g(u)e^{iru}du\) and let
+\(Q(g)\) denote the right-hand side of Theorem A.4 evaluated at \(h(r) = |\hat g(r)|^2\)
+(an admissible \(h\)). Then
+\[
+\mathrm{RH} \iff Q(g) \ge 0 \quad\text{for all } g \in C_c^\infty(\mathbb R).
+\]
+The forward implication is immediate from A.4: under RH every \(\gamma_\rho\) is real, so
+\(\sum_\rho h(\gamma_\rho) = \sum_\rho |\hat g(\gamma_\rho)|^2 \ge 0\). The converse is Weil's
+theorem: a zero off the line yields a test function making the zero side negative.</p>
+</div>
+<p class="small">Li's criterion (\(\mathrm{RH} \iff \lambda_n = \sum_\rho[1-(1-1/\rho)^n] \ge 0\)
+for all \(n\); Li 1997, Bombieri–Lagarias 1999) is the same wall in a discrete basis. Every
+surviving route of the series — the kernel route (via A.6), the adelic route (via A.7), the trace
+route (via A.4) — terminates at precisely this positivity.</p>
+
+<h3>A.9 GUE statistics: honest status (Task 6) <span class="tag t-cond">conditional / numerical</span></h3>
+<div class="fix">
+<p><strong>Montgomery (1973), correctly stated.</strong> Assume RH, and let
+\(F(\alpha,T) = N(T)^{-1}\sum_{0<\gamma,\gamma'\le T} T^{i\alpha(\gamma-\gamma')} w(\gamma-\gamma')\),
+\(w(x) = 4/(4+x^2)\). Then \(F(\alpha,T) = T^{-2|\alpha|}\log T\,(1+o(1)) + |\alpha| + o(1)\)
+uniformly for \(|\alpha|\le1\). For test functions \(f\) with
+\(\mathrm{supp}\,\hat f \subset (-1,1)\) this yields the pair-correlation density
+\(1 - \big(\frac{\sin\pi u}{\pi u}\big)^2\) — the GUE form. The extension to \(|\alpha|\ge1\)
+(hence to all \(f\)) is <em>conjectural</em>; higher correlations are known only with analogous
+support restrictions (Rudnick–Sarnak, under the corresponding hypotheses); full GUE statistics
+for the zeros are a conjecture supported by Odlyzko's large-height computations.
+hp-6's displayed "\(\widehat F(\alpha) = 1-|\alpha|\) on \([-1,1]\), \(0\) outside" is the Fourier
+transform of the sine-kernel square, mislabelled, with the diagonal term dropped and the
+\(|\alpha|>1\) behaviour inverted; and no GUE claim about the sieve matrices can survive E16/E19.</p>
+<p><strong>Replacement numerics</strong> (appendix N.7): the first 120 <em>actual</em> zeros,
+unfolded by \(x_j = \bar N(\gamma_j)\), \(\bar N(T) = \frac{T}{2\pi}\log\frac{T}{2\pi e}+\frac78\):
+mean gap \(1.0003\), variance \(0.124\), minimum gap \(0.387\) — clear level repulsion, consistent
+with GUE at low height (asymptotic GUE variance \(\approx 0.18\); Poisson would give \(1\)).</p>
+</div>
+
+<h2>5. The irreducible gap</h2>
+<div class="note">
+<p>Each of the following is <em>unconditionally proven equivalent</em> to the Riemann Hypothesis:</p>
+<ol>
+<li>Weil positivity: \(Q(g)\ge0\) for all \(g\in C_c^\infty(\mathbb R)\) (Theorem A.8);</li>
+<li>Hermite–Biehler positivity: \(K_h \succeq 0\) on \(\mathbb C^+\) for all \(h>0\)
+    (Proposition A.6);</li>
+<li>Connes' global trace formula in the Hilbert space setting (A.7);</li>
+<li>Li positivity: \(\lambda_n \ge 0\) for all \(n\ge1\).</li>
+</ol>
+<p>The series' plan — positive finite prime kernels → limiting positive de Branges structure →
+real zeros — collapses at the limit (the kernel is \(0\), by L2/L3) and at the finite stage (the
+spectra are confined, by L1). Any repaired variant must <em>inject</em> positivity of type (1)/(2),
+i.e. must prove RH itself; positivity cannot be inherited from finite truncations whose limit is
+degenerate. Known unconditional partial results in these directions — the archimedean-place
+positivity of Connes–Consani, narrow-support positivity (where the prime terms of A.4 vanish),
+Li-coefficient computations, zero-density and zero-free regions, and verification of RH to height
+\(3\times10^{12}\) (Platt–Trudgian) — are genuine but strictly weaker than (1)–(4).</p>
+<p><strong>Conclusion of the review.</strong> Documents hp-3 and hp-7's claim that the Riemann
+Hypothesis is proved is withdrawn by this review as unfounded: hp-3's central theorem ("\(\Xi\) is
+a de Branges function") is false for reasons independent of RH, and no other document supplies a
+substitute. The correct standing of the problem is: <em>open</em>, with the honest reformulations
+above marking exactly where a proof would have to strike.</p>
+</div>
+
+<h2>6. Numerical appendix</h2>
+<p class="small">Environment: Python 3.14, numpy/scipy/mpmath (30-digit precision where stated).
+Scripts and full logs are catalogued in <a href="worksheet.md"><code>worksheet.md</code></a> §4.</p>
+
+<h4>N.1 — completing §4 / sieve §8 / hp-6 §2 matrix, executed verbatim</h4>
+<table>
+<tr><th>N</th><th>claimed max error</th><th>actual max error</th><th>claimed 1st eig</th><th>actual 1st eig</th></tr>
+<tr><td>40</td><td>0.428391</td><td><strong>37.815581</strong></td><td>14.563116</td><td><strong>0.843324</strong></td></tr>
+<tr><td>60</td><td>0.202159</td><td><strong>35.563188</strong></td><td>14.336884</td><td><strong>0.843255</strong></td></tr>
+<tr><td>80</td><td>0.112456</td><td><strong>33.605444</strong></td><td>14.247181</td><td><strong>0.843251</strong></td></tr>
+<tr><td>100</td><td>0.068312</td><td><strong>31.847540</strong></td><td>14.203037</td><td><strong>0.843250</strong></td></tr>
+<tr><td>120</td><td>0.043567</td><td><strong>30.235085</strong></td><td>14.180292</td><td><strong>0.843250</strong></td></tr>
+</table>
+<p class="small">At \(N=120\): \(\max|\lambda| = 2.39\times10^3\); 116/120 eigenvalues have
+\(|\mathrm{Re}\,\lambda|>1\). The spectrum is not close to any real sequence, let alone the zeros.</p>
+
+<h4>N.2 — hp-6 unfolding routine</h4>
+<p class="small">For any input spectrum, <code>unfolded = ranks/(N+1)</code> gives spacings all
+equal to \(N/(N+1)\) (sample std \(1.6\times10^{-14}\) at \(N=400\)): a delta spike, not a Wigner
+distribution.</p>
+
+<h4>N.3 — kernel limit (L3)</h4>
+<table>
+<tr><th>\(M\)</th><th>\(|K_n|\) at \(\lambda-\bar\mu = 1\)</th><th>\(K_n\) at \(\lambda-\bar\mu = -1.5i\)</th></tr>
+<tr><td>\(2^{14}\)</td><td>4.95e-4</td><td>8.16e+1</td></tr>
+<tr><td>\(2^{17}\)</td><td>6.4e-5</td><td>2.33e+2</td></tr>
+<tr><td>\(2^{20}\)</td><td>1.0e-5</td><td>6.63e+2</td></tr>
+<tr><td>\(2^{23}\)</td><td>2.0e-6</td><td>1.88e+3</td></tr>
+</table>
+
+<h4>N.4 — vanishing of \(K_\Xi\) (L2)</h4>
+<p class="small">\(|\Xi(\lambda) - \overline{\Xi(\bar\lambda)}| < 10^{-30}\) at
+\(\lambda = 3.7,\ 14,\ 2.3+0.9i\); kernel numerator \(= 8.6\times10^{-32}\) at
+\((\lambda,\mu) = (1.3+0.4i,\, -0.7+1.1i)\), where \(|\Xi(\lambda)| = 0.48\).</p>
+
+<h4>N.5 — explicit formula (Theorem A.4), \(h(r)=e^{-(r/6)^2}\)</h4>
+<table>
+<tr><th>term</th><th>value</th></tr>
+<tr><td>zero side \(\sum_\rho h(\gamma_\rho)\)</td><td>0.0077863602482884239503…</td></tr>
+<tr><td>\(h(i/2)+h(-i/2)\)</td><td>2.013937226…</td></tr>
+<tr><td>\(-g(0)\log\pi\)</td><td>−1.937534033…</td></tr>
+<tr><td>archimedean integral</td><td>−0.046598878…</td></tr>
+<tr><td>prime side</td><td>−0.022017955…</td></tr>
+<tr><td><strong>RHS total</strong></td><td><strong>0.0077863602482884239503…</strong></td></tr>
+<tr><td>|LHS − RHS|</td><td>9.4e−32</td></tr>
+</table>
+
+<h4>N.6 — slow equidistribution of scaled ordinates (A.5.1)</h4>
+<p class="small">\(\frac1N\sum_{j\le N}(\gamma_j/\gamma_N)^2 = 0.4433\) at \(N=40\), versus the
+limit \(1/3\); the \(1+O(1/\log\gamma_N)\) CDF distortion of the proof predicts exactly this
+scale of discrepancy.</p>
+
+<h4>N.7 — unfolded spacings of the actual zeros (A.9)</h4>
+<p class="small">First 120 zeros, RvM unfolding: mean gap \(1.0003\); variance \(0.124\)
+(GUE \(\approx0.18\), Poisson \(=1\)); minimum gap \(0.387\).</p>
+
+<h4>N.8 — refutation of hp-1 Lemma 3.2 at \(\lambda = i\)</h4>
+<p class="small">Prime side: \(-0.7871 - 1.1430i\) at \(M = 2^{22}\), tending to
+\(\int_0^1\frac{dt}{i/2-t} = -0.8047 - 1.1071i\). Zero side:
+\(\sum_\rho\frac1{i-\gamma} = -0.0462i\) (40 zero pairs plus smooth tail; exactly imaginary by
+the \(\pm\gamma,\pm\bar\gamma\) symmetry).</p>
+
+<h2>7. References</h2>
+<ol class="small">
+<li>M. V. Berry, J. P. Keating, <em>The Riemann zeros and eigenvalue asymptotics</em>, SIAM Review 41 (1999) 236–266.</li>
+<li>A. Connes, <em>Trace formula in noncommutative geometry and the zeros of the Riemann zeta function</em>, Selecta Math. (N.S.) 5 (1999) 29–106.</li>
+<li>A. Connes, C. Consani, <em>Weil positivity and trace formula: the archimedean place</em>, Selecta Math. (N.S.) 27 (2021); and subsequent work on ζ-cycles and prolate operators.</li>
+<li>R. Meyer, <em>On a representation of the idele class group related to primes and zeros of L-functions</em>, Duke Math. J. 127 (2005) 519–595.</li>
+<li>J.-F. Burnol, <em>Sur les espaces de Sonine associés par de Branges à la transformation de Fourier</em>, C. R. Acad. Sci. Paris (2002/03); <em>On Fourier and zeta(s)</em>, Forum Math. 16 (2004) 789–840.</li>
+<li>L. de Branges, <em>Hilbert Spaces of Entire Functions</em>, Prentice-Hall, 1968.</li>
+<li>B. Ja. Levin, <em>Distribution of Zeros of Entire Functions</em>, AMS Transl. Monographs 5, ch. VII (Hermite–Biehler).</li>
+<li>J. C. Lagarias, <em>Hilbert spaces of entire functions and Dirichlet L-functions</em>, in Frontiers in Number Theory, Physics, and Geometry I, Springer, 2006.</li>
+<li>A. P. Guinand, <em>A summation formula in the theory of prime numbers</em>, Proc. London Math. Soc. (2) 50 (1948) 107–119.</li>
+<li>A. Weil, <em>Sur les "formules explicites" de la théorie des nombres premiers</em>, Comm. Sém. Math. Lund (1952) 252–265.</li>
+<li>K. Barner, <em>On A. Weil's explicit formula</em>, J. reine angew. Math. 323 (1981) 139–152.</li>
+<li>H. Iwaniec, E. Kowalski, <em>Analytic Number Theory</em>, AMS Colloq. Publ. 53, Theorem 5.12.</li>
+<li>E. Bombieri, <em>Remarks on Weil's quadratic functional in the theory of prime numbers I</em>, Rend. Mat. Acc. Lincei (9) 11 (2000) 183–233.</li>
+<li>H. L. Montgomery, <em>The pair correlation of zeros of the zeta function</em>, Proc. Sympos. Pure Math. 24 (1973) 181–193.</li>
+<li>Z. Rudnick, P. Sarnak, <em>Zeros of principal L-functions and random matrix theory</em>, Duke Math. J. 81 (1996) 269–322.</li>
+<li>A. M. Odlyzko, <em>On the distribution of spacings between zeros of the zeta function</em>, Math. Comp. 48 (1987) 273–308.</li>
+<li>A. Voros, <em>Zeta Functions over Zeros of Zeta Functions</em>, Lecture Notes UMI 8, Springer, 2010.</li>
+<li>X.-J. Li, <em>The positivity of a sequence of numbers and the Riemann hypothesis</em>, J. Number Theory 65 (1997) 325–333; E. Bombieri, J. C. Lagarias, <em>Complements to Li's criterion</em>, J. Number Theory 77 (1999) 274–287.</li>
+<li>C. M. Bender, D. C. Brody, M. P. Müller, <em>Hamiltonian for the zeros of the Riemann zeta function</em>, Phys. Rev. Lett. 118 (2017) 130201 — with the ensuing self-adjointness critiques.</li>
+<li>G. Sierra, J. Rodríguez-Laguna, <em>H = xp model revisited and the Riemann zeros</em>, Phys. Rev. Lett. 106 (2011) 200201.</li>
+<li>E. C. Titchmarsh, <em>The Theory of the Riemann Zeta-function</em>, 2nd ed. (rev. D. R. Heath-Brown), Oxford, 1986.</li>
+<li>D. Platt, T. Trudgian, <em>The Riemann hypothesis is true up to 3·10^12</em>, Bull. London Math. Soc. 53 (2021) 792–797.</li>
+<li>K. Pratt, N. Robles, A. Zaharescu, D. Zeindler, <em>More than five-twelfths of the zeros of ζ are on the critical line</em>, Res. Math. Sci. 7 (2020).</li>
+</ol>
+
+<p style="margin-top:40px; font-size:0.9em; color:#555; text-align:center;">
+Addendum and errata — review complete. The series' RH claim does not stand;
+Lemmas A.1–A.6 preserve what is true. The Riemann Hypothesis remains open.
+</p>
+
+</body>
+</html>

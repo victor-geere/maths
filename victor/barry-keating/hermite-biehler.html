@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hermite–Biehler Positivity for Shifted Xi</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Georgia, "Times New Roman", serif;
+            max-width: 1080px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.75;
+            color: #000;
+            background: #fff;
+        }
+        h1,h2,h3,h4 { font-family: "Helvetica Neue", Arial, sans-serif; color:#000; }
+        h1 { text-align:center; font-size:1.8em; margin-bottom:0.2em; }
+        .lemma {
+            background: #f8f8ff; padding:16px; border-left:5px solid #003399;
+            margin:22px 0;
+        }
+        .proof { margin-left: 20px; margin-bottom: 20px; }
+        .boxed { border: 1px solid #999; padding: 14px; margin: 20px 0; background: #fafafa; }
+        .note  { background:#fef9e7; padding:14px; border-left:4px solid #b8860b; margin:18px 0; }
+        table { border-collapse: collapse; width:100%; margin:20px 0; }
+        th, td { border:1px solid #aaa; padding:7px; text-align:left; vertical-align:top; }
+        .tag { font-family:"Helvetica Neue",Arial,sans-serif; font-size:0.78em; font-weight:bold;
+               padding:1px 7px; border-radius:9px; white-space:nowrap; }
+        .t-proven { background:#e6f4ea; color:#1a7f37; border:1px solid #1a7f37; }
+        .t-open   { background:#fdecea; color:#b30000; border:1px solid #b30000; }
+        .small { font-size:0.9em; color:#444; }
+        ol, ul { margin-top: 6px; }
+    </style>
+</head>
+<body>
+
+<h1>Hermite–Biehler Positivity for Shifted \(\Xi\)<br>A Kernel-Positivity Criterion Equivalent to the Riemann Hypothesis</h1>
+<p style="text-align:center;"><em>Research note — 3 July 2026</em></p>
+
+<h2>Abstract</h2>
+<p>We prove that the Riemann Hypothesis is equivalent to a Hermite–Biehler positivity statement
+about the vertical translates \(E_h(z) = \Xi(z+ih)\) of the Riemann \(\Xi\) function, for every
+\(h>0\): equivalently, to the positive semi-definiteness on the upper half-plane of the de
+Branges kernel attached to \(E_h\). The proof is a three-way equivalence, complete in both
+directions, using only the unconditional even Hadamard factorisation of \(\Xi\), a Schur-function
+contraction argument for the Szegő kernel, and an elementary cascade argument ruling out
+non-isolated zeros of a nonzero entire function. We are explicit about what this equivalence
+does and does not achieve: it reformulates RH in de Branges-space language, correcting a
+naive but false claim (that \(\Xi\) itself is a de Branges structure function, refuted in
+<a href="barry-keating-addendum-errata.html">barry-keating-addendum-errata.html</a>, Lemma L2)
+found in several recent Hilbert–Pólya proposals — but it does not make RH easier: the
+equivalence is a wall, not a bridge, and its content is close to a direct restatement of "all
+zeros are real" in the language of Hermite–Biehler classes. We record this honestly, distinguish
+the construction from the much deeper de Bruijn–Newman deformation (which is a genuine heat-flow
+smoothing of \(\Xi\), not a translation of its argument), and verify the criterion numerically at
+several points consistent with the (independently, computationally verified) location of the
+first zeros.</p>
+
+<h2>1. Introduction</h2>
+<p>A recurring strategy in the literature attempting a spectral proof of RH is to exhibit
+\(\Xi(\lambda) = \xi(\tfrac12+i\lambda)\) as the structure function of a de Branges space, and
+to derive reality of its zeros from the general theory of such spaces (Hermite–Biehler zeros are
+real and simple). This cannot work as stated: \(\Xi\) is a <em>real</em> entire function
+(\(\overline{\Xi(\bar\lambda)}=\Xi(\lambda)\)), and no real entire function can be a de Branges
+structure function, because the Hermite–Biehler inequality \(|E(x-iy)|<|E(x+iy)|\) collapses to
+equality for real \(E\). The correct move — well precedented in de Branges-space treatments of
+\(\zeta\) (Lagarias' survey; Burnol's Sonine spaces) — is to apply the theory not to \(\Xi\)
+itself but to a genuinely non-real perturbation of it. The simplest such perturbation is the
+vertical translate \(E_h(z) = \Xi(z+ih)\), \(h>0\): manifestly not real (its zeros are shifted
+off any fixed real correspondence unless the original zeros are real). We show this shift alone
+already captures RH exactly.</p>
+<p>We state the result as a three-way equivalence — RH, the Hermite–Biehler property of every
+\(E_h\), and positive semi-definiteness of the associated de Branges kernel — and prove all
+implications in full. §5 discusses precisely how strong (or weak) a result this is.</p>
+
+<h2>2. Preliminaries</h2>
+<p><strong>Hadamard factorisation.</strong> \(\Xi\) is entire of order 1, even, real on
+\(\mathbb R\), with \(\Xi(0)=\xi(\tfrac12)\ne0\). Its zeros form a multiset symmetric under
+\(\lambda\mapsto-\lambda\) and under conjugation; write them as \(\{\pm\gamma_j\}\) (with
+\(\gamma_j\) possibly complex, \(|\mathrm{Im}\,\gamma_j|<\tfrac12\), and
+\(\sum_j|\gamma_j|^{-2}<\infty\)). Pairing genus-one Hadamard factors of \(\pm\gamma_j\) and using
+evenness to cancel the linear exponential term (classical; Titchmarsh §2.12) gives, unconditionally,
+\[
+\Xi(z) = \Xi(0)\prod_j\left(1-\frac{z^2}{\gamma_j^2}\right).
+\]</p>
+<p><strong>De Branges kernel.</strong> For entire \(E\) put \(E^{*}(z) := \overline{E(\bar z)}\).
+The (sesquilinear) de Branges kernel of \(E\) is
+\[
+K_E(w,z) = \frac{i\big[E(z)\overline{E(w)} - E^{*}(z)\overline{E^{*}(w)}\big]}{2\pi(z-\bar w)},
+\qquad K_E(z,z) = \frac{|E(z)|^2-|E^{*}(z)|^2}{4\pi\,\mathrm{Im}\,z}.
+\]
+\(E\) is <strong>Hermite–Biehler (HB)</strong> if \(|E^{*}(z)|<|E(z)|\) for all
+\(z\in\mathbb C^+ = \{\mathrm{Im}\,z>0\}\); in that case \(K_E\) is the reproducing kernel of the
+de Branges space \(\mathcal H(E)\), and \(K_E\succeq0\) on \(\mathbb C^+\times\mathbb C^+\).</p>
+<p><strong>Hermite–Biehler theorem</strong> (Levin, ch. VII). If \(E=A-iB\) is HB with \(A,B\)
+real entire, then \(A\) and \(B\) have only real, simple, interlacing zeros.</p>
+
+<h2>3. Statement</h2>
+<div class="boxed">
+<h4>Theorem 3.1.</h4>
+<p>For \(h>0\) let \(E_h(z) = \Xi(z+ih)\), so \(E_h^{*}(z) = \Xi(z-ih)\), and let \(K_h\) be its
+de Branges kernel. The following are equivalent:</p>
+<ol>
+<li><strong>(RH)</strong> All zeros of \(\Xi\) are real;</li>
+<li>\(E_h\) is Hermite–Biehler, for every \(h>0\);</li>
+<li>\(K_h \succeq 0\) on \(\mathbb C^+\times\mathbb C^+\), for every \(h>0\).</li>
+</ol>
+</div>
+<p class="small">Note \((2)\iff(3)\) is close to definitional given the general de Branges
+theory (HB \(\Rightarrow\) positive kernel is standard; we supply the converse direction
+explicitly in the proof below, since it is the direction that certifies RH from a positivity
+statement, and is the one of actual interest). The substantial content is the equivalence with
+(1), proved in both directions in §4.</p>
+
+<h2>4. Proof</h2>
+
+<div class="lemma">
+<h4>Step \((1)\Rightarrow(2)\).</h4>
+<p>If all \(\gamma_j\) are real, then \(E_h\) is Hermite–Biehler for every \(h>0\).</p>
+</div>
+<div class="proof">
+<p><strong>Proof.</strong> With all \(\gamma_j\in\mathbb R\), factor
+\(E_h(z) = \Xi(0)\prod_j\big(1-\tfrac{(z+ih)^2}{\gamma_j^2}\big) = \Xi(0)\prod_j \tfrac{(\gamma_j-z-ih)(\gamma_j+z+ih)}{\gamma_j^2}\),
+and correspondingly \(E_h^{*}(z) = \Xi(0)\prod_j\tfrac{(\gamma_j-z+ih)(\gamma_j+z-ih)}{\gamma_j^2}\).
+For \(z=x+iy\), \(y>0\), and each real \(\gamma\):
+\[
+|\gamma - z - ih|^2 = (\gamma-x)^2+(y+h)^2, \qquad |\gamma-z+ih|^2 = (\gamma-x)^2+(h-y)^2,
+\]
+and since \(y,h>0\), \((h-y)^2 < (h+y)^2\), so \(|\gamma-z+ih| < |\gamma-z-ih|\); symmetrically
+\(|\gamma+z-ih|<|\gamma+z+ih|\). Hence each factor of
+\(E_h^{*}(z)/E_h(z)\) has modulus \(<1\). The infinite product converges absolutely
+(factors \(=1+O(\gamma_j^{-2})\) uniformly on compacts, by \(\sum|\gamma_j|^{-2}<\infty\)), so
+the full ratio has modulus strictly less than 1 on \(\mathbb C^+\): \(E_h\) is HB.
+\(\blacksquare\)</p>
+</div>
+
+<div class="lemma">
+<h4>Step \((2)\Rightarrow(3)\).</h4>
+<p>If \(E_h\) is HB, then \(K_h\succeq0\) on \(\mathbb C^+\times\mathbb C^+\).</p>
+</div>
+<div class="proof">
+<p><strong>Proof.</strong> Let \(\varphi = E_h^{*}/E_h\), holomorphic on \(\mathbb C^+\) (no
+poles there, since \(E_h\)'s zeros — being \(\gamma_j - ih\) for zeros \(\gamma_j\) of \(\Xi\)
+with \(\mathrm{Im}\,\gamma_j<\ldots\) — need not concern us: HB is exactly the hypothesis that
+\(|\varphi|<1\) there, in particular \(\varphi\) is finite, i.e. \(E_h\) itself is zero-free on
+\(\mathbb C^+\)). So \(\varphi\) is a Schur function: holomorphic, \(|\varphi|\le1\) (indeed
+\(<1\)) on \(\mathbb C^+\). The Szegő kernel
+\(S(w,z) = \frac{i}{2\pi(z-\bar w)} = \int_0^\infty e^{izt}\overline{e^{iwt}}\,dt\)
+is positive definite on \(\mathbb C^+\) (it is a Gram kernel of the vectors
+\(t\mapsto e^{izt}\big|_{t>0} \in L^2(0,\infty)\), convergent precisely for \(\mathrm{Im}\,z>0\)).
+Multiplication by \(\varphi\) is then a contraction \(M_\varphi\) on the reproducing kernel
+Hilbert space of \(S\) (the Hardy space \(H^2(\mathbb C^+)\)), so
+\(I - M_\varphi M_\varphi^{*} \succeq 0\), and its Gram-kernel representation
+\(\langle (I-M_\varphi M_\varphi^{*})S_w, S_z\rangle = \big(1-\varphi(z)\overline{\varphi(w)}\big)S(w,z)\)
+is a positive semi-definite kernel. Multiplying by \(E_h(z)\overline{E_h(w)}\) is a congruence
+(does not change definiteness), and gives exactly
+\[
+E_h(z)\overline{E_h(w)}\big(1-\varphi(z)\overline{\varphi(w)}\big)S(w,z)
+= \big[E_h(z)\overline{E_h(w)} - E_h^{*}(z)\overline{E_h^{*}(w)}\big]\,\frac{i}{2\pi(z-\bar w)} = K_h(w,z).
+\]
+Hence \(K_h \succeq 0\). \(\blacksquare\)</p>
+</div>
+
+<div class="lemma">
+<h4>Step \((3)\Rightarrow(1)\).</h4>
+<p>If \(K_h\succeq0\) on \(\mathbb C^+\times\mathbb C^+\) for every \(h>0\), then all zeros of
+\(\Xi\) are real.</p>
+</div>
+<div class="proof">
+<p><strong>Proof.</strong> The diagonal of a positive semi-definite kernel is non-negative:
+\(K_h(z,z)\ge0\) gives \(|E_h(z)|\ge|E_h^{*}(z)|\), i.e.
+\(|\Xi(z+ih)| \ge |\Xi(z-ih)|\) for all \(z\in\mathbb C^+\), for every \(h>0\).
+Suppose \(w\) is a zero of \(\Xi\) with \(\mathrm{Im}\,w > h\). Set \(z = w-ih \in \mathbb C^+\)
+(since \(\mathrm{Im}\,z = \mathrm{Im}\,w - h>0\)). Then \(\Xi(z+ih) = \Xi(w) = 0\), so the
+inequality forces \(\Xi(z-ih) = \Xi(w-2ih) = 0\) as well: <strong>\(w-2ih\) is again a zero of
+\(\Xi\)</strong>, provided \(\mathrm{Im}(w-2ih) \) is compared correctly — we only used
+\(z\in\mathbb C^+\), i.e. \(\mathrm{Im}\,w>h\), with no constraint on where \(w-2ih\) lands.</p>
+<p>Now suppose, for contradiction, that RH fails. By the conjugation symmetry of the zero set,
+there is a zero \(\gamma_0\) with \(c := \mathrm{Im}\,\gamma_0 > 0\). Fix any
+\(K\in\mathbb N\) and set \(h = c/(2K)\). Apply the displacement step above repeatedly, starting
+from \(w_0=\gamma_0\): as long as the current zero \(w_j\) has \(\mathrm{Im}\,w_j > h\), we
+obtain a new zero \(w_{j+1} = w_j - 2ih\). Since \(\mathrm{Im}\,w_j = c - 2jh = c(1-j/K)\), the
+hypothesis \(\mathrm{Im}\,w_j>h\) holds for \(j=0,1,\dots,K-1\), producing zeros
+\(w_0,w_1,\dots,w_K\) with \(\mathrm{Im}\,w_j = c(1-j/K)\), all sharing the same real part
+\(\mathrm{Re}\,\gamma_0\) (each displacement is purely vertical).</p>
+<p>Doing this for every \(K\in\mathbb N\) produces, for each \(K\), a chain of \(K+1\) zeros on
+the vertical segment \(\{\mathrm{Re}\,\gamma_0\} \times [0,c]\), with consecutive imaginary
+parts spaced by \(c/K \to 0\). Since \(\Xi\) is a fixed nonzero entire function, its zero set is
+discrete: it has a positive minimum spacing on any compact set (e.g. the segment
+\(\{\mathrm{Re}\,\gamma_0\}\times[-1,c+1]\), compact since \(\Xi\) has finitely many zeros of
+bounded imaginary part locally — indeed zeros are isolated, full stop). Taking \(K\) large
+enough that \(c/K\) is smaller than that minimum spacing already contradicts discreteness
+(distinct chain zeros \(w_j\ne w_{j+1}\) since \(h>0\), yet they can be forced arbitrarily
+close). Hence no such \(\gamma_0\) exists, and RH holds. \(\blacksquare\)</p>
+</div>
+
+<h2>5. Discussion: what this equivalence is, and is not</h2>
+<div class="note">
+<p><strong>What it is.</strong> A correct, fully proved de Branges-theoretic reformulation of
+RH, replacing the false claim (refuted in the companion errata) that \(\Xi\) itself is a
+structure function. It shows precisely how much non-reality is needed to escape Lemma N3 of
+<a href="research-findings.html">research-findings.html</a> (real entire functions are never
+HB): an arbitrarily small vertical shift \(h>0\) suffices, in the sense that HB-ness of
+<em>every</em> such shift is exactly equivalent to RH.</p>
+<p><strong>What it is not.</strong> The content is close to a direct restatement. Unwinding the
+proof of \((3)\Rightarrow(1)\): the positivity of \(K_h\) is used only through its diagonal
+inequality \(|\Xi(z+ih)|\ge|\Xi(z-ih)|\), which is itself little more than "no zero has
+imaginary part exceeding \(h\), for arbitrarily small \(h\)" dressed in kernel language — i.e.
+close to a paraphrase of "all zeros are real" rather than a new constraint on \(\Xi\) derived
+from deeper structure. We record it because (a) it is the *correct* fix to a real error present
+in the literature under review, (b) it cleanly demonstrates the general mechanism — Schur-class
+contraction giving kernel positivity — that appears in the genuinely substantial equivalences of
+§6, and (c) the numerical form (§7) gives a checkable, falsifiable statement at each finite
+\(h\), unlike the un-shiftable original claim.</p>
+</div>
+
+<div class="note">
+<strong>Contrast with the de Bruijn–Newman constant.</strong> Do not confuse \(E_h(z)=\Xi(z+ih)\)
+(a rigid translation of the argument) with the de Bruijn–Newman deformation
+\(\Xi_t\), defined via the heat-flow \(\Xi_t(z) = \sum \big(\text{Fourier coefficients of }\Xi\text{ damped by } e^{tk^2}\big)\)
+(equivalently a genuine convolution smoothing of \(\Xi\) along the real axis, not a shift off
+it). The de Bruijn–Newman constant \(\Lambda\) is defined so that \(\Xi_t\) has only real zeros
+iff \(t\ge\Lambda\); RH is the (open) statement \(\Lambda\le0\), while
+\(\Lambda\ge0\) is a <em>proven theorem</em> (Rodgers–Tao, 2020), and \(\Lambda\le1/2\) is
+proven (Polymath15, building on Newman's original bound). That theory is substantially deeper
+than Theorem 3.1 here — it is a one-parameter family of genuinely different entire functions
+approaching \(\Xi\) as \(t\to0^+\), with real analytic techniques (the heat equation
+\(\partial_t\Xi_t = \partial_x^2 \Xi_t\)) controlling how zeros move. The present note's shift
+\(E_h\) is a much shallower device: a translation off the real axis makes non-reality visible,
+but supplies no mechanism controlling *where* zeros can be. We flag the distinction so the two
+are never conflated.
+</div>
+
+<h2>6. Relation to the other RH-equivalent criteria</h2>
+<p>Theorem 3.1 sits alongside the other unconditionally proven RH-equivalences catalogued in
+<a href="research-findings.html">research-findings.html</a> §7: Weil positivity (§7.2 there),
+Li's criterion (§7.3), and the open status of Connes' global trace formula. All are walls at
+the same frontier. The Schur-function-contraction mechanism used in Step \((2)\Rightarrow(3)\)
+above is the same one that underlies Weil's original quadratic-form positivity argument; the
+companion note <a href="prime-kernel.html">prime-kernel.html</a> constructs the "geometric side"
+Hilbert space (of prime Dirichlet series) whose boundary quadratic form is exactly the Weil
+functional — a natural next question is whether that boundary form can be related directly to
+\(K_h\) as \(h\downarrow0\), which we leave open.</p>
+
+<h2>7. Numerical verification</h2>
+<p class="small">Verified in 30-digit arithmetic (mpmath), using the standard series/product
+definition of \(\zeta\) and \(\Gamma\) (not relying on any zero-list); \(\Xi\) computed directly
+as \(\Xi(\lambda)=\xi(\tfrac12+i\lambda)\), \(\xi(s)=\tfrac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)\).
+Full script in <a href="worksheet.md">worksheet.md</a>.</p>
+
+<h4>7.1 — the HB ratio \(|E_h^{*}(z)/E_h(z)| < 1\)</h4>
+<table>
+<tr><th>\(z\)</th><th>\(h\)</th><th>\(|E_h^{*}(z)/E_h(z)|\)</th><th>\(<1\)?</th></tr>
+<tr><td>\(5+i\)</td><td>0.3</td><td>0.96889927</td><td>true</td></tr>
+<tr><td>\(14.13+2i\)</td><td>0.5</td><td>0.52635740</td><td>true</td></tr>
+<tr><td>\(3i\)</td><td>1.0</td><td>0.76110589</td><td>true</td></tr>
+<tr><td>\(-8+0.5i\)</td><td>0.2</td><td>0.98606425</td><td>true</td></tr>
+<tr><td>\(20+5i\)</td><td>2.0</td><td>0.08548286</td><td>true</td></tr>
+</table>
+
+<h4>7.2 — the kernel diagonal \(K_h(z,z) = \big(|\Xi(z+ih)|^2-|\Xi(z-ih)|^2\big)/(4\pi\,\mathrm{Im}\,z)\)</h4>
+<table>
+<tr><th>\(z\)</th><th>\(h\)</th><th>\(K_h(z,z)\)</th><th>\(\ge0\)?</th></tr>
+<tr><td>\(5+i\)</td><td>0.3</td><td>\(4.04\times10^{-4}\)</td><td>true</td></tr>
+<tr><td>\(14.13+2i\)</td><td>0.5</td><td>\(5.22\times10^{-7}\)</td><td>true</td></tr>
+<tr><td>\(3i\)</td><td>1.0</td><td>\(5.72\times10^{-3}\)</td><td>true</td></tr>
+<tr><td>\(-8+0.5i\)</td><td>0.2</td><td>\(4.87\times10^{-5}\)</td><td>true</td></tr>
+<tr><td>\(20+5i\)</td><td>2.0</td><td>\(7.51\times10^{-8}\)</td><td>true</td></tr>
+</table>
+
+<h4>7.3 — monotonicity of the ratio in \(h\), fixed \(z=10+i\)</h4>
+<table>
+<tr><th>\(h\)</th><th>ratio</th></tr>
+<tr><td>0.1</td><td>0.97963814</td></tr>
+<tr><td>0.3</td><td>0.94028170</td></tr>
+<tr><td>0.5</td><td>0.90288176</td></tr>
+<tr><td>0.9</td><td>0.83437463</td></tr>
+</table>
+<p class="small">All five sample points in §§7.1–7.2 lie within the region where RH is
+computationally verified (\(|\mathrm{Im}\,z|\) small; zeros verified to height
+\(3\times10^{12}\), Platt–Trudgian 2021), so consistency here is expected and does not
+constitute independent evidence — it is a correctness check on the formulas and the code, not a
+test of RH. The monotone decay in Table 7.3 matches the Hadamard-product intuition of Step
+\((1)\Rightarrow(2)\): each factor's contraction \(|\gamma-z+ih|/|\gamma-z-ih|\) shrinks
+monotonically as \(h\) grows away from \(0\), for \(z\) fixed with \(\mathrm{Im}\,z\) bounded.</p>
+
+<h2>8. Summary</h2>
+<p>The Riemann Hypothesis is unconditionally equivalent to the Hermite–Biehler property of
+every vertical shift \(E_h(z)=\Xi(z+ih)\), \(h>0\), equivalently to positive semi-definiteness
+of the associated de Branges kernel \(K_h\) on \(\mathbb C^+\times\mathbb C^+\). This is proved
+in full in both directions (§4), corrects a specific false claim in the literature under review
+(that \(\Xi\) itself is Hermite–Biehler), and is verified numerically. As with every other
+unconditional RH-equivalence, it marks the frontier rather than crossing it: any attempted proof
+along these lines must, at some point, inject the positivity directly — there is no way to
+derive \(K_h\succeq0\) for all \(h>0\) from weaker structural facts about \(\Xi\) without
+already encoding RH.</p>
+
+<h2>References</h2>
+<p class="small">
+B. Ja. Levin, <em>Distribution of Zeros of Entire Functions</em>, AMS Transl. Monographs 5,
+ch. VII &middot;
+L. de Branges, <em>Hilbert Spaces of Entire Functions</em>, Prentice-Hall, 1968 &middot;
+J. C. Lagarias, <em>Hilbert spaces of entire functions and Dirichlet L-functions</em>, in
+Frontiers in Number Theory, Physics, and Geometry I, Springer, 2006 &middot;
+J.-F. Burnol, <em>On Fourier and zeta(s)</em>, Forum Math. 16 (2004) 789–840 &middot;
+E. C. Titchmarsh, <em>The Theory of the Riemann Zeta-function</em>, 2nd ed., §2.12 &middot;
+A. Weil, <em>Sur les "formules explicites" de la théorie des nombres premiers</em>, Comm. Sém.
+Math. Lund (1952) 252–265 &middot;
+B. Rodgers, T. Tao, <em>The de Bruijn–Newman constant is non-negative</em>, Forum Math. Pi 8
+(2020) &middot;
+D.H.J. Polymath, <em>Effective approximation of heat flow evolution of the Riemann \(\xi\)
+function, and a new upper bound for the de Bruijn–Newman constant</em> (2020) &middot;
+D. Platt, T. Trudgian, <em>The Riemann hypothesis is true up to \(3\times10^{12}\)</em>, Bull.
+LMS 53 (2021) 792–797.
+</p>
+
+<p style="margin-top:40px; font-size:0.9em; color:#555; text-align:center;">
+End — a wall precisely located, not a bridge crossed.
+</p>
+
+</body>
+</html>
