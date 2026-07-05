@@ -195,7 +195,12 @@ any outcome; the number itself is the deliverable.
 
 ## I7. Code
 
-### I7.1 Consolidated lab script (paste as `prime_graph_lab.py`; CLI, no streamlit)
+### I7.1 Consolidated lab script — **now implemented as [prime_graph_lab.py](prime_graph_lab.py)**
+
+*(5 Jul 2026: the lab exists as a real script with sections `control bass gaps siegel coupled
+fe qgamma1 cue flower`, extending the sketch below with the Bass-identity test, the coupled/FE
+H\* probes, Q-γ1, and the flower no-go witness. Run results: [findings.md](findings.md).
+The sketch below is kept as the original specification.)*
 
 ```python
 """prime_graph_lab.py -- corrected numerics for victor/prime-sieve (path.md / implementation.md).

@@ -1,3 +1,11 @@
+> **Correction notice (5 Jul 2026).** Kept as an audit trail; two claims are corrected — see
+> [notes.md](notes.md) §2.3: **M4** §2's "whose spectrum … *is* the set of Riemann zeros
+> (Connes, 1999)" overstates: the proven results are the semi-local trace formula (Connes
+> 1999) and Meyer's (2005) unconditional realization on *nuclear non-Hilbert* spaces —
+> positivity, the missing piece, is the entire problem; **M5** §5's *strong* resolvent
+> convergence does not control spectra (pollution) — the correct mode is *norm*-resolvent
+> (path.md P4). The five-space table below remains a useful map.
+
 The short answer is **yes** — the sieve can be embedded in several of those frameworks, and in each one it yields a *closed‑form expression* for the object that connects the primes to the zeros.  
 What follows is a tour of the most promising spaces and the analytic forms the sieve takes there.
 

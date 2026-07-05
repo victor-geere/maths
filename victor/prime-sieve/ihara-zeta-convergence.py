@@ -1,9 +1,18 @@
+"""CORRECTED 5 Jul 2026 — see notes.md §2 and findings.md.
+
+D1 fixed: the original graph (primes in I_n coupled via composites in I_n) is provably
+empty; vertices are now the generator primes p < 2^n. D2 fixed: rank-unfolding against
+the zero-counting function is retired (it ignored its input — identical output for any
+data — and its range was capped below the second zero). This app now reports raw-gap
+statistics with data-internal normalisation only (implementation.md I0/I3).
+Honest pipeline: prime_graph_lab.py.
+"""
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.linalg import eigvals
 import math
-from math import log, pi, exp
+from math import log, pi, exp, erf, sqrt
 import time
 
 # ---- Sieve helpers (unchanged) ----
@@ -45,11 +54,14 @@ def generate_sieve_data(n):
     return primes_in_I, composites_in_I, primes_lt_2n, M_n
 
 def build_prime_graph(n):
+    """CORRECTED (D1): vertices = generator primes p < 2^n, coupled through composites
+    in I_n. The original block-internal version is provably empty (pq >= 2^{2n} > M_n)."""
     primes_I, composites_I, primes_lt_2n, M_n = generate_sieve_data(n)
-    idx = {p: i for i, p in enumerate(primes_I)}
-    N = len(primes_I)
+    verts = [int(p) for p in primes_lt_2n]
+    idx = {p: i for i, p in enumerate(verts)}
+    N = len(verts)
     if N == 0:
-        return None, None, primes_I, M_n
+        return None, None, verts, M_n
     A = np.zeros((N, N), dtype=float)
     for m in composites_I:
         fac = prime_factors(m, primes_lt_2n)
@@ -62,7 +74,8 @@ def build_prime_graph(n):
                 A[ip, iq] += 1
                 A[iq, ip] += 1
     A_binary = (A > 0).astype(float)
-    return A_binary, A, primes_I, M_n   # return both binary and weighted
+    assert A_binary.sum() > 0, "D1 regression guard: graph must be non-empty"
+    return A_binary, A, verts, M_n   # return both binary and weighted
 
 def ihara_poles_from_adj(A):
     """
@@ -103,14 +116,10 @@ def invert_zero_count(target, tol=1e-12, max_iter=50):
     return T
 
 def unfold_args(arg_vals):
-    """Unfold sorted arguments using zero counting function."""
-    arg_sorted = np.sort(arg_vals)
-    N = len(arg_sorted)
-    unfolded = np.zeros(N)
-    for i in range(N):
-        cdf = (i + 0.5) / N   # mapping quantile
-        unfolded[i] = invert_zero_count(cdf)
-    return unfolded
+    """RETIRED (D2): ignored its input (rank-quantiles only) and could not exceed
+    N^{-1}(1) ~ 14.9 — every reported 'match' was fabricated. Fails loudly now."""
+    raise RuntimeError("unfold_args is retired (defect D2, see notes.md §2.2); "
+                       "use raw gaps with data-internal normalisation — rule I0.1/I3")
 
 def get_riemann_zeros(num_zeros):
     try:
@@ -134,12 +143,12 @@ def get_riemann_zeros(num_zeros):
 # ---- Streamlit app ----
 def main():
     st.set_page_config(page_title="Ihara Poles → Riemann Zeros", layout="wide")
-    st.title("Phase 7 – Refined Mapping: Ihara Zeta Poles to Riemann Zeros via Unfolding")
+    st.title("Corrected: Raw Ihara Pole Statistics of the (fixed) Prime Graph")
     st.markdown("""
-    The Ihara zeta function of the prime graph (built from the sieve) has poles on the unit circle.
-    We collect their arguments \( \theta_k \), sort them, and unfold them using the Riemann zero
-    counting function \( N(T) \). If the graph's Ihara zeta truly encodes the zeros, the unfolded
-    values should match the actual zeros to high precision.
+    The graph now couples the generator primes p < 2^n through the composites in the dyadic
+    block (defect D1 fixed). We show **raw** pole data and gap statistics with data-internal
+    normalisation only — the former unfolding step was defect D2 (input-independent) and is
+    retired. See notes.md §2 and findings.md.
     """)
 
     with st.sidebar:
@@ -171,58 +180,45 @@ def main():
     st.write(f"Pole computation: {comp_time:.2f}s")
     st.write(f"Total poles: {len(poles)}")
 
-    # Select poles on the unit circle (|u| close to 1)
-    tol = 1e-6
-    on_circle = np.abs(np.abs(poles) - 1.0) < tol
-    st.write(f"Poles on unit circle: {np.sum(on_circle)}")
+    # ---- CORRECTED analysis (D2 retired): raw-gap statistics, data-internal only ----
+    st.warning("Evidence rules (implementation.md I0/I3): unfolding against the Riemann "
+               "counting function is retired (defect D2). Below: raw non-real pole angle "
+               "gaps, normalised by their own mean, against RMT reference curves.")
 
-    if np.sum(on_circle) == 0:
-        st.warning("No poles on unit circle found. The graph might be too small or the adjacency matrix ill‑conditioned.")
+    finite = poles[np.isfinite(poles)]
+    nonreal = finite[np.abs(finite.imag) > 1e-9]
+    th = np.sort(np.angle(nonreal))
+    th = th[th > 0]
+    if len(th) < 20:
+        st.error("Too few non-real poles for gap statistics.")
         return
 
-    pole_angles = np.angle(poles[on_circle])
-    # Use positive angles (symmetry gives ±, take positive half)
-    pos_angles = np.sort(pole_angles[pole_angles >= 0])
+    gaps = np.diff(th)
+    gaps = gaps / gaps.mean()           # data-internal normalisation only
+    xs = np.sort(gaps)
+    F_emp = np.arange(1, len(xs) + 1) / len(xs)
+    F_cue = np.array([erf(2*x/sqrt(pi)) - (4*x/pi)*np.exp(-4*x*x/pi) for x in xs])
+    F_poi = 1 - np.exp(-xs)
+    ks_cue = float(np.max(np.abs(F_emp - F_cue)))
+    ks_poi = float(np.max(np.abs(F_emp - F_poi)))
 
-    if len(pos_angles) < 2:
-        st.error("Too few positive arguments to compare.")
-        return
-
-    # Unfold
-    unfolded = unfold_args(pos_angles)
-    actual_zeros = get_riemann_zeros(len(unfolded))
-
-    # Q-Q plot and residuals
-    fig2, (ax3, ax4) = plt.subplots(1, 2, figsize=(12,5))
-    ax3.scatter(unfolded, actual_zeros, s=8, alpha=0.7)
-    ax3.plot([min(unfolded), max(unfolded)], [min(unfolded), max(unfolded)], 'r--')
-    ax3.set_xlabel('Unfolded pole arguments (T)')
-    ax3.set_ylabel('Actual Riemann zeros')
-    ax3.set_title('Q‑Q plot after unfolding')
-    ax3.set_aspect('equal')
-
-    diff = unfolded - actual_zeros
-    ax4.plot(actual_zeros, diff, '.')
-    ax4.axhline(0, color='red', linestyle='--')
-    ax4.set_xlabel('Riemann zero')
-    ax4.set_ylabel('Difference')
-    ax4.set_title('Residuals')
-
+    fig2, (ax3, ax4) = plt.subplots(1, 2, figsize=(12, 5))
+    ax3.hist(gaps, bins=40, density=True, alpha=0.6, label='raw gaps (mean-normalised)')
+    ss = np.linspace(0, 4, 200)
+    ax3.plot(ss, (32/np.pi**2)*ss**2*np.exp(-4*ss**2/np.pi), 'r-', label='Wigner β=2 (CUE)')
+    ax3.plot(ss, np.exp(-ss), 'g--', label='Poisson')
+    ax3.legend(); ax3.set_xlabel('normalised gap'); ax3.set_title('Raw angle-gap density')
+    ax4.plot(xs, F_emp - F_cue, label=f'KS to CUE = {ks_cue:.3f}')
+    ax4.plot(xs, F_emp - F_poi, label=f'KS to Poisson = {ks_poi:.3f}')
+    ax4.axhline(0, color='k', lw=0.5); ax4.legend(); ax4.set_title('CDF differences')
     st.pyplot(fig2)
 
-    mae = np.mean(np.abs(diff))
-    st.metric("Mean Absolute Error (unfolded)", f"{mae:.4f}")
-
-    # Display first few comparisons
-    with st.expander("First 20 unfolded vs actual zeros"):
-        data = {"Unfolded": unfolded[:20], "Actual zero": actual_zeros[:20]}
-        st.dataframe(data)
-
     st.markdown("""
-    **Interpretation:** If the prime graph's Ihara zeta poles truly correspond to Riemann zeros,
-    the unfolded arguments should lie on the diagonal with zero residuals. The MAE measures how
-    far we are from that ideal. As \(n\) grows (and the graph becomes larger and more
-    "regular"), the MAE is expected to decrease, indicating convergence.
+    **Interpretation (honest):** these statistics are a *consistency diagnostic only* —
+    RMT agreement, even if it appeared, would not be evidence about zero locations
+    (research-findings §8). Baseline measured values are recorded in
+    [findings.md](findings.md) (F9): at current weightings the gaps match neither CUE nor
+    Poisson; the locus is structure-dominated.
     """)
 
 if __name__ == "__main__":

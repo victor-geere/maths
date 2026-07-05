@@ -1,3 +1,16 @@
+"""CORRECTED 5 Jul 2026 — see notes.md §2 and findings.md.
+
+Two defects were found and fixed in this file (audit trail per repo convention):
+  D1: the original build_prime_graph joined primes *inside* I_n via composites of I_n —
+      impossible (p*q >= 2^{2n} > M_n), so the graph was empty and every reported pole
+      was the (u^2-1)^N artifact of a degenerate pencil. Fixed: vertices are now the
+      generator primes p < 2^n, coupled through the composites in I_n (cross-scale,
+      mirroring adele/phase3.md Def 3.2).
+  D2: unfold_eigenvalues mapped ranks through the zero-counting function, ignoring its
+      input entirely — it "matched" the zeros for any data. It is retired below and kept
+      only as a stub with a warning. No unfolding is used as evidence (implementation.md I0.1).
+Honest pipeline: prime_graph_lab.py. This app now shows raw pole data only.
+"""
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
@@ -66,16 +79,20 @@ def generate_sieve_data(n):
 # Build the "prime graph" adjacency from sieve
 # ------------------------------------------------------------
 def build_prime_graph(n):
+    """CORRECTED (D1): vertices are the generator primes p < 2^n; an edge {p,q} is added
+    when a composite m in I_n is divisible by both. The original version used the primes
+    *in* I_n as vertices, which provably yields the empty graph (pq >= 2^{2n} > M_n)."""
     primes_I, composites_I, primes_lt_2n, M_n = generate_sieve_data(n)
-    idx = {p: i for i, p in enumerate(primes_I)}
-    N = len(primes_I)
+    verts = [int(p) for p in primes_lt_2n]
+    idx = {p: i for i, p in enumerate(verts)}
+    N = len(verts)
     if N == 0:
-        return None, primes_I, M_n
+        return None, verts, M_n
     A = np.zeros((N, N), dtype=float)
     for m in composites_I:
         fac = prime_factors(m, primes_lt_2n)
         fac_in = [p for p in fac if p in idx]
-        # add edges between every pair of distinct primes that co-divide m
+        # add edges between every pair of distinct generator primes that co-divide m
         for i in range(len(fac_in)):
             p = fac_in[i]
             for j in range(i+1, len(fac_in)):
@@ -83,9 +100,9 @@ def build_prime_graph(n):
                 ip, iq = idx[p], idx[q]
                 A[ip, iq] += 1
                 A[iq, ip] += 1
-    # Optional: keep only binary edges (set to 1 if >0) for an unweighted graph
     A_binary = (A > 0).astype(float)
-    return A_binary, primes_I, M_n
+    assert A_binary.sum() > 0, "D1 regression guard: graph must be non-empty"
+    return A_binary, verts, M_n
 
 # ------------------------------------------------------------
 # Ihara zeta function poles via Hashimoto matrix
@@ -148,13 +165,11 @@ def invert_zero_count(target, tol=1e-12, max_iter=50):
     return T
 
 def unfold_eigenvalues(eigvals):
-    eig_sorted = np.sort(eigvals)
-    N = len(eig_sorted)
-    unfolded = np.zeros(N)
-    for i in range(N):
-        cdf = (i + 0.5) / N
-        unfolded[i] = invert_zero_count(cdf)
-    return unfolded
+    """RETIRED (D2): this mapped ranks through the zero-counting function and ignored its
+    input values entirely — identical output for any data. Kept as a stub so old imports
+    fail loudly instead of silently fabricating matches."""
+    raise RuntimeError("unfold_eigenvalues is retired (defect D2, see notes.md §2.2); "
+                       "use raw pole data — implementation.md rule I0.1")
 
 def get_riemann_zeros(num_zeros):
     try:
@@ -233,64 +248,33 @@ def main():
     compute_time = time.time() - t0
     st.write(f"Pole computation time: {compute_time:.2f}s")
 
-    # Filter poles: keep those with |Im(u)| small (poles on/near real axis are not from the circle)
-    # Actually, the Ihara poles for a connected graph are all on the unit circle or real axis.
-    real_poles = np.real(poles)
-    imag_poles = np.imag(poles)
-    # Select poles with large imaginary part (unit circle) – we expect many near |u|=1.
-    unit_circle_mask = np.abs(np.abs(poles) - 1) < 1e-6
-    st.write(f"Poles on unit circle: {np.sum(unit_circle_mask)} out of {len(poles)}")
+    # ---- CORRECTED analysis (D2 retired): raw pole data only, no target-fitting ----
+    st.warning("Evidence rules (implementation.md I0): no unfolding, no fits against the "
+               "Riemann zeros. Panels below show raw pole data. The old unit-circle claim "
+               "was defect M1 (the correct regular-graph locus is |u| = q^{-1/2}; the "
+               "weighted locus is governed by the weighted Ihara–Bass identity, findings.md F2).")
 
-    # Use those on unit circle, take their arguments.
-    arg_poles = np.angle(poles[unit_circle_mask])
-    arg_poles = np.sort(arg_poles[arg_poles >= 0])  # take positive arguments
+    finite = poles[np.isfinite(poles)]
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+    ax1.hist(np.abs(finite), bins=60)
+    ax1.set_xlabel('|u| of Ihara pole'); ax1.set_ylabel('count')
+    ax1.set_title('Raw pole modulus distribution')
+    nonreal = finite[np.abs(finite.imag) > 1e-9]
+    ax2.hist(np.angle(nonreal), bins=60)
+    ax2.set_xlabel('arg(u) (non-real poles)'); ax2.set_ylabel('count')
+    ax2.set_title('Raw pole angle distribution')
+    st.pyplot(fig)
 
-    # Unfold arguments using the zero counting function (as a proxy)
-    # We need to map argument to T. Since the Ihara zeta's functional equation involves u -> 1/(qu) for some q?
-    # In the limit, the number of poles with argument ≤ θ should grow like (N/π) θ? Not exactly.
-    # For now, we simply plot the raw arguments and compare with Riemann zeros after linear scaling.
-    # The connection is subtle; we'll show a scatter plot.
-
-    # Let's also get the actual Riemann zeros for reference.
-    num_poles = len(arg_poles)
-    actual_zeros = get_riemann_zeros(num_poles)
-
-    # For a visual, we can linearly transform the arg_poles to match the range of zeros.
-    # Compute a simple linear regression: we want a*arg + b ≈ actual_zeros.
-    # This is a crude approximation to see if there is a correlation.
-    if num_poles > 0:
-        arg_arr = arg_poles[:num_poles]
-        zero_arr = actual_zeros[:num_poles]
-        # Fit linear: zero = a * arg + b
-        A_fit = np.vstack([arg_arr, np.ones_like(arg_arr)]).T
-        a, b = np.linalg.lstsq(A_fit, zero_arr, rcond=None)[0]
-        predicted = a * arg_arr + b
-        mae = np.mean(np.abs(predicted - zero_arr))
-
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
-        ax1.scatter(arg_arr, zero_arr, s=8, alpha=0.7)
-        ax1.set_xlabel('Argument of Ihara pole (radians)')
-        ax1.set_ylabel('Actual Riemann zero')
-        ax1.set_title(f'Raw correlation (slope ≈ {a:.2f})')
-        ax2.plot(zero_arr, predicted - zero_arr, '.')
-        ax2.axhline(0, color='r', linestyle='--')
-        ax2.set_xlabel('Riemann zero')
-        ax2.set_ylabel('Residual after linear fit')
-        ax2.set_title(f'Residuals (MAE = {mae:.3f})')
-        st.pyplot(fig)
-
-        st.write(f"Linear fit: T ≈ {a:.3f} * arg + {b:.3f}")
-        st.write(f"Mean absolute error after linear scaling: {mae:.4f}")
-
-        # Interpretation: if the Ihara poles were perfectly aligned, the residuals would be small.
-        # For small n, the graph is tiny and the match is poor; as n grows, the Ihara zeta should
-        # approach the Selberg zeta of the modular surface, which is known to encode the Riemann zeros.
+    n_real = int(np.sum(np.abs(finite.imag) <= 1e-9))
+    st.write(f"Poles: {len(finite)} finite; {n_real} real; "
+             f"|u| range [{np.abs(finite).min():.4f}, {np.abs(finite).max():.4f}]")
 
     st.markdown("""
-    **Note:** The exact relationship between the Ihara zeta of this prime graph and the Riemann zeta function
-    is still conjectural. In the adèle class space, the graph built from all primes (the “prime graph”)
-    should have Ihara zeta equal to the completed Riemann zeta, after a change of variable 
-    \(u = p^{-s}\) and a product over all \(p\). This finite approximation is a step toward that limit.
+    **Note.** Any relationship between this graph's Ihara zeta and the Riemann zeta function
+    must be established through the corrected path ([path.md](path.md): determinant
+    convergence C1, then the Hurwitz dictionary P2), never by rank-fitting pole data to the
+    zeros. The honest pipeline is `prime_graph_lab.py`; current measured baselines are in
+    [findings.md](findings.md).
     """)
 
 if __name__ == "__main__":

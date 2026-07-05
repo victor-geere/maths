@@ -1,3 +1,11 @@
+"""CORRECTED 5 Jul 2026 — see notes.md §2 and findings.md.
+
+D1 fixed (graph was empty; vertices now = generator primes p < 2^n). D2 fixed: the
+'S_Ihara' column was unfolding output (input-independent) and is removed; the explicit
+formula panel S_0 vs W_inf - A_n is kept — it is genuine (cross-check against
+../adele/adele_trace.py, which verifies the same balance to 1e-36).
+Honest pipeline: prime_graph_lab.py.
+"""
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
@@ -75,12 +83,14 @@ def generate_sieve_data(n: int):
     return primes_in_I, composites_in_I, primes_lt_2n, M_n
 
 def build_prime_graph(n: int):
-    """Builds binary and weighted adjacency of the prime graph."""
+    """CORRECTED (D1): vertices = generator primes p < 2^n, coupled through composites
+    in I_n; the original block-internal version is provably empty (pq >= 2^{2n} > M_n)."""
     primes_I, composites_I, primes_lt_2n, M_n = generate_sieve_data(n)
-    idx = {p: i for i, p in enumerate(primes_I)}
-    N = len(primes_I)
+    verts = [int(p) for p in primes_lt_2n]
+    idx = {p: i for i, p in enumerate(verts)}
+    N = len(verts)
     if N == 0:
-        return None, None, primes_I, M_n
+        return None, None, verts, M_n
     A_weighted = np.zeros((N, N), dtype=float)
     for m in composites_I:
         fac = prime_factors(m, primes_lt_2n)
@@ -93,7 +103,8 @@ def build_prime_graph(n: int):
                 A_weighted[ip, iq] += 1
                 A_weighted[iq, ip] += 1
     A_binary = (A_weighted > 0).astype(float)
-    return A_binary, A_weighted, primes_I, M_n
+    assert A_binary.sum() > 0, "D1 regression guard: graph must be non-empty"
+    return A_binary, A_weighted, verts, M_n
 
 # ------------------------------------------------------------
 # Ihara zeta poles (via generalized eigenvalue problem)
@@ -216,13 +227,9 @@ def invert_zero_count(target):
     return T
 
 def unfold_eigenvalues(eigvals):
-    sorted_vals = np.sort(eigvals)
-    N = len(sorted_vals)
-    unfolded = np.zeros(N)
-    for i in range(N):
-        cdf = (i + 0.5) / N
-        unfolded[i] = invert_zero_count(cdf)
-    return unfolded
+    """RETIRED (D2): rank-quantile map, input-independent, range-capped below the second
+    zero. Fails loudly instead of fabricating agreement."""
+    raise RuntimeError("unfold_eigenvalues is retired (defect D2, see notes.md §2.2)")
 
 # ------------------------------------------------------------
 # Streamlit app
@@ -287,82 +294,42 @@ def main():
     comp_time = time.time() - t0
     st.write(f"Ihara poles computed in {comp_time:.2f}s. Total poles: {len(poles)}")
 
-    # Select unit circle poles
-    tol = 1e-6
-    on_circle = np.abs(np.abs(poles) - 1.0) < tol
-    num_unit = np.sum(on_circle)
-    st.write(f"Poles on unit circle: {num_unit}")
+    # ---- CORRECTED: raw pole summary only (D2 retired; no unfolding, no Q-Q) ----
+    finite = poles[np.isfinite(poles)]
+    n_real = int(np.sum(np.abs(finite.imag) <= 1e-9))
+    st.write(f"Poles: {len(finite)} finite; {n_real} real; "
+             f"|u| range [{np.abs(finite).min():.4f}, {np.abs(finite).max():.4f}]")
+    st.warning("The former 'unfolded poles vs zeros' panel and the S_Ihara column were "
+               "defect D2 (input-independent unfolding) and have been removed. "
+               "See notes.md §2.2 and findings.md.")
 
-    if num_unit == 0:
-        st.warning("No unit‑circle poles found. Try a larger n.")
-        return
-
-    pole_angles = np.angle(poles[on_circle])
-    # Take positive angles (the others are just negative copies)
-    pos_angles = np.sort(pole_angles[pole_angles >= 0])
-    if len(pos_angles) == 0:
-        st.error("No positive pole arguments.")
-        return
-
-    # Unfold
-    unfolded_T = unfold_eigenvalues(pos_angles)
-    num_poles = len(unfolded_T)
-
-    # Get actual Riemann zeros
-    actual_zeros = get_riemann_zeros(num_poles)
-
-    # Q-Q plot & residuals
-    fig_qq, (ax_qq, ax_res) = plt.subplots(1, 2, figsize=(12,5))
-    ax_qq.scatter(unfolded_T, actual_zeros, s=8, alpha=0.7)
-    ax_qq.plot([min(unfolded_T), max(unfolded_T)], [min(unfolded_T), max(unfolded_T)], 'r--')
-    ax_qq.set_xlabel('Unfolded pole arguments (T)')
-    ax_qq.set_ylabel('Actual Riemann zeros')
-    ax_qq.set_title('Q‑Q plot')
-    ax_qq.set_aspect('equal')
-    diff = unfolded_T - actual_zeros
-    ax_res.plot(actual_zeros, diff, '.')
-    ax_res.axhline(0, color='r', linestyle='--')
-    ax_res.set_xlabel('Actual zero')
-    ax_res.set_ylabel('Difference')
-    ax_res.set_title('Residuals')
-    st.pyplot(fig_qq)
-    mae = np.mean(np.abs(diff))
-    st.metric("Mean Absolute Error (unfolded vs actual zeros)", f"{mae:.4f}")
-
-    # Explicit formula trace balance
+    # Explicit formula trace balance (genuine — kept)
     if show_trace:
-        st.subheader("Trace formula verification")
+        st.subheader("Explicit-formula balance (genuine panel, kept)")
         st.markdown("""
-        Using the test function \(g(x)=e^{-x^2}\), we compare three quantities:
-        - **Zero sum** \(S_0 = \sum_\rho h(\gamma)\) over the first \(N\) Riemann zeros.
-        - **Geometric side** \(S_{\text{geom}} = W_\infty - A_n\) from the explicit formula,
-          with \(A_n\) computed from the sieve (prime powers ≤ M_n).
-        - **Ihara pole sum** \(S_{\text{Ihara}} = 2\sum_{i=1}^N h(T_i)\) using the unfolded Ihara poles.
+        Using \(g(x)=e^{-x^2}\), compare:
+        - **Zero sum** \(S_0 = 2\sum_{k \le K} h(\gamma_k)\) over the first \(K\) Riemann zeros
+          (independently computed via mpmath);
+        - **Geometric side** \(S_{\mathrm{geom}} = W_\infty - A_n\), with \(A_n\) from the
+          sieve's prime powers \(\le M_n\).
+        Cross-check: `../adele/adele_trace.py` verifies the same balance to \(10^{-36}\).
         """)
-
-        # Compute arithmetic sum from sieve
         A_n = arithmetic_sum_from_sieve(n, M_n, primes_lt_2n, all_primes_full)
         S_geom = W_inf - A_n
+        K = 50  # h decays fast; 50 zeros is ample at this test-function width
+        actual_zeros = get_riemann_zeros(K)
+        zero_sum = 2.0 * np.sum(h(actual_zeros))
 
-        # Zero sum (using actual zeros)
-        # sum over positive zeros: h(γ_i)
-        # The explicit formula symmetric sum = 2 * Σ_{k=1}^N h(γ_k) (since h is even and zeros come in ± pairs)
-        zero_sum = 2.0 * np.sum(h(actual_zeros[:num_poles]))
-
-        # Ihara pole sum: 2 * Σ h(unfolded_T_i)
-        ihara_sum = 2.0 * np.sum(h(unfolded_T[:num_poles]))
-
-        col1, col2, col3 = st.columns(3)
+        col1, col2 = st.columns(2)
         col1.metric("Zero sum (S₀)", f"{zero_sum:.10f}")
         col2.metric("Geometric side (W∞ - A_n)", f"{S_geom:.10f}")
-        col3.metric("Ihara pole sum", f"{ihara_sum:.10f}")
-
         err_geom = abs(zero_sum - S_geom)
-        err_ihara = abs(zero_sum - ihara_sum)
-        st.write(f"|S₀ - (W∞ - A_n)| = {err_geom:.2e}   (should be near 0; exact formula holds)")
-        st.write(f"|S₀ - S_Ihara| = {err_ihara:.2e}   (convergence of Ihara poles to zeros)")
+        st.write(f"|S₀ - (W∞ - A_n)| = {err_geom:.2e}  "
+                 f"(explicit formula; residual = prime-power tail beyond M_n + quadrature)")
 
-    st.success("Verification complete. The Ihara zeta of the prime graph, built without prior prime knowledge, replicates the spectral side of the Riemann zeta function.")
+    st.info("Scope (honest): this app verifies the explicit-formula balance and shows raw "
+            "graph-spectral data. It does not — and cannot — link Ihara poles to Riemann "
+            "zeros; that link is exactly target C1 of path.md, currently open.")
 
 if __name__ == "__main__":
     main()

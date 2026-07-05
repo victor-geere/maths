@@ -401,3 +401,31 @@ comes from self-adjointness at every stage.
 - Next session should start with: (1) obligation W symbolically at $n \le 6$; (2) the
   functional-equation sweep I2.3 (most fertile unknown); (3) graph-Siegel tracking only after
   W lands.
+
+### Dump 4 — 5 Jul 2026, after implementing the lab and running everything ([findings.md](findings.md))
+
+- The lab is real now ([prime_graph_lab.py](prime_graph_lab.py)), the three streamlit scripts
+  are fixed (D1 corrected with regression asserts, D2 functions raise loudly, honest panels),
+  and the prose artifacts carry correction notices with originals preserved — the folder is
+  audit-clean per the [../flawed/](../flawed/) convention.
+- Biggest single win: the **weighted Ihara–Bass identity discovered-by-testing** (F2) — the
+  resolvent form validated to $10^{-15}$ on the actual stage graph, naive form refuted at
+  $10^{-1}$. Obligation W went from "elementary-looking open lemma" to "numeric half banked,
+  symbolic half routine." Everything spectral now routes through $\det M(u)$.
+- Most instructive negative: the FE-asymmetry sweep (F6). One-sided $m^{-s}$ couplings
+  *monotonically destroy* functional-equation symmetry — so H\*'s family must carry AFE
+  symmetry by construction (Riemann–Siegel kernels). That single design law reshaped the new
+  plan's G2 and feels like the folder's compass from here.
+- Most satisfying confirmation: graph-Siegel tracking (F4) — detached spectrum is exactly
+  4 eigenvalues at every stage, all accounted for by block structure (Perron ± mirror + one
+  complex pair), zero arithmetic exceptions. The community-detection reading (detached NB
+  eigenvalues count blocks) turns an RH-adjacent worry into a provable-looking combinatorial
+  statement (plan G4).
+- New micro-theorem (F8): the quantum-graph no-go — unitary mixing vs $\Lambda$-support is a
+  genuine dichotomy (unique factorisation does the work). Proved in three lines, witnessed
+  numerically, and it fences off an entire tempting model class while naming the three doors
+  that remain (energy dependence / openness / interference). Candidate N5 for the repo's
+  no-go catalogue.
+- Everything still lands where P2.3 says it must: below the wall, rungs only. The plan's
+  near-term theorems (G1 locus, G3 normalised gap ≈ 0.56, G4 anti-Siegel) are all
+  independently meaningful even if H\* dies — that is the shape a healthy program should have.

@@ -1,3 +1,15 @@
+> **Correction notice (5 Jul 2026).** This sketch is kept as an audit trail; several of its
+> claims are refuted or corrected — see [notes.md](notes.md) §2 and [findings.md](findings.md):
+> **M1** the Ramanujan locus is $|u| = q^{-1/2}$, not $|u| = 1$; **M2** the per-block Euler
+> factor $\prod_{p \in G_n}(1-p^{-s})^{-1} \to 1$, so the claimed $\xi_n \to \xi$ fails as
+> written (the corrected object is cumulative); **M3** $\mathrm{Tr}\,|D|^{-s}$ would be Voros'
+> secondary zeta, not $\pi^{-s/2}\Gamma(s/2)\zeta(s)$; step 1's "uniform trace class bounds"
+> are provably unavailable in the strip for this family (path.md P1.3); the closing
+> "RH is therefore a consequence…" is available only in the conditional form made precise by
+> path.md Theorem P2.3 — which also shows the final step *is* RH, not a route to it.
+> The corrected programme is [path.md](path.md); measured baselines are in
+> [findings.md](findings.md).
+
 We now outline how the three outstanding steps could be completed, thereby turning the observed analogies into a rigorous proof of the Hilbert–Pólya conjecture. The argument remains at the level of a programme; each step would require substantial technical work, but the conceptual path is clear.
 
 ---
