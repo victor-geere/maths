@@ -164,6 +164,6 @@ This plan lives in the Hilbert–Pólya/adèle track. The verified anchor remain
 trace-level Weil balance ([../adele/phase6.md](../adele/phase6.md), $10^{-36}$); this folder
 attacks the *determinant level* above it (path.md P5 ladder). The circle-kernel track is
 untouched. Any result here that reaches "proven" should be reflected in
-[../adele/index.md](../adele/index.md)'s status tables and, where relevant, in
-[../barry-keating/research-findings.md](../barry-keating/research-findings.md) §3's no-go
+[./to-be-reviewed/adele-index.md](../adele/index.md)'s status tables and, where relevant, in
+[./to-be-reviewed/berry-keating/research-findings.md](../barry-keating/research-findings.md) §3's no-go
 catalogue (the F8 no-go is a candidate N5 entry).
