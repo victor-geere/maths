@@ -1,0 +1,2 @@
+The function f(n)=f(n-1)+n, f(0)=0 and the function r(n)=g(n)-r(n-1), g(n)=g(n-1)+2n-1, r(0)=0, g(0)=0. are symbolically distinct, yet extensionally equal. Both functions output equal values for every n. Thus they are equal functions, f(n)=r(n).
+Consider a third recursive function h(n) distinct in its definition. How will you determine whether h(n) is equivalent to f(n) and r(n). If h(n) is not equivalent to f(n) and r(n) then what is it equivalent to?
