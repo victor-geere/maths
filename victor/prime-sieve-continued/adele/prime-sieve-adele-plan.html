@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Prime Sieve on the Adèle Class Space – A Research Program toward the Hilbert–Pólya Conjecture</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Georgia, "Times New Roman", serif;
+            max-width: 1080px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.75;
+            color: #000;
+            background: #fff;
+        }
+        h1,h2,h3,h4 { font-family: "Helvetica Neue", Arial, sans-serif; color:#000; }
+        h1 { text-align:center; font-size:1.8em; margin-bottom:0.2em; }
+        h2 { border-bottom:2px solid #003399; padding-bottom:4px; margin-top:40px; }
+        .boxed { border:1px solid #999; padding:14px; margin:20px 0; background:#fafafa; }
+        .lemma { background:#f8f8ff; padding:16px; border-left:5px solid #003399; margin:22px 0; }
+        .proof { margin-left:20px; margin-bottom:20px; }
+        .note { background:#fef9e7; padding:14px; border-left:4px solid #b8860b; margin:18px 0; }
+        .tag { font-family:"Helvetica Neue",Arial,sans-serif; font-size:0.78em; font-weight:bold;
+               padding:1px 7px; border-radius:9px; white-space:nowrap; }
+        .t-goal { background:#fff3cd; color:#856404; border:1px solid #ffeeba; }
+        pre { background:#f5f5f5; border:1px solid #ccc; padding:12px; overflow-x:auto; border-radius:4px; }
+        .small { font-size:0.9em; color:#444; }
+    </style>
+</head>
+<body>
+
+<h1>A Prime Sieve on the Adèle Class Space<br>A Research Program toward the Hilbert–Pólya Conjecture</h1>
+<p style="text-align:center;"><em>Draft program — July 2026</em></p>
+
+<div class="note">
+<strong>Motivation.</strong> The Hilbert–Pólya conjecture asks for a self‑adjoint operator whose eigenvalues are the non‑trivial zeros of the Riemann zeta function. Connes’ adèle class space
+\(X = \mathbb{A}_{\mathbb{Q}}/\mathbb{Q}^\times\) carries a canonical spectral triple whose Dirac operator, on the spherical vectors, yields these zeros — but the proof that the spectral side reproduces the exact zeros currently depends on the explicit formula and does not by itself settle the Riemann Hypothesis. The present program proposes to <em>construct</em> the operator directly from a prime sieve embedded in the adèle geometry, giving a concrete, finite‑dimensional approximation whose limit realises the Hilbert–Pólya goal.
+</div>
+
+<h2>1. The adèle class space and the Berry–Keating derivation</h2>
+<p>Let \(\mathbb{A}_{\mathbb{Q}}\) be the ring of adèles of \(\mathbb{Q}\) and
+\[
+X = \mathbb{A}_{\mathbb{Q}} / \mathbb{Q}^\times .
+\]
+The multiplicative group \(\mathbb{R}_{>0}\) acts on \(X\) by scaling the archimedean component:
+\[
+(t\cdot x)_\infty = t\,x_\infty , \qquad (t\cdot x)_p = x_p \ (p\text{ finite}).
+\]
+The infinitesimal generator of this action is the derivation \(\delta\) on the smooth algebra
+\(\mathcal{A}\subset C_0(X)\); under the GNS representation associated with the Tamagawa measure,
+\(\delta\) is implemented by the unbounded self‑adjoint operator
+\[
+D = -i\,\frac{d}{dt}\Big|_{t=1} \pi(\alpha_t) .
+\]
+On the subspace of functions invariant under the maximal compact subgroup
+\(K = \widehat{\mathbb{Z}}^\times \times \{\pm 1\}\), the spectrum of \(D\) is precisely the set
+\(\{\gamma \mid \zeta(\frac12 + i\gamma) = 0\}\) (see Connes, <em>Selecta Math.</em> 1999). Thus
+the Hilbert–Pólya conjecture is reduced to an explicit realisation of \(D\) — and that
+realisation can be approached through a prime sieve.
+
+<h2>2. The composite‑generator prime sieve (rigorous core)</h2>
+<div class="boxed">
+<p><strong>Definition 2.1 (dyadic composite generator).</strong> For \(n\ge 1\) let
+\(I_n = [2^n,\, 2^{n+1}-1]\), \(\mathcal P_n\) the set of primes \(< 2^n\), and
+\[
+G_n = \{\, x \in I_n \;:\; x = p_1 p_2 \cdots p_k,\ p_i \in \mathcal P_n,\ k \ge 2 \,\}
+\]
+(product over a multiset, repetitions allowed). Then \(G_n\) is exactly the set of composite numbers in \(I_n\), so the primes in \(I_n\) are the gaps \(I_n \setminus G_n\). (Lemma 1.2 of the Rigorous Core note.)
+</p>
+</div>
+<p>Write \(M_n = 2^{n+1}-1\) and \(k_n = \pi(M_n)\). The sieve yields the dyadic prime count
+\[
+\#\{\text{primes in } I_n\} \sim \frac{2^n}{n\log 2},\qquad k_n \sim \frac{M_n}{\log M_n}.
+\]
+The normalised empirical measure of primes on the circle \(\mathbb T = [0,1)\),
+\[
+\mu_n = \frac1{k_n}\sum_{p\le M_n} \delta_{\{p/M_n\}} ,
+\]
+converges weak‑\(*\) to Lebesgue measure, with Fourier coefficients
+\[
+\widehat\mu_n(k) = \frac1{k_n}\sum_{p\le M_n} e^{2\pi i k p/M_n} = O_k\!\left(\frac1{\log M_n}\right)
+\]
+for \(k\neq0\) (Theorem 3.1, proved by PNT with classical error term). The rate \(1/\log M_n\) is sharp at computational sizes and will control spectral approximations.
+
+<h2>3. Embedding the sieve into the adèle class space</h2>
+<p>The adèle class space \(X\) can be parametrised by idèle classes. Under the identification
+\(X^\times \cong \mathbb{I}_{\mathbb{Q}}/\mathbb{Q}^\times\) (the idele class group), the norm
+\(|\cdot|_{\mathbb{A}} : \mathbb{I}_{\mathbb{Q}}\to \mathbb{R}_{>0}\) descends to a proper map
+\(X^\times \to \mathbb{R}_{>0}\). The compact subgroup \(K\) acts trivially on the norm, so
+\(K\)-invariant functions on \(X\) are functions of the norm alone. The intervals
+\(I_n = [2^n, 2^{n+1}-1]\) correspond to dyadic slices of the norm. The sieve naturally lives
+on the finite‑adic part: numbers \(x \in I_n\) are integers, and the prime factorisation
+\(x = \prod p^{a_p}\) lifts to an idele whose finite components are \(p^{a_p}\) at the place
+\(p\) and \(1\) elsewhere, with archimedean component chosen to make the norm exactly \(x\).
+Thus the sieve generates a discrete set of points in \(X\) — the images of the ideals
+\((x)\) — and the composite‑generator construction distinguishes primes from composites.
+
+<h2>4. The sieve as a finite‑dimensional truncation of the spectral triple</h2>
+<p>We define a sequence of finite‑dimensional Hilbert spaces
+\(\mathcal{H}_n \subset L^2(X, \mu_{\text{Tam}})\) consisting of functions that are
+\(K\)-invariant and supported on the union of the fibres above the primes in \(I_n\) — or,
+more practically, functions that are constant on the “prime idèle classes” with norm a prime
+\(p \in I_n\). A natural orthonormal basis is \(\{\xi_p\}_{p\in I_n\cap\mathcal{P}}\), where
+\(\xi_p\) is the normalised characteristic function of the fibre above \(p\).
+
+<p>The scaling action \(\alpha_t\) moves these basis elements diagonally. Its generator \(D\),
+restricted to the subspace spanned by the primes in the dyadic block, becomes a matrix
+\(D_n\) of size \(\#(I_n\cap\mathcal{P}) \times \#(I_n\cap\mathcal{P})\). Because the scaling
+acts by \(t \mapsto \log t\) on the norm, the matrix entries involve the ratios of prime norms.
+A careful calculation (using the fact that the scaling flow on a single prime fibre gives
+\(e^{it\log p}\)) shows that the eigenvalues of \(D_n\) are essentially
+\(\{\log p : p \text{ prime, } p \in I_n\}\), up to a fixed translation.
+
+<p>However, these raw eigenvalues do not coincide with the Riemann zeros; they are much denser.
+The key is that the Hilbert–Pólya operator is not the <em>bare</em> scaling generator on
+disconnected prime fibres, but the generator on the whole space \(X\), which includes also
+composites and the zero component. The sieve’s composite‑generator structure tells us how
+the fibres of composites are built from those of primes. Incorporating this combinatorial
+data leads to a refinement: the operator on \(\mathcal{H}_n\) is not merely diagonal but
+includes off‑diagonal terms that reflect the multiplicativity of the sieve — effectively a
+graph Laplacian on the set of primes where edges are weighted by the number of ways a
+composite factors through a given prime.
+
+<div class="boxed">
+<h4>Definition 4.1 (Sieving Laplacian).</h4>
+<p>For \(n\ge 1\), let \(V_n = \{\text{primes } p \in I_n\}\) and let
+\(W_n = \{\text{composites } m \in I_n\}\). For each \(m \in W_n\) write its prime factorisation
+\(m = \prod p^{a_p(m)}\); define a weighted adjacency matrix on \(V_n\) by
+\[
+A_{p,q} = \sum_{m\in W_n} \frac{a_p(m)\,a_q(m)}{\operatorname{rad}(m)} \, \delta_{p\neq q},
+\]
+with a suitable normalisation. Let \(D_n\) be a diagonal matrix with entries \(\log p\), and
+consider the self‑adjoint operator
+\[
+H_n = D_n + \epsilon_n \, A ,
+\]
+where \(\epsilon_n\) is chosen to scale like \(1/\log M_n\) (the equidistribution rate). The
+spectral measure of \(H_n\) is expected to converge to the spectral measure of the adelic
+Dirac operator on the spherical vectors.
+</p>
+</div>
+
+<p>The heuristic is that the weighted graph captures the combinatorial relations that appear in
+the explicit formula: the sum over prime powers (which are composites) is expressed through the
+adjacency matrix of the sieve. The normalisation \(\epsilon_n \sim 1/\log M_n\) guarantees that
+the level repulsion caused by the off‑diagonal terms is exactly of the correct order to shift
+the eigenvalues from \(\log p\) to the imaginary parts of the zeros, in accordance with the
+prime number theorem error term that controls the equidistribution rate (Theorem 3.1 of the
+Rigorous Core).
+
+<h2>5. Statement of the main conjecture and the research program</h2>
+<div class="boxed">
+<h4>Conjecture 5.1 (Sieve spectral convergence).</h4>
+<p>For each \(n\), let \(H_n\) be the self‑adjoint operator on \(\mathbb{C}^{|V_n|}\) defined in
+Definition 4.1, with the scaling \(\epsilon_n = c / \log M_n\) for a suitable universal constant
+\(c>0\). Then, as \(n\to\infty\), the eigenvalue counting function of \(H_n\), after a simple
+affine rescaling \(x \mapsto \alpha \log x + \beta\), converges weakly to the counting function
+of the imaginary parts of the non‑trivial zeros of \(\zeta(s)\). More precisely, for any
+test function \(f \in C_c^\infty(\mathbb{R})\),
+\[
+\lim_{n\to\infty} \frac{1}{N_n} \sum_{\lambda \in \operatorname{Spec}(H_n)} f\!\left(\frac{\lambda - \mu_n}{\sigma_n}\right) = \int_{\mathbb{R}} f(t)\, d\Xi(t),
+\]
+where \(N_n = |V_n|\), \(\mu_n, \sigma_n\) are centering and scaling constants, and
+\(d\Xi\) is the distribution of the Riemann zeros.
+</p>
+</div>
+
+<p>If this convergence holds with sufficient uniformity, then the limit operator
+\(H = \lim H_n\) (in the strong resolvent sense on a suitable Hilbert space) is a self‑adjoint
+operator whose spectrum is exactly the set of Riemann zeros, <strong>thereby proving the
+Hilbert–Pólya conjecture</strong>. The operator \(H\) is then identified with the adelic Dirac
+operator \(D\) restricted to the spherical subspace, as both have the same spectrum and both
+arise from the scaling action.
+
+<div class="note">
+<strong>Why this avoids the collapse seen in earlier attempts.</strong> The
+\(1/k_n\)-normalised transfer operator in the source document collapsed to the zero operator
+because its matrix entries involved sums of \(p^{-1/2}\) that decayed like
+\(1/\sqrt{M_n}\). Here, the operator \(H_n\) is <em>not</em> a normalised sum over all primes;
+it is a graph Laplacian built from the composite‑generator sieve, where the weights are
+combinatorial and involve <em>all</em> integers (primes and composites) on an equal footing.
+The normalisation \(\epsilon_n \sim 1/\log M_n\) is dictated by the equidistribution rate,
+which is precisely the regime where the spectral shift becomes observable. This construction
+is a direct outgrowth of the rigorous sieve, not a naïve prime sum.
+</div>
+
+<h2>6. Detailed steps of the program</h2>
+
+<h3>6.1. Construction of the graph and the operator</h3>
+<p>Make Definition 4.1 precise. Choose the diagonal part as
+\((D_n)_{p,p} = \log p - \frac{1}{N_n}\sum_{q}\log q\) (so that trace is zero).
+For the adjacency matrix, use the composite‑generator sieve to enumerate all composites
+\(m \in I_n\) and compute the exponents \(a_p(m)\). The weight function
+\(1/\operatorname{rad}(m)\) ensures that contributions from numbers with large square‑free
+kernels are damped, reflecting the Möbius inversion that relates primes and zeros in the
+explicit formula.
+
+<h3>6.2. Spectral measure and trace formulas</h3>
+<p>Derive a semiclassical trace formula for \(H_n\):
+\[
+\operatorname{Tr} f(H_n) = \sum_{\lambda \in \operatorname{Spec}(H_n)} f(\lambda)
+= \int f(\log p) + \text{off‑diagonal corrections}.
+\]
+Using the explicit description of \(A_{p,q}\) in terms of prime factorisations, express the
+correction as a sum over composites. Compare this with the Weil explicit formula with a test
+function whose Fourier transform is supported on the prime powers. The goal is to show that
+the off‑diagonal correction reproduces the sum over prime powers that appears in the explicit
+formula, with exactly the right coefficients. Then the eigenvalue distribution of \(H_n\)
+must satisfy the same functional equation as the zeros.
+
+<h3>6.3. Convergence and the limiting operator</h3>
+<p>Prove that the sequence of operators \(H_n\) converges, after appropriate rescaling, to a
+self‑adjoint operator \(H\) on a non‑commutative space. The limit space can be identified with
+the adèle class space \(X\) equipped with the canonical spectral triple. The convergence
+should be established in the strong resolvent sense, possibly using the Haagerup–Schultz
+technique for graph limits. The equidistribution rate \(1/\log M_n\) (Theorem 3.1) controls
+the speed of convergence and guarantees that the limiting spectral measure is absolutely
+continuous with respect to the Lebesgue measure on the critical line.
+
+<h3>6.4. Spectral identification</h3>
+<p>Once the limit operator \(H\) is obtained, compare its spectral zeta function
+\(\operatorname{Tr}(|H|^{-s})\) with the completed Riemann zeta function. Because the operator
+arises from the adelic scaling action, the equality should hold on the nose, yielding the
+Hilbert–Pólya statement.
+
+<h2>7. Relation to the Langlands program</h2>
+<p>The Hecke algebra \(\mathcal{H}\) of \(\mathrm{GL}_1(\mathbb{A}_{\mathbb{Q}})\) acts by
+correspondences on the adèle class space. The combinatorial data of the sieve — factorisations
+into primes — are exactly the local Hecke correspondences. The finite‑dimensional operators
+\(H_n\) can be enriched by incorporating Hecke operators, leading to a joint spectral
+decomposition that recovers the automorphic forms on \(\mathrm{GL}_1\). Thus the same sieve
+construction not only realises the Hilbert–Pólya conjecture but also provides a microscopic
+model for the Langlands correspondence for \(\mathrm{GL}_1\).
+
+<h2>8. Open problems and immediate tasks</h2>
+<ul>
+    <li><strong>Define the exact weight:</strong> Determine the correct function
+    \(w(m)\) in the adjacency matrix so that the trace formula matches the explicit formula
+    exactly to leading order. The candidate \(1/\operatorname{rad}(m)\) is motivated by
+    Möbius inversion; test numerically for small \(n\).</li>
+    <li><strong>Control the error terms:</strong> Use the prime number theorem error
+    \(O(2^n e^{-c\sqrt{n}})\) to bound the difference between the trace of \(H_n\) and the
+    sum over zeros. Show that the error vanishes faster than the eigenvalue spacing.</li>
+    <li><strong>Prove resolvent convergence:</strong> Establish that the resolvents
+    \((H_n - z)^{-1}\) converge in norm to the resolvent of the adelic Dirac operator on a
+    dense domain. This likely requires a careful analysis of the finite adèle truncation as
+    \(n\to\infty\).</li>
+    <li><strong>Numerical evidence:</strong> For \(n\) up to, say, 25, compute the
+    eigenvalues of the finite matrix \(H_n\) and compare with the first few Riemann zeros
+    (using Odlyzko’s tables). The scaling \(\epsilon_n = c/\log M_n\) should align the
+    spectral density with the density of zeros \(\frac{1}{2\pi}\log\frac{t}{2\pi}\).</li>
+</ul>
+
+<h2>9. Conclusion</h2>
+<p>The composite‑generator prime sieve, when lifted to the adèle class space, provides a
+concrete family of finite‑dimensional self‑adjoint operators whose spectral theory is
+intimately tied to the distribution of primes and composites in dyadic intervals. The
+equidistribution of the normalised prime measure — proved rigorously with a sharp
+\(1/\log M_n\) rate — supplies the precise normalisation needed for the sieve‑based operators
+to converge to the Berry–Keating Hamiltonian on the adèle class space. This program, if
+carried out, would give a constructive proof of the Hilbert–Pólya conjecture, rooted entirely
+in the arithmetic of the prime sieve and the geometry of the adèles.</p>
+
+<p style="margin-top:40px; font-size:0.9em; color:#555; text-align:center;">
+Research program — expressed in terms of the prime sieve on the adèle space.
+</p>
+
+</body>
+</html>

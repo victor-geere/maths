@@ -3,7 +3,7 @@
 *Companion to [path.md](path.md) (the corrected proof path) and [implementation.md](implementation.md)
 (the corrected constructions and numerical protocol). Started 5 July 2026.*
 
-*Rigour policy (repo convention, [CLAUDE.md](../../CLAUDE.md)): every claim below is tagged
+*Rigour policy (repo convention, [CLAUDE.md](../CLAUDE.md)): every claim below is tagged
 **proven** / **conditional** / **RH-equivalent** / **heuristic**. Refutations of our own material
 are recorded as positive findings, per the precedent of [../flawed/](../flawed/) and the
 Phase 3–4 corrections in [../adele/](../adele/).*
@@ -113,7 +113,7 @@ counting function is forbidden as evidence* — it manufactures the answer. Hone
 raw pole angles, counting-function fluctuations, pointwise determinant values against
 $\xi(s)$ computed independently (mpmath), and gap statistics on raw data. Same failure class as
 N2's normalized-kernel degeneracy in
-[../barry-keating/research-findings.md](../barry-keating/research-findings.md) §3: an operation
+[../berry-keating/research-findings.md](../berry-keating/research-findings.md) §3: an operation
 that erases the arithmetic content while keeping the cosmetic shape of a comparison.
 
 ### 2.3 D3: misstatements of classical theory in the prose artifacts — **proven corrections**
@@ -138,7 +138,7 @@ that erases the arithmetic content while keeping the cosmetic shape of a compari
   $\sigma(|D|) = \{\gamma_\rho\}$ then $\mathrm{Tr}\,|D|^{-s}$ is Voros' *secondary* zeta
   $Z(s) = \sum \gamma_j^{-s}$, a different function with different singularities. Already
   catalogued as a standing distinction in
-  [../barry-keating/research-findings.md](../barry-keating/research-findings.md) §5.3. The
+  [../berry-keating/research-findings.md](../berry-keating/research-findings.md) §5.3. The
   correct determinant-level target is $\det\nolimits_\zeta(D - s)$-style (zeros as zeros), i.e.
   C1 of [path.md](path.md).
 - **M4 (Connes 1999 overclaim).** closed-form §2 says the adelic operator's spectrum "*is* the
@@ -246,7 +246,7 @@ formality. *Significance:* the folder now has falsification machinery that runs,
 success/failure criteria written down *before* the data.
 
 **[notes.md](notes.md)** (this file) — the audit trail and significance map, per the
-[worksheet.md](../barry-keating/worksheet.md) precedent.
+[worksheet.md](../berry-keating/worksheet.md) precedent.
 
 ---
 
@@ -432,7 +432,7 @@ comes from self-adjointness at every stage.
 
 ### Dump 5 — 5 Jul 2026, pivot: the eigenvalue-level program gets its own folder
 
-- New charter written: [../prime-sieve-continued/research-plan.md](../prime-sieve-continued/research-plan.md)
+- New charter written: [../research-plan.md](../research-plan.md)
   — the eigenvalue$\to\pm\gamma$ program, split off so this folder keeps the determinant level
   (G1–G6) and `../adele/` keeps the trace level. Trigger: a parallel-session triage of
   [closed-form.md](closed-form.md)'s five frameworks — only #2 (Connes' $D$) and #5 ($H_n$)
@@ -447,7 +447,7 @@ comes from self-adjointness at every stage.
 - Alternative routes noted, not taken now: full norm-resolvent windows (E3a — expected
   wall-adjacent); Krein-space reformulations (category change, Meyer detector applies).
 - Still queued from the morning instruction: gate G1 (weighted locus theorem → `gate-1.md`),
-  folder self-containment (`imports/` for `../adele/`, `../barry-keating/` references), and
+  folder self-containment (`imports/` for `../adele/`, `../berry-keating/` references), and
   closed-form.md Part II. Recon done; the G1 proof skeleton (incidence/Schur argument for the
   resolvent-form identity; Herglotz per-edge partial fractions ⇒ annulus
   $\big|\,|z| - \sqrt{\langle d^{(2)}\rangle_\psi}\,\big| \le w_{\max}$ for non-real spectrum)
@@ -455,7 +455,7 @@ comes from self-adjointness at every stage.
 
 ### Dump 6 — 5 Jul 2026, evaluation: "greedy harmonic decomposition" proposal (rejected route)
 
-- Proposal evaluated for [../prime-sieve-continued/research-plan.md](../prime-sieve-continued/research-plan.md):
+- Proposal evaluated for [../research-plan.md](../research-plan.md):
   $\delta_n(\theta) = \Theta(\theta - \theta_n - \alpha_n)$, $\alpha_n = \pi/(n+2)$,
   $\theta_{n+1} = \theta_n + \delta_n\alpha_n$, claimed to give a monotone nested family
   $\mathcal S(\theta)$ with counting $(\theta/\pi)\ln N + O(1)$.

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Composite-Generator Prime Sieve: Rigorous Core</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Georgia, "Times New Roman", serif;
+            max-width: 1080px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.75;
+            color: #000;
+            background: #fff;
+        }
+        h1,h2,h3,h4 { font-family: "Helvetica Neue", Arial, sans-serif; color:#000; }
+        h1 { text-align:center; font-size:1.8em; margin-bottom:0.2em; }
+        .lemma {
+            background: #f8f8ff; padding:16px; border-left:5px solid #003399;
+            margin:22px 0;
+        }
+        .proof { margin-left: 20px; margin-bottom: 20px; }
+        .boxed { border: 1px solid #999; padding: 14px; margin: 20px 0; background: #fafafa; }
+        .note  { background:#fef9e7; padding:14px; border-left:4px solid #b8860b; margin:18px 0; }
+        table { border-collapse: collapse; width:100%; margin:20px 0; }
+        th, td { border:1px solid #aaa; padding:7px; text-align:left; vertical-align:top; }
+        code, pre { background:#f5f5f5; border:1px solid #ccc; border-radius:4px; }
+        pre { padding:12px; overflow-x:auto; }
+        .tag { font-family:"Helvetica Neue",Arial,sans-serif; font-size:0.78em; font-weight:bold;
+               padding:1px 7px; border-radius:9px; white-space:nowrap; }
+        .t-proven { background:#e6f4ea; color:#1a7f37; border:1px solid #1a7f37; }
+        .small { font-size:0.9em; color:#444; }
+    </style>
+</head>
+<body>
+
+<h1>The Composite-Generator Prime Sieve<br>Rigorous Core</h1>
+<p style="text-align:center;"><em>Research note — 3 July 2026</em></p>
+
+<div class="note">
+<strong>Provenance and scope.</strong> This document extracts the rigorous content of
+<a href="../flawed/barry-keating-hamiltonian-sieve.html">barry-keating-hamiltonian-sieve.html</a>
+— namely its §§2–3: the composite-generator sieve, the normalised prime measure, and the
+equidistribution lemma — and completes the proofs. The source's remaining sections (its
+transfer operator, finite-stage operators, spectral identification, limiting characteristic
+function, de Branges construction, and adelic sketch, §§4–11) are <em>not</em> reproduced:
+their central claims are either ill-posed as stated (a multiplication operator credited with
+eigenvectors it does not have), degenerate (the \(1/\pi(M_n)\)-normalised transfer sum tends to
+zero uniformly — see the one-line estimate in §4 below), or asserted without proof. Everything
+that appears below is <span class="tag t-proven">proven</span>, with complete proofs on the
+page, and is verified numerically in §5. This document is self-contained.
+</div>
+
+<h2>1. The sieve</h2>
+
+<div class="boxed">
+<h4>Definition 1.1 (composite generator).</h4>
+<p>For \(n \ge 1\) let \(I_n = [2^n,\, 2^{n+1}-1]\), let \(\mathcal P_n\) be the set of primes
+\(< 2^n\), and define
+\[
+G_n = \{\, x \in I_n \;:\; x = p_1 p_2 \cdots p_k,\ p_i \in \mathcal P_n,\ k \ge 2 \,\},
+\]
+where the product is over a <em>multiset</em> of primes (repetitions allowed). Write
+\(M_n = 2^{n+1}-1\) and \(k_n = \pi(M_n)\).</p>
+</div>
+
+<div class="lemma">
+<h4>Lemma 1.2 (sieve correctness). <span class="tag t-proven">proven</span></h4>
+<p>\(G_n\) is exactly the set of composite numbers in \(I_n\). Consequently
+\(I_n \setminus G_n\) is the set of primes in \(I_n\), and by induction all primes
+\(\le M_n\) are known after stage \(n\).</p>
+</div>
+<div class="proof">
+<p><strong>Proof.</strong> A product of \(k \ge 2\) primes is composite, so
+\(G_n \subseteq \{\text{composites in } I_n\}\). Conversely, let \(x \in I_n\) be composite and
+let \(x = q_1 q_2 \cdots q_k\) be its prime factorisation (\(k \ge 2\), multiplicities counted).
+For each \(i\), the complementary factor \(m = \prod_{j \ne i} q_j\) is an integer \(\ge 2\), so
+\[
+q_i = \frac{x}{m} \le \frac{x}{2} < \frac{2^{n+1}}{2} = 2^n,
+\]
+i.e. \(q_i \in \mathcal P_n\). Hence \(x \in G_n\). For the induction: \(\mathcal P_1 = \emptyset\)
+declares \(I_1 = \{2,3\}\) prime; and if the primes \(< 2^n\) are known, stage \(n\) generates all
+composites in \(I_n\), exposing the primes in \(I_n\) as the gaps, which extends the known list
+to all primes \(< 2^{n+1}\). \(\blacksquare\)</p>
+<p class="small"><em>Remark.</em> Repetitions in the multiset are necessary: \(4 = 2\cdot2 \in I_2\)
+has no representation as a product of distinct primes below \(4\). The source states the sieve
+with a bare product \(p_1p_2\cdots p_k\); the multiset reading is the correct one and is what any
+implementation does anyway.</p>
+</div>
+
+<div class="lemma">
+<h4>Proposition 1.3 (how many gaps: dyadic prime counts). <span class="tag t-proven">proven</span></h4>
+<p>As \(n \to \infty\),
+\[
+\#\{\text{primes in } I_n\} \;=\; \frac{2^n}{n\log 2}\,\big(1 + O(1/n)\big),
+\qquad
+k_n = \pi(M_n) \sim \frac{M_n}{\log M_n}.
+\]</p>
+</div>
+<div class="proof">
+<p><strong>Proof.</strong> The second statement is the prime number theorem. For the first, PNT
+with classical error gives \(\pi(x) = \mathrm{Li}(x) + O\big(x\,e^{-c\sqrt{\log x}}\big)\), and
+substituting \(t = 2^n u\),
+\[
+\mathrm{Li}(2^{n+1}) - \mathrm{Li}(2^n)
+= \int_{2^n}^{2^{n+1}} \frac{dt}{\log t}
+= \frac{2^n}{n\log 2}\int_1^2 \frac{du}{1 + \frac{\log u}{n\log 2}}
+= \frac{2^n}{n\log 2}\big(1 + O(1/n)\big),
+\]
+while the PNT error terms are \(O(2^n e^{-c\sqrt{n}})\), negligible against \(2^n/n\).
+\(\blacksquare\)</p>
+<p class="small"><em>Reading.</em> The sieve's "gaps" are not sparse accidents: each dyadic block
+contributes \(\asymp 2^n/n\) new primes. The \(1 + O(1/n)\) correction is visible at
+computational sizes (§5, table B: the normalised ratio climbs \(0.94 \to 0.98\) between
+\(n = 12\) and \(n = 22\)).</p>
+</div>
+
+<h2>2. The normalised prime measure</h2>
+
+<div class="boxed">
+<h4>Definition 2.1.</h4>
+<p>On the circle \(\mathbb T = [0,1)\) define the empirical probability measure of the
+normalised primes and its Fourier coefficients at integer frequencies:
+\[
+\mu_n = \frac1{k_n}\sum_{p \le M_n} \delta_{\{p/M_n\}},
+\qquad
+\widehat\mu_n(k) = \int_{\mathbb T} e^{2\pi i k t}\, d\mu_n(t)
+= \frac1{k_n}\sum_{p \le M_n} e^{2\pi i k p/M_n}, \quad k \in \mathbb Z.
+\]</p>
+</div>
+<p class="small">Only integer frequencies \(k\) are Fourier coefficients of a measure on
+\(\mathbb T\); the source occasionally writes \(\widehat\mu_n(\xi)\) with unrestricted \(\xi\),
+which should be read as the exponential-sum function of a real variable, not as a Fourier
+coefficient. Nothing below needs non-integer frequencies.</p>
+
+<h2>3. Equidistribution</h2>
+
+<div class="boxed">
+<h4>Theorem 3.1 (vague convergence to Lebesgue, with rate). <span class="tag t-proven">proven</span></h4>
+<p>For each fixed \(k \in \mathbb Z \setminus \{0\}\),
+\[
+\widehat\mu_n(k) = O_k\!\left(\frac{1}{\log M_n}\right) \longrightarrow 0,
+\]
+and \(\widehat\mu_n(0) = 1\). Consequently \(\mu_n \to\) Lebesgue measure on \(\mathbb T\)
+in the weak-* topology.</p>
+</div>
+<div class="proof">
+<p><strong>Proof.</strong> Fix \(k \ne 0\) and write \(M = M_n\), \(e(x) = e^{2\pi i x}\).
+By Riemann–Stieltjes summation against the prime-counting function,
+\[
+S := \sum_{p \le M} e\!\left(\frac{kp}{M}\right) = \int_{2^-}^{M} e\!\left(\frac{kt}{M}\right) d\pi(t),
+\qquad \pi(t) = \mathrm{Li}(t) + E(t),
+\]
+with \(E(t) \ll t\,e^{-c\sqrt{\log t}}\) (prime number theorem with the classical
+de la Vallée Poussin error). The error part contributes, after integrating by parts,
+\[
+\int_{2}^{M} e\!\left(\frac{kt}{M}\right) dE(t)
+\;\ll\; |E(M)| + |E(2)| + \frac{2\pi|k|}{M}\int_2^M |E(t)|\,dt
+\;\ll\; (1+|k|)\,M e^{-c\sqrt{\log M}},
+\]
+using \(\int_2^M |E(t)|\,dt \ll M^2 e^{-c\sqrt{\log M}}\) (the last dyadic block dominates).
+For the main part substitute \(t = Ms\):
+\[
+\int_{2}^{M} \frac{e(kt/M)}{\log t}\,dt = M\int_{2/M}^{1} \frac{e(ks)}{\log(Ms)}\,ds .
+\]
+The range \(s \le M^{-1/2}\) contributes at most \(M \cdot M^{-1/2}/\log 2 = O(\sqrt M)\).
+On \(s \ge M^{-1/2}\), where \(|\log s| \le \tfrac12\log M\), expand
+\[
+\frac{1}{\log(Ms)} = \frac{1}{\log M}\left(1 - \frac{\log s}{\log M} + O\!\left(\frac{\log^2 s}{\log^2 M}\right)\right)
+\]
+uniformly. The first term integrates to \(O(\sqrt M)\) because
+\(\int_0^1 e(ks)\,ds = 0\) exactly for integer \(k \ne 0\) (only the truncation at
+\(s = M^{-1/2}\) survives). The second term is \(\ll_k M/\log^2 M\), since
+\(\int_0^1 |\log s|\,ds = 1\). The third is \(\ll M/\log^3 M\). Altogether
+\(S \ll_k M/\log^2 M\), and dividing by \(k_n \sim M/\log M\) gives
+\(\widehat\mu_n(k) \ll_k 1/\log M\). Since trigonometric polynomials are dense in
+\(C(\mathbb T)\) and the \(\mu_n\) are probability measures, Weyl's criterion upgrades
+coefficientwise convergence \(\widehat\mu_n(k) \to \delta_{k,0}\) to weak-* convergence to
+Lebesgue measure. \(\blacksquare\)</p>
+</div>
+
+<div class="note">
+<h4>Remark 3.2 (why the source's cited bound cannot be used).</h4>
+<p>The source derives Theorem 3.1 in one line from "Vinogradov's bound
+\(\sum_{p\le x} e(\alpha p) \ll_A x/\log^A x\) for \(0 < |\alpha| \le \tfrac12\)". No such bound
+holds for all \(\alpha\) in that range: at a fixed rational \(\alpha = a/q\) with \((a,q)=1\),
+splitting the primes into reduced residue classes mod \(q\) and applying the prime number
+theorem in arithmetic progressions gives
+\[
+\sum_{p \le x} e\!\left(\frac{ap}{q}\right)
+= \sum_{\substack{r \bmod q \\ (r,q)=1}} e\!\left(\frac{ar}{q}\right) \pi(x;q,r) + O(q)
+= \frac{c_q(a)}{\varphi(q)}\,\frac{x}{\log x}\,(1+o(1)),
+\]
+where \(c_q(a) = \mu(q)\) is the Ramanujan sum. For \(q = 3\) this is
+\(-\tfrac12\,x/\log x\) — of full order \(x/\log x\), not \(o(x/\log^A x)\). Vinogradov-type
+savings require \(\alpha\) on a minor arc; the frequencies \(k/M_n\) appearing here are rationals
+(with large denominator \(M_n/\gcd(k,M_n)\), which is why the <em>theorem</em> is nevertheless
+true), and the PNT-with-partial-summation route above is the correct proof. The rate
+\(O_k(1/\log M_n)\) obtained is sharp up to constants at computational sizes (§5, table C).</p>
+</div>
+
+<h2>4. What is omitted, and the one-line reason</h2>
+<p>The source proceeds to build a "transfer operator"
+\((\mathcal T_n a)(\gamma) = \frac1{k_n}\sum_{p\le M_n} a_p\, p^{-1/2+i\gamma}\) and, on top of
+it, finite-stage operators and a limiting spectral identification. None of that is reproduced
+here. Beyond the ill-posed operator definitions, the normalisation itself is degenerate: for any
+bounded coefficients \(\|a\|_\infty \le 1\) and every real \(\gamma\),
+\[
+\big|(\mathcal T_n a)(\gamma)\big| \;\le\; \frac1{k_n}\sum_{p \le M_n} p^{-1/2}
+\;\sim\; \frac{2\sqrt{M_n}/\log M_n}{M_n/\log M_n} \;=\; \frac{2}{\sqrt{M_n}} \;\longrightarrow\; 0,
+\]
+uniformly on \(\mathbb R\) (the middle estimate is partial summation against
+Proposition 1.3's counting). Whatever limit theory one hopes to attach to
+\(\mathcal T_n\), its uniform limit on the real line is the zero operator; the sections of the
+source that assume otherwise are omitted for that reason.</p>
+
+<h2>5. Numerical verification</h2>
+<p class="small">Exact prime enumeration by Eratosthenes sieve; double-precision sums (entirely
+adequate at these magnitudes). All three checks verify statements <em>proved</em> above; they are
+correctness checks on the formulas, not evidence for anything unproven.</p>
+
+<h4>A — Lemma 1.2: largest prime factor of any composite in \(I_n\) is below \(2^n\)</h4>
+<table>
+<tr><th>\(n\)</th><th>max prime factor over composites in \(I_n\)</th><th>bound \(2^n\)</th></tr>
+<tr><td>10</td><td>1021</td><td>1024</td></tr>
+<tr><td>13</td><td>8191</td><td>8192</td></tr>
+<tr><td>16</td><td>65521</td><td>65536</td></tr>
+</table>
+<p class="small">(The observed maxima are the largest primes below \(2^n\), attained by
+\(x = 2q\) — the extremal case \(q = x/2\) of the proof.)</p>
+
+<h4>B — Proposition 1.3: \(\#\{\text{primes in } I_n\}\cdot n\log 2\,/\,2^n \to 1\)</h4>
+<table>
+<tr><th>\(n\)</th><th>primes in \(I_n\)</th><th>normalised ratio</th></tr>
+<tr><td>12</td><td>464</td><td>0.9422</td></tr>
+<tr><td>16</td><td>5709</td><td>0.9661</td></tr>
+<tr><td>19</td><td>38635</td><td>0.9705</td></tr>
+<tr><td>22</td><td>268216</td><td>0.9752</td></tr>
+</table>
+
+<h4>C — Theorem 3.1: \(|\widehat\mu_n(k)|\) decays like \(1/\log M_n\)</h4>
+<table>
+<tr><th>\(n\) (so \(M_n = 2^{n+1}-1\))</th><th>\(k\)</th><th>\(|\widehat\mu_n(k)|\)</th><th>\(|\widehat\mu_n(k)|\cdot\log M_n\)</th></tr>
+<tr><td>13</td><td>1</td><td>0.057809</td><td>0.5610</td></tr>
+<tr><td>13</td><td>2</td><td>0.037972</td><td>0.3685</td></tr>
+<tr><td>13</td><td>5</td><td>0.016534</td><td>0.1604</td></tr>
+<tr><td>17</td><td>1</td><td>0.042610</td><td>0.5316</td></tr>
+<tr><td>17</td><td>2</td><td>0.027573</td><td>0.3440</td></tr>
+<tr><td>17</td><td>5</td><td>0.013810</td><td>0.1723</td></tr>
+<tr><td>21</td><td>1</td><td>0.034028</td><td>0.5189</td></tr>
+<tr><td>21</td><td>2</td><td>0.021948</td><td>0.3347</td></tr>
+<tr><td>21</td><td>5</td><td>0.011740</td><td>0.1790</td></tr>
+</table>
+<p class="small">The raw coefficients shrink while the product with \(\log M_n\) is nearly
+constant for each fixed \(k\) (drifting slowly, consistent with the \(1/\log\) corrections in
+the proof) — exactly the proven rate, no faster.</p>
+
+<h2>6. Summary</h2>
+<p>The composite-generator sieve is correct (Lemma 1.2), quantitatively productive
+(Proposition 1.3), and the normalised prime measure it produces equidistributes on the circle
+with rate \(O_k(1/\log M_n)\) (Theorem 3.1, complete proof, sharp at computational sizes).
+This — no more and no less — is the rigorous content of the source document. Anything built on
+the \(1/k_n\)-normalised prime sums beyond measure-level statements collapses under the
+normalisation (§4); constructions that want an operator or a kernel from the primes must start
+from unnormalised, absolutely convergent objects instead.</p>
+
+<h2>References</h2>
+<p class="small">
+Source: <a href="../flawed/barry-keating-hamiltonian-sieve.html"><em>A Constructive Arithmetic
+Realization of the Berry–Keating Hamiltonian via Iterative Sieves and Oscillator
+Projections</em></a>, §§2–3 (this note reproduces and completes only those sections) &middot;
+H. L. Montgomery, R. C. Vaughan, <em>Multiplicative Number Theory I</em> (prime number theorem
+with classical error term) &middot;
+H. Davenport, <em>Multiplicative Number Theory</em>, 3rd ed. (PNT in arithmetic progressions;
+Ramanujan sums) &middot;
+L. Kuipers, H. Niederreiter, <em>Uniform Distribution of Sequences</em> (Weyl's criterion) &middot;
+R. C. Vaughan, <em>The Hardy–Littlewood Method</em> (major/minor arcs, for Remark 3.2).
+</p>
+
+<p style="margin-top:40px; font-size:0.9em; color:#555; text-align:center;">
+End — the sieve, the measure, and the equidistribution rate: proven, verified, and nothing else.
+</p>
+
+</body>
+</html>

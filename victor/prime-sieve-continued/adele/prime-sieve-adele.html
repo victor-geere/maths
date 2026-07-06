@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Prime Sieve on the Adèle Class Space – Phased Research Plan</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Georgia, "Times New Roman", serif;
+            max-width: 1080px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.75;
+            color: #000;
+            background: #fff;
+        }
+        h1,h2,h3 { font-family: "Helvetica Neue", Arial, sans-serif; color:#000; }
+        h1 { text-align:center; font-size:1.8em; margin-bottom:0.2em; }
+        h2 { border-bottom:2px solid #003399; padding-bottom:4px; margin-top:50px; }
+        h3 { margin-top:30px; font-size:1.2em; color:#003399; }
+        .boxed { border:1px solid #999; padding:14px; margin:20px 0; background:#fafafa; }
+        .phase { background:#f4f4ff; border-left:6px solid #003399; padding:12px 18px; margin:30px 0; }
+        .step { margin-left:30px; margin-bottom:15px; }
+        .step strong { color:#003399; }
+        .note { background:#fef9e7; padding:14px; border-left:4px solid #b8860b; margin:18px 0; }
+        pre { background:#f5f5f5; border:1px solid #ccc; padding:12px; overflow-x:auto; border-radius:4px; }
+        .small { font-size:0.9em; color:#444; }
+    </style>
+</head>
+<body>
+
+<h1>A Prime Sieve on the Adèle Class Space<br>Phased Research Plan</h1>
+<p style="text-align:center;"><em>Concrete steps toward the Hilbert–Pólya conjecture</em></p>
+
+<div class="note">
+<strong>Overall objective.</strong> Construct a self‑adjoint operator whose spectrum coincides with the non‑trivial zeros of the Riemann zeta function, using the composite‑generator prime sieve embedded in the geometry of the adèle class space \(X = \mathbb{A}_{\mathbb{Q}}/\mathbb{Q}^\times\). The approach proceeds through five phases, each with precise, verifiable tasks.
+</div>
+
+<!-------------------------------------------------------------------->
+<div class="phase">
+<h2>Phase 1 · The Sieve on the Adèles: Rigorous Groundwork</h2>
+<p><strong>Goal:</strong> Embed the dyadic composite‑generator sieve into the adèle class space and establish the precise combinatorial data that will feed the finite‑dimensional operators.</p>
+
+<h3>Step 1.1 – Lift the integer sieve to idèle classes</h3>
+<div class="step">
+<strong>Task:</strong> For each integer \(m \ge 2\), construct an explicit representative \(\mathbf{a}(m) \in \mathbb{A}_{\mathbb{Q}}^\times\) such that its idele norm \(|\mathbf{a}(m)|_{\mathbb{A}} = m\) and its image in \(X^\times = \mathbb{I}_{\mathbb{Q}}/\mathbb{Q}^\times\) depends only on the prime factorisation of \(m\). Show that the composite‑generator sieve of Definition 2.1 (dyadic block) gives a partition of the set of idèle classes of norm in \(I_n\) into “prime” classes and “composite” classes.
+</div>
+
+<h3>Step 1.2 – Parametrise \(K\)-invariant functions on the norm fibres</h3>
+<div class="step">
+<strong>Task:</strong> Prove that a function on \(X\) that is invariant under the maximal compact subgroup \(K = \widehat{\mathbb{Z}}^\times \times \{\pm 1\}\) is completely determined by its values on the set of prime idèle classes (one per rational prime). For a fixed dyadic block \(I_n\), the restriction to the norm slice \([2^n, 2^{n+1}-1]\) is a finite‑dimensional vector space spanned by the characteristic functions \(\xi_p\) of the prime fibres (\(p\in I_n\)).
+</div>
+
+<h3>Step 1.3 – Compute the scaling action in the prime basis</h3>
+<div class="step">
+<strong>Task:</strong> Write the generator \(D\) of the scaling flow \(\alpha_t\) on the subspace spanned by \(\{\xi_p\}_{p\in I_n\cap\mathcal{P}}\). Show that, up to a unitary transformation, \((D\xi_p)(x) = (\log p)\,\xi_p(x)\) plus a “leakage” term into composite fibres. The leakage coefficients are expressed in terms of the factorisation of composites.
+</div>
+
+<h3>Step 1.4 – Quantify the leakage with the sieve data</h3>
+<div class="step">
+<strong>Task:</strong> For each composite \(m \in I_n\) with prime exponents \(a_p(m)\), compute the inner product \(\langle \alpha_t \xi_p, \xi_m\rangle\) and extract the infinitesimal contribution. Show that the off‑diagonal part of the scaling generator, when restricted to the prime basis, is a weighted adjacency matrix where the weight between distinct primes \(p,q\) is proportional to
+\[
+\sum_{m \in W_n} \frac{a_p(m) a_q(m)}{|\mathrm{rad}(m)|}\quad (\text{or a similarly motivated expression}).
+\]
+</div>
+
+<h3>Deliverable of Phase 1</h3>
+<p>A closed‑form description of the finite‑dimensional matrix \(H_n = D_n + \epsilon_n A_n\), with
+\[
+(D_n)_{p,p} = \log p - \frac{1}{|V_n|}\sum_{q}\log q,\qquad
+(A_n)_{p,q} = \sum_{m\in W_n} \frac{a_p(m)a_q(m)}{\mathrm{rad}(m)}\ (p\neq q),\quad (A_n)_{p,p}=0,
+\]
+and a clear statement of the scaling factor \(\epsilon_n\) (to be determined in Phase 2).</p>
+</div>
+
+<!-------------------------------------------------------------------->
+<div class="phase">
+<h2>Phase 2 · Spectral Calibration of the Finite‑Stage Operators</h2>
+<p><strong>Goal:</strong> Determine the normalisation \(\epsilon_n\) so that the eigenvalue distribution of \(H_n\) matches, in the large‑\(n\) limit, the density of Riemann zeros. Prove that the operator is self‑adjoint and analyse its spectral measure using trace formulae.</p>
+
+<h3>Step 2.1 – Self‑adjointness and basic spectrum</h3>
+<div class="step">
+<strong>Task:</strong> Verify that \(H_n\) is a real symmetric matrix, hence diagonalisable with real eigenvalues. Compute its moment generating function \(\operatorname{Tr}(e^{itH_n})\) and compare it with the sum \(\sum_{p\in V_n} e^{it\log p}\) plus an off‑diagonal correction. Express the correction as a sum over composites.
+</div>
+
+<h3>Step 2.2 – Semiclassical trace formula</h3>
+<div class="step">
+<strong>Task:</strong> Derive an exact trace identity:
+\[
+\operatorname{Tr} f(H_n) = \sum_{p\in V_n} f(\lambda_p^{(0)}) + \sum_{m\in W_n} c_m\, \widehat{f}(\log m) + \text{error},
+\]
+where \(\lambda_p^{(0)}\) are the unperturbed eigenvalues (rescaled logarithms of primes) and \(c_m\) are explicit coefficients coming from the adjacency matrix. The goal is to see the Weil explicit formula emerge: the sum over prime powers should appear naturally.
+</div>
+
+<h3>Step 2.3 – Choosing \(\epsilon_n\) from the equidistribution rate</h3>
+<div class="step">
+<strong>Task:</strong> Use the rigorous equidistribution rate \(\widehat\mu_n(k) = O_k(1/\log M_n)\) (Theorem 3.1 of the rigorous sieve note) to determine the scale at which the off‑diagonal perturbation influences the eigenvalue spacing. Heuristically, the effective perturbation strength must be \(\sim 1/\log M_n\) to shift the eigenvalues from the primes to the zeros. Set
+\[
+\epsilon_n = \frac{C}{\log M_n}
+\]
+and treat \(C\) as a universal constant to be fitted (or determined from the explicit formula).
+</div>
+
+<h3>Step 2.4 – Rescaling and unfolding</h3>
+<div class="step">
+<strong>Task:</strong> Apply an affine rescaling to the eigenvalues of \(H_n\):
+\[
+\widetilde\lambda = \frac{\lambda - \mu_n}{\sigma_n},
+\]
+where \(\mu_n\) is the mean of the diagonal entries and \(\sigma_n\) is chosen so that the asymptotic density of \(\widetilde\lambda\) is \(\frac{1}{2\pi}\log\frac{t}{2\pi}\) (the density of Riemann zeros). Prove that, with \(\epsilon_n = C/\log M_n\), the rescaled eigenvalues have the correct mean spacing to leading order.
+</div>
+
+<h3>Deliverable of Phase 2</h3>
+<p>An explicit conjecture for the constant \(C\) (possibly \(C=1\) or related to \(\log 2\)),
+backed by a formal matching of the trace formula with the Weil explicit formula.
+Numerical evidence for small \(n\) (up to \(n\approx 15\)) that the rescaled eigenvalue
+histogram approximates the Riemann zero distribution.</p>
+</div>
+
+<!-------------------------------------------------------------------->
+<div class="phase">
+<h2>Phase 3 · Convergence to the Adelic Dirac Operator</h2>
+<p><strong>Goal:</strong> Show that the sequence of finite‑dimensional operators \((H_n)\) converges, in a suitable topology, to the canonical Dirac operator \(D\) on the adèle class space \(X\), and that this convergence preserves the spectrum in the limit.</p>
+
+<h3>Step 3.1 – Embedding the finite spaces into \(L^2(X)\)</h3>
+<div class="step">
+<strong>Task:</strong> Construct a sequence of isometric embeddings \(J_n : \mathbb{C}^{|V_n|} \hookrightarrow L^2(X,\mu_{\mathrm{Tam}})^{K}\) such that \(J_n^* D J_n = H_n + \text{small correction}\). Prove that the correction vanishes in operator norm as \(n\to\infty\).
+</div>
+
+<h3>Step 3.2 – Strong resolvent convergence</h3>
+<div class="step">
+<strong>Task:</strong> Show that for every \(z \in \mathbb{C}\setminus\mathbb{R}\),
+\[
+\| (H_n - z)^{-1} - J_n^* (D - z)^{-1} J_n \| \to 0 .
+\]
+This requires estimating the off‑diagonal leakage from the finite prime set to the rest of the spectrum (composites and the continuous part). The error terms should be controlled by the equidistribution rate \(1/\log M_n\) and the prime number theorem error.
+</div>
+
+<h3>Step 3.3 – Norm‑resolvent estimates using the sieve</h3>
+<div class="step">
+<strong>Task:</strong> Write \((D - z)^{-1}\) as an integral kernel on \(X\) and restrict its domain to the subspace spanned by the prime fibres in the \(n\)-th block. Compare the matrix of this restriction with \((H_n - z)^{-1}\). The difference involves sums over composites that are omitted in the finite truncation. Bound these using the explicit formula and the known decay of correlations.
+</div>
+
+<h3>Step 3.4 – Identification of the limit operator</h3>
+<div class="step">
+<strong>Task:</strong> Once strong resolvent convergence is established, it follows that the spectrum of \(D\) on the spherical subspace is contained in the limit set of spectra of \(H_n\). Conversely, any eigenvalue of \(D\) is approximated by eigenvalues of \(H_n\). Conclude that the two spectra coincide.
+</div>
+
+<h3>Deliverable of Phase 3</h3>
+<p>A rigorous proof that \(\sigma(H_n) \to \sigma(D|_{\text{sph}})\) in the Hausdorff metric (after rescaling), assuming the main technical lemmas on leakage estimates. This reduces the Hilbert–Pólya conjecture to a precise combinatorial estimate on the adjacency matrix.</p>
+</div>
+
+<!-------------------------------------------------------------------->
+<div class="phase">
+<h2>Phase 4 · Spectral Identification with Zeta Zeros</h2>
+<p><strong>Goal:</strong> Prove that the limiting spectrum is exactly the set of non‑trivial zeros of \(\zeta(s)\), not just a superset or a subset.</p>
+
+<h3>Step 4.1 – Trace formula matches the Weil explicit formula</h3>
+<div class="step">
+<strong>Task:</strong> For the sequence \(H_n\), write the regularised trace of a test function \(g\):
+\[
+\sum_{\lambda \in \sigma(H_n)} g(\lambda) = \text{main term} + \text{composite sum} + o(1).
+\]
+Take the limit \(n\to\infty\) and show that the right‑hand side converges to the Weil explicit formula for \(\widehat{g}\) supported on the prime powers. Conclude that the limiting spectral measure satisfies the same distributional identity as the Riemann zeros.
+</div>
+
+<h3>Step 4.2 – Uniqueness of the spectral measure</h3>
+<div class="step">
+<strong>Task:</strong> Prove that any self‑adjoint operator with the same trace formula (for a sufficiently large class of test functions) must have the same spectrum as the zeros. This may require an argument using the functional equation and the fact that the spectral measure is determined by its Mellin transform.
+</div>
+
+<h3>Step 4.3 – Direct spectral zeta calculation</h3>
+<div class="step">
+<strong>Task:</strong> Compute \(\operatorname{Tr}(|H_n|^{-s})\) for \(n\) large, and show that it converges (after regularisation) to the completed Riemann zeta function \(\pi^{-s/2}\Gamma(s/2)\zeta(s)\). The regularisation involves subtracting the contribution of the zero mode and using the known heat kernel expansion on \(X\).
+</div>
+
+<h3>Deliverable of Phase 4</h3>
+<p>A complete proof that the Hilbert–Pólya conjecture holds, with the operator \(D\) (the limit of \(H_n\)) being the sought‑after self‑adjoint operator. The proof will be conditional on the convergence established in Phase 3 and the combinatorial estimates from Phases 1–2.</p>
+</div>
+
+<!-------------------------------------------------------------------->
+<div class="phase">
+<h2>Phase 5 · Explicit Construction and Numerical Validation</h2>
+<p><strong>Goal:</strong> Provide concrete, verifiable matrices \(H_n\) and numerical evidence that their eigenvalues converge to the Riemann zeros, and refine the constant \(C\) to high precision.</p>
+
+<h3>Step 5.1 – Build the matrix for \(n = 10\) to \(n = 25\)</h3>
+<div class="step">
+<strong>Task:</strong> Write a computer program that, for a given \(n\), enumerates all primes and composites in \(I_n\) (using the composite‑generator sieve) and assembles the matrix \(H_n\) of size \(\pi(2^{n+1}) - \pi(2^n)\). Store the exact combinatorial weights.
+</div>
+
+<h3>Step 5.2 – Diagonalise and compare with zeros</h3>
+<div class="step">
+<strong>Task:</strong> Compute the eigenvalues of \(H_n\) for \(n = 10, 12, 14, 16, 18, 20, 22, 24\) (the matrices will have sizes up to a few hundred thousand, still manageable with sparse methods). Apply the rescaling derived in Phase 2 and compare the histograms with the distribution of the first few hundred Riemann zeros (using e.g. Odlyzko’s tables).
+</div>
+
+<h3>Step 5.3 – Estimate the constant \(C\)</h3>
+<div class="step">
+<strong>Task:</strong> Vary \(C\) and measure the Kolmogorov–Smirnov distance between the empirical eigenvalue distribution and the Riemann zero distribution. Find the optimal \(C\) as \(n\) grows; hypothesise that \(C\) tends to a universal limit (possibly \(1\) or \(1/\log 2\)).
+</div>
+
+<h3>Step 5.4 – Error scaling analysis</h3>
+<div class="step">
+<strong>Task:</strong> Track the difference between the largest few eigenvalues and the first few zeros. Fit the error to a function of \(n\) and verify that it decays as predicted by the \(1/\log M_n\) rate. If the decay is too slow, adjust the weighting function \(w(m)\) (e.g., replace \(1/\operatorname{rad}(m)\) with something derived from the Möbius function).
+</div>
+
+<h3>Deliverable of Phase 5</h3>
+<p>A publicly available code repository and a paper containing numerical evidence that the
+finite‑stage operators reproduce the zeros to an accuracy that improves systematically with
+\(n\), providing strong support for the conjectured limit.</p>
+</div>
+
+<!-------------------------------------------------------------------->
+<h2>Summary of phases</h2>
+<table style="width:100%; border-collapse:collapse; margin:20px 0;">
+<tr style="background:#e6e6fa;">
+<th style="border:1px solid #999; padding:8px;">Phase</th>
+<th style="border:1px solid #999; padding:8px;">Title</th>
+<th style="border:1px solid #999; padding:8px;">Key Output</th>
+</tr>
+<tr>
+<td style="border:1px solid #999; padding:8px;">1</td>
+<td style="border:1px solid #999; padding:8px;">Sieve on the Adèles</td>
+<td style="border:1px solid #999; padding:8px;">Exact formula for \(H_n\)</td>
+</tr>
+<tr>
+<td style="border:1px solid #999; padding:8px;">2</td>
+<td style="border:1px solid #999; padding:8px;">Spectral Calibration</td>
+<td style="border:1px solid #999; padding:8px;">Scaling law \(\epsilon_n = C/\log M_n\)</td>
+</tr>
+<tr>
+<td style="border:1px solid #999; padding:8px;">3</td>
+<td style="border:1px solid #999; padding:8px;">Convergence to \(D\)</td>
+<td style="border:1px solid #999; padding:8px;">Strong resolvent limit</td>
+</tr>
+<tr>
+<td style="border:1px solid #999; padding:8px;">4</td>
+<td style="border:1px solid #999; padding:8px;">Spectral Identification</td>
+<td style="border:1px solid #999; padding:8px;">Proof that spectrum = zeros</td>
+</tr>
+<tr>
+<td style="border:1px solid #999; padding:8px;">5</td>
+<td style="border:1px solid #999; padding:8px;">Numerical Validation</td>
+<td style="border:1px solid #999; padding:8px;">Empirical convergence to RH zeros</td>
+</tr>
+</table>
+
+<p style="margin-top:40px; font-size:0.9em; color:#555; text-align:center;">
+Phased plan — from the prime sieve to the Hilbert–Pólya operator.
+</p>
+
+</body>
+</html>
