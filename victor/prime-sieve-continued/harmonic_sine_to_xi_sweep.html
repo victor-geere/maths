@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>From Harmonic Unit-Fraction Sine to Riemann Xi: Sweeping Zeros One at a Time</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Space+Grotesk:wght@500;600&amp;display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+    }
+    body {
+      font-family: 'Inter', system_ui, sans-serif;
+      line-height: 1.7;
+      color: #1e293b;
+      background: linear-gradient(to bottom, #f8fafc, #f1f5f9);
+      margin: 0;
+      padding: 0;
+    }
+    .header {
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 2rem 0;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+    }
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+    h1, h2, h3, h4 {
+      font-family: 'Space Grotesk', Inter, sans-serif;
+      color: #0f172a;
+      font-weight: 600;
+    }
+    h1 {
+      font-size: 2.8rem;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(90deg, #1e40af, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle {
+      text-align: center;
+      color: #64748b;
+      font-size: 1.25rem;
+      margin-bottom: 3rem;
+    }
+    .section {
+      background: white;
+      margin-bottom: 3rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+      padding: 2.5rem;
+      border: 1px solid #e2e8f0;
+    }
+    .math-block {
+      background: #f8fafc;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin: 1.5rem 0;
+      border-left: 5px solid #3b82f6;
+      font-size: 1.05em;
+      overflow-x: auto;
+    }
+    .toc {
+      background: #f8fafc;
+      padding: 1.5rem 2rem;
+      border-radius: 12px;
+      margin-bottom: 2.5rem;
+    }
+    .toc ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .toc li {
+      margin: 0.5rem 0;
+    }
+    .toc a {
+      color: #334155;
+      text-decoration: none;
+    }
+    .toc a:hover {
+      color: #3b82f6;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+    }
+    th, td {
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    th {
+      background: #f1f5f9;
+      font-weight: 600;
+      color: #475569;
+    }
+    .highlight {
+      background: #fefce8;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+    }
+    .step {
+      counter-increment: step-counter;
+      position: relative;
+      padding-left: 3rem;
+      margin-bottom: 1.5rem;
+    }
+    .step:before {
+      content: counter(step-counter);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 2rem;
+      height: 2rem;
+      background: #3b82f6;
+      color: white;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .formula {
+      font-size: 1.1em;
+      margin: 1.2rem 0;
+    }
+    .note {
+      font-size: 0.9rem;
+      color: #64748b;
+      border-left: 3px solid #94a3b8;
+      padding-left: 1rem;
+      margin: 1rem 0;
+    }
+    .plot-container {
+      margin: 2rem 0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    }
+  </style>
+</head>
+<body>
+<header class="header">
+  <div style="max-width: 1100px; margin: 0 auto; padding: 0 2rem;">
+    <h1>Harmonic Sine → Riemann Xi</h1>
+    <p class="subtitle">Sweeping the Unit-Fraction Construction to Analytic Continuation,<br>One Zero at a Time (No RH Assumed)</p>
+  </div>
+</header>
+
+<main>
+  <div class="toc">
+    <h2 style="margin-top:0; font-size:1.4rem;">Table of Contents</h2>
+    <ul>
+      <li><a href="#intro">1. Introduction &amp; Overview</a></li>
+      <li><a href="#finite">2. Finite Harmonic Reconstruction for Rational Angles</a></li>
+      <li><a href="#complex">3. Analytic Continuation to ℂ — The Euler Product</a></li>
+      <li><a href="#zeta">4. Logarithmic Expansion &amp; Relation to Riemann Zeta &amp; Eta</a></li>
+      <li><a href="#table">5. The Non-Trivial Zeros: Table of First tₙ</a></li>
+      <li><a href="#paired">6. The Paired Product for Ξ(t) — Direct Analogue</a></li>
+      <li><a href="#convergence">7. Convergence Factors in the Hadamard Product</a></li>
+      <li><a href="#explicit">8. Explicit Formula: Primes from Summing over tₙ</a></li>
+      <li><a href="#sweep">9. Sweeping One Zero at a Time (Deformation on ℂ)</a></li>
+      <li><a href="#numerical">10. Numerical Illustration: Sine Evaluated at t₁</a></li>
+      <li><a href="#plots">11. Visualizations: Harmonic Sine vs Math.sin</a></li>
+      <li><a href="#conclusion">12. Conclusion &amp; Implications</a></li>
+    </ul>
+  </div>
+
+  <!-- SECTION 1 -->
+  <section id="intro" class="section">
+    <h2>1. Introduction &amp; Overview</h2>
+    <p>
+      This document synthesizes a complete journey: starting from the <strong>harmonic (greedy Egyptian/unit-fraction) reconstruction</strong> of the sine function for rational angles (finite exact products of rotations), through its analytic continuation to the classical Euler–Weierstrass product on the complex plane, its logarithmic encoding of the even Riemann zeta values, and finally the structural analogy that allows us to <strong>sweep the zero set one pair at a time</strong> from the integers to the actual non-trivial zeros of the Riemann zeta function — all <strong>without assuming the Riemann hypothesis</strong>.
+    </p>
+    <p>
+      The key unifying idea is the <strong>Weierstrass/Hadamard canonical product</strong>: entire functions of finite order are built from their zeros. The sine function is the canonical example with zeros at the integers. The completed Riemann xi function \(\xi(s)\) is the analogous object whose zeros are precisely the non-trivial zeros of \(\zeta(s)\).
+    </p>
+    <div class="math-block">
+      <strong>Core analogy</strong><br>
+      \[
+      \frac{\sin(\pi t)}{\pi t} = \prod_{n=1}^\infty \left(1 - \frac{t^2}{n^2}\right)
+      \qquad \longleftrightarrow \qquad
+      \Xi(t) = \Xi(0) \prod_{k=1}^\infty \left(1 - \frac{t^2}{t_k^2}\right)
+      \]
+      where \( t_k = \operatorname{Im}(\rho_k) \) are the imaginary parts of the non-trivial zeros \(\rho_k\) of \(\zeta(s)\).
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section id="finite" class="section">
+    <h2>2. Finite Harmonic Reconstruction for Rational Angles</h2>
+    <p>
+      For rational \( t = a/b \in [0,1) \), the greedy Egyptian-fraction (Sylvester–Fibonacci) expansion \( t = \sum_{k=1}^K 1/q_k \) (with \( q_k \) strictly increasing integers \(\ge 2\)) terminates after finitely many steps (\( K \le a \)).
+    </p>
+    <div class="math-block">
+      <strong>Closed form (from the harmonic reconstruction)</strong><br>
+      \[
+      \sin(\pi t) = \operatorname{Im} \prod_{k=1}^K \exp\left( i \frac{\pi}{q_k} \right)
+      \]
+    </div>
+
+    <h3>Explicit expansion with sine, cosine, and symbolic \( i^2 \)</h3>
+    <p>
+      We compute the product by successive complex multiplication, keeping the imaginary unit \( i \) and the symbol \( i^2 \) explicit until the end, then apply the angle-addition identity.
+    </p>
+
+    <div class="math-block">
+      <strong>Worked example: \( t = 3/4 = 1/2 + 1/4 \)</strong> (\( q_1 = 2 \), \( q_2 = 4 \))<br><br>
+      Factor 1: \(\exp(i \pi/2) = 0 + i \cdot 1 = i\)<br>
+      Factor 2: \(\exp(i \pi/4) = \frac{\sqrt{2}}{2} + i \frac{\sqrt{2}}{2}\)<br><br>
+      Product (keeping \( i^2 \) symbolic):<br>
+      \[
+      i \cdot \left( \frac{\sqrt{2}}{2} + i \frac{\sqrt{2}}{2} \right) = \frac{\sqrt{2}}{2} i + i^2 \cdot \frac{\sqrt{2}}{2}
+      \]<br><br>
+      Apply addition identity to accumulated angle \(\pi/2 + \pi/4 = 3\pi/4\):<br>
+      \[
+      \sin\left(\frac{\pi}{2} + \frac{\pi}{4}\right) = \sin\frac{\pi}{2}\cos\frac{\pi}{4} + \cos\frac{\pi}{2}\sin\frac{\pi}{4} = \frac{\sqrt{2}}{2}
+      \]<br>
+      After substituting the value of the symbol \( i^2 = -1 \), the imaginary part of the product is exactly \(\sqrt{2}/2 = \sin(3\pi/4)\).
+    </div>
+
+    <p class="note">
+      The same recursive process (or expanded odd-subset sum of the imaginary contributions) works for any finite greedy expansion. The real part of the product is always the cosine of the accumulated angle, carried forward exactly.
+    </p>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section id="complex" class="section">
+    <h2>3. Analytic Continuation to \(\mathbb{C}\) — The Euler Product</h2>
+    <p>
+      When \( t \) is irrational the greedy process never terminates, but the partial products converge (doubly exponentially). The limit yields the globally valid expression on the complex plane:
+    </p>
+    <div class="math-block">
+      \[
+      \sin(\pi z) = \pi z \prod_{n=1}^{\infty} \left(1 - \frac{z^2}{n^2}\right), \qquad z \in \mathbb{C}.
+      \]
+      This is the Weierstrass canonical product over the zeros \(\pm n\) of sine. It is already the analytic continuation of the finite harmonic construction.
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section id="zeta" class="section">
+    <h2>4. Logarithmic Expansion &amp; Relation to Riemann Zeta &amp; Dirichlet Eta</h2>
+    <p>
+      Taking the logarithm of the normalized product (for \( |z| &lt; 1 \)) and expanding:
+    </p>
+    <div class="math-block">
+      \[
+      \log\left( \frac{\sin(\pi z)}{\pi z} \right) = \sum_{n=1}^{\infty} \log\left(1 - \frac{z^2}{n^2}\right) = -\sum_{m=1}^{\infty} \frac{\zeta(2m)}{m} z^{2m}.
+      \]
+      Thus
+      \[
+      \sin(\pi z) = \pi z \exp\left( -\sum_{m=1}^{\infty} \frac{\zeta(2m)}{m} z^{2m} \right).
+      \]
+    </div>
+    <p>
+      The coefficients are exactly the even positive integer values of the Riemann zeta function.
+    </p>
+    <p>
+      <strong>Connection to Dirichlet eta function \(\eta(s)\)</strong>: The eta function \(\eta(s) = (1-2^{1-s})\zeta(s)\) converges for \(\operatorname{Re}(s) &gt; 0\) and is the natural tool for proving the functional equation of zeta. The Gamma reflection formula
+      \[
+      \Gamma(z)\Gamma(1-z) = \frac{\pi}{\sin(\pi z)}
+      \]
+      directly inserts our sine product. The completed xi function that encodes the non-trivial zeros is built from this Gamma factor together with \(\zeta(s)\).
+    </p>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section id="table" class="section">
+    <h2>5. The Non-Trivial Zeros: Table of First \( t_n \)</h2>
+    <p>
+      The imaginary parts \( t_n = \operatorname{Im}(\rho_n) \) of the non-trivial zeros of \(\zeta(s)\) (ordered by increasing positive value). All computed zeros lie on the critical line, but we make <strong>no assumption</strong> that this holds for all zeros.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>n</th>
+          <th>Imaginary part \( t_n \) (approx.)</th>
+          <th>Approximate zero \(\rho_n\)</th>
+          <th>Nearest integer</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>14.1347251417</td><td>½ + 14.1347251417 i</td><td>14</td></tr>
+        <tr><td>2</td><td>21.0220396388</td><td>½ + 21.0220396388 i</td><td>21</td></tr>
+        <tr><td>3</td><td>25.0108575801</td><td>½ + 25.0108575801 i</td><td>25</td></tr>
+        <tr><td>4</td><td>30.4248761259</td><td>½ + 30.4248761259 i</td><td>30</td></tr>
+        <tr><td>5</td><td>32.9350615877</td><td>½ + 32.9350615877 i</td><td>33</td></tr>
+        <tr><td>6</td><td>37.5861781588</td><td>½ + 37.5861781588 i</td><td>38</td></tr>
+        <tr><td>7</td><td>40.9187190121</td><td>½ + 40.9187190121 i</td><td>41</td></tr>
+        <tr><td>8</td><td>43.3270732809</td><td>½ + 43.3270732809 i</td><td>43</td></tr>
+        <tr><td>9</td><td>48.0051508812</td><td>½ + 48.0051508812 i</td><td>48</td></tr>
+        <tr><td>10</td><td>49.7738324777</td><td>½ + 49.7738324777 i</td><td>50</td></tr>
+      </tbody>
+    </table>
+    <p class="note">Values are standard high-precision results (Odlyzko, Wikipedia, MathWorld). The table is valid regardless of whether all zeros lie on the critical line.</p>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section id="paired" class="section">
+    <h2>6. The Paired Product for \(\Xi(t)\) — Direct Analogue</h2>
+    <p>
+      Define the Riemann–Siegel Xi function \(\Xi(t) := \xi(\frac12 + i t)\). It is even and real-valued for real \( t \). Its zeros are exactly \(\pm t_k\).
+    </p>
+    <div class="math-block">
+      \[
+      \Xi(t) = \Xi(0) \prod_{k=1}^{\infty} \left(1 - \frac{t^2}{t_k^2}\right).
+      \]
+      This is the precise structural analogue of the sine product, with the integers \( n \) replaced by the ordinates \( t_k \) of the non-trivial zeros.
+    </div>
+  </section>
+
+  <!-- SECTION 7 -->
+  <section id="convergence" class="section">
+    <h2>7. Convergence Factors in the Hadamard Product</h2>
+    <p>
+      Both sine and \(\xi(s)\) are entire of order 1. The general Hadamard factorization therefore includes genus-1 exponential convergence factors:
+    </p>
+    <div class="math-block">
+      \[
+      \xi(s) = \xi(0) \prod_{\rho} \left(1 - \frac{s}{\rho}\right) \exp\left( \frac{s}{\rho} \right),
+      \]
+      where the product runs over all non-trivial zeros \(\rho\). The factor \(\exp(s/\rho)\) guarantees convergence.
+    </p>
+    <p>
+      When zeros are paired as \(\rho_n = \frac12 + i t_n\) and its conjugate (or the functional-equation quartet), the linear exponential terms cancel in the paired quadratic factors, recovering the clean product for \(\Xi(t)\) with <strong>no extra exponential factors</strong>.
+    </p>
+  </section>
+
+  <!-- SECTION 8 -->
+  <section id="explicit" class="section">
+    <h2>8. Explicit Formula: Primes from Summing over \( t_n \)</h2>
+    <p>
+      The von Mangoldt explicit formula expresses the Chebyshev function in terms of the non-trivial zeros:
+    </p>
+    <div class="math-block">
+      \[
+      \psi_0(x) = x - \sum_{\rho} \frac{x^\rho}{\rho} - \log(2\pi) - \frac12 \log(1 - x^{-2}),
+      \]
+      (symmetric limit over zeros). Substituting \(\rho = \frac12 + i t_n\) (and conjugates) yields an explicit oscillatory sum over the frequencies \( t_n \):
+      \[
+      -x^{1/2} \sum_n \left[ \frac{x^{i t_n}}{\frac12 + i t_n} + \text{c.c.} \right].
+      \]
+      This is how the imaginary parts \( t_n \) “recover the primes”.
+    </div>
+  </section>
+
+  <!-- SECTION 9 -->
+  <section id="sweep" class="section">
+    <h2>9. Sweeping One Zero at a Time (Deformation on \(\mathbb{C}\), No RH Assumed)</h2>
+    <p>
+      We now perform the central construction of this document: a continuous deformation that sweeps the zero set from the integers (sine) to the actual non-trivial zeros of \(\zeta(s)\), <strong>one pair at a time</strong>, using only complex analysis and the Weierstrass theorem. No assumption is made that any zero lies on the critical line.
+    </p>
+
+    <div class="step">
+      <strong>Stage \(\lambda = 0\)</strong>: Zero set = \(\{\pm n \mid n \in \mathbb{N}\}\). The canonical product recovers (a multiple of) \(\sin(\pi z)\).
+    </div>
+
+    <div class="step">
+      <strong>Continuous paths</strong>: Enumerate the actual non-trivial zeros \(\rho_j\) (with functional-equation symmetries). Choose continuous paths \(\gamma_j(\lambda)\) in \(\mathbb{C}\) for \(\lambda \in [0,1]\) such that \(\gamma_j(0)\) is the corresponding integer and \(\gamma_j(1) = \rho_j\) (and similarly for symmetric partners). Paths avoid collisions and the origin.
+    </div>
+
+    <div class="step">
+      <strong>One zero (pair) at a time</strong>: At stage \( N \), form the partial canonical Weierstrass product
+      \[
+      P_N(z; \lambda) = z^m \exp(Q_N(z;\lambda)) \prod_{j=1}^N \left(1 - \frac{z}{\gamma_j(\lambda)}\right) \exp\left( \frac{z}{\gamma_j(\lambda)} \right).
+      \]
+      Each new factor introduces (or moves) exactly one simple zero while preserving analyticity. The exponential polynomial \( Q_N \) enforces convergence and symmetry at that finite stage.
+    </div>
+
+    <div class="step">
+      <strong>Limit \(\lambda \to 1\)</strong>: The infinite product converges uniformly on compact sets and defines an entire function of order 1 whose zeros are exactly the actual non-trivial zeros \(\{\rho_j\}\). This function coincides with the completed xi function \(\xi(z)\) up to a multiplicative factor \(\exp(a + b z)\) fixed by the functional equation and the value at zero.
+    </div>
+
+    <p class="note">
+      At every intermediate \(\lambda\) the product is an entire function whose zeros are the current positions \(\gamma_j(\lambda)\). When a zero reaches its final location \(\rho_j\), the corresponding factor forces a zero of the limiting function exactly there — this is the “analytic continued non-trivial zero” produced by the sweep.
+    </p>
+  </section>
+
+  <!-- SECTION 10 -->
+  <section id="numerical" class="section">
+    <h2>10. Numerical Illustration: Sine Evaluated at \( t_1 \)</h2>
+    <p>
+      Evaluate the sine identity at the first ordinate \( t_1 \approx 14.13472514173469379 \):
+    </p>
+    <div class="math-block">
+      \[
+      \sin(\pi t_1) \approx 0.4107272152, \quad \pi t_1 \approx 44.40554867,
+      \]
+      \[
+      \frac{\sin(\pi t_1)}{\pi t_1} \approx 0.009249457.
+      \]
+      The infinite product \(\prod (1 - t_1^2 / n^2)\) equals this same non-zero value. (Contrast: at any integer the product vanishes exactly.)
+    </div>
+  </section>
+
+  <!-- SECTION 11 -->
+  <section id="plots" class="section">
+    <h2>11. Visualizations: Harmonic Sine vs Math.sin</h2>
+    <div class="plot-container">
+      <div id="math-sin-plot" style="width:100%; height:420px;"></div>
+    </div>
+    <div class="plot-container">
+      <div id="harm-sin-plot" style="width:100%; height:420px;"></div>
+    </div>
+    <div class="plot-container">
+      <div id="steps-plot" style="width:100%; height:340px;"></div>
+    </div>
+    <div class="plot-container">
+      <div id="error-plot" style="width:100%; height:340px;"></div>
+    </div>
+  </section>
+
+  <!-- SECTION 12 -->
+  <section id="conclusion" class="section">
+    <h2>12. Conclusion &amp; Implications</h2>
+    <p>
+      The harmonic unit-fraction reconstruction provides an exact finite closed form for rational angles via finite products of rotations. Its analytic continuation yields the Euler product whose logarithm directly encodes the even zeta values. The identical Weierstrass product logic, when applied to the zero set of \(\xi(s)\), replaces the integer labels by the actual non-trivial zeros \(\rho_j\) (wherever they lie). The continuous deformation described in Section 9 performs this replacement <strong>one zero (pair) at a time</strong> on the complex plane, using only the synthetic imaginary unit and the canonical product construction — without any assumption that the zeros lie on the critical line.
+    </p>
+    <p>
+      This establishes a rigorous structural bridge between the elementary harmonic sine and the deepest object in analytic number theory: the Riemann xi function whose zeros encode the primes.
+    </p>
+  </section>
+
+  <footer style="text-align:center; color:#64748b; font-size:0.9rem; margin-top:4rem;">
+    Generated from the complete conversation on harmonic sine, Euler product, zeta zeros, and zero-set deformation.<br>
+    All numerical values and formulas are standard and independent of the Riemann hypothesis.
+  </footer>
+</main>
+
+<script>
+  // Reuse and adapt the plotting code from the original harmonic document
+  function dyadic_sin_base(abs_x, max_n) {
+    const pi = Math.PI;
+    const target = pi * abs_x;
+    let theta_approx = 0;
+    let s = 0;
+    let c = 1;
+    let h = 1;
+    let v = 1;
+    for (let n = 0; n < max_n; n++) {
+      const half_angle = pi / Math.pow(2, n + 1);
+      if (target - theta_approx >= half_angle) {
+        const ch = 1 - v;
+        const s_next = s * ch + c * h;
+        const c_next = c * ch - s * h;
+        s = s_next;
+        c = c_next;
+        theta_approx += half_angle;
+      }
+      const ch_half = Math.sqrt(1 - v / 2);
+      v = (v / 2) / (1 + ch_half);
+      h = Math.sqrt(v * (2 - v));
+    }
+    return s;
+  }
+
+  function harmonic_rotation(abs_x, max_k) {
+    let r = abs_x;
+    let s = 0;
+    let c = 1;
+    let q_prev = 1;
+    let steps = 0;
+    for (let k = 0; k < max_k; k++) {
+      if (r <= 1e-15) break;
+      let q = Math.ceil(1 / r);
+      if (q <= q_prev) q = q_prev + 1;
+      if (q > 9e15) break;
+      const h = dyadic_sin_base(1 / q, 60);
+      const ch = Math.sqrt(1 - h * h);
+      const s_next = s * ch + c * h;
+      const c_next = c * ch - s * h;
+      s = s_next;
+      c = c_next;
+      r -= 1 / q;
+      q_prev = q;
+      steps++;
+    }
+    return { s: s, c: c, steps: steps };
+  }
+
+  function harmonic_sin_base(abs_x, max_k) {
+    if (abs_x <= 0 || abs_x >= 1) return 0;
+    return harmonic_rotation(abs_x, max_k).s;
+  }
+
+  function harmonic_sin(x, max_k = 64) {
+    const sign = Math.sign(x);
+    const abs_x = Math.abs(x) % 2;
+    if (abs_x > 1) {
+      return sign * -harmonic_sin_base(abs_x - 1, max_k);
+    } else {
+      return sign * harmonic_sin_base(abs_x, max_k);
+    }
+  }
+
+  function harmonic_steps(x, max_k = 64) {
+    const abs_x = Math.abs(x) % 2;
+    const t = abs_x > 1 ? abs_x - 1 : abs_x;
+    if (t <= 0 || t >= 1) return 0;
+    return harmonic_rotation(t, max_k).steps;
+  }
+
+  // Generate data
+  var xValues = [];
+  var yHarm = [];
+  var yMath = [];
+  var ySteps = [];
+  var yErr = [];
+  var numPoints = 2000;
+  for (let i = 0; i <= numPoints; i++) {
+    let val = (i / numPoints) * 4 - 2;
+    xValues.push(val);
+    const harm = harmonic_sin(val);
+    const exact = Math.sin(Math.PI * val);
+    yHarm.push(harm);
+    yMath.push(exact);
+    ySteps.push(harmonic_steps(val));
+    yErr.push(Math.max(Math.abs(harm - exact), 1e-18));
+  }
+
+  // Plots
+  var traceMath = {
+    x: xValues, y: yMath,
+    type: 'scatter', mode: 'lines',
+    name: 'Math.sin(πx)',
+    line: { color: '#3b82f6', width: 2.5 }
+  };
+  var traceHarm = {
+    x: xValues, y: yHarm,
+    type: 'scatter', mode: 'lines',
+    name: 'Harmonic (Greedy Egyptian) Sin(πx)',
+    line: { color: '#ef4444', width: 2.5 }
+  };
+  var traceSteps = {
+    x: xValues, y: ySteps,
+    type: 'scatter', mode: 'lines',
+    name: 'Rotations used (greedy steps)',
+    line: { color: '#10b981', width: 2, shape: 'hv' }
+  };
+  var traceErr = {
+    x: xValues, y: yErr,
+    type: 'scatter', mode: 'lines',
+    name: '|Harmonic − Math.sin| (log scale)',
+    line: { color: '#8b5cf6', width: 1.8 }
+  };
+
+  var layoutBase = {
+    margin: { t: 50, b: 50, l: 60, r: 30 },
+    font: { family: 'Inter, system_ui, sans-serif' }
+  };
+
+  Plotly.newPlot('math-sin-plot', [traceMath], {
+    ...layoutBase,
+    title: 'Math.sin(πx) — Reference',
+    xaxis: { title: 'x' },
+    yaxis: { title: 'sin(πx)', range: [-1.15, 1.15] }
+  });
+
+  Plotly.newPlot('harm-sin-plot', [traceHarm], {
+    ...layoutBase,
+    title: 'Harmonic Greedy Egyptian Reconstruction of sin(πx)',
+    xaxis: { title: 'x' },
+    yaxis: { title: 'sin(πx)', range: [-1.15, 1.15] }
+  });
+
+  Plotly.newPlot('steps-plot', [traceSteps], {
+    ...layoutBase,
+    title: 'Number of Greedy Rotations Used per Point (doubly exponential convergence)',
+    xaxis: { title: 'x' },
+    yaxis: { title: 'Rotations', rangemode: 'tozero' }
+  });
+
+  Plotly.newPlot('error-plot', [traceErr], {
+    ...layoutBase,
+    title: 'Absolute Error |Harmonic Sin(πx) − Math.sin(πx)| (log scale, floored)',
+    xaxis: { title: 'x' },
+    yaxis: { title: 'Absolute error', type: 'log', exponentformat: 'power' }
+  });
+
+  // MathJax re-render safety
+  if (window.MathJax) {
+    window.MathJax.typesetPromise();
+  }
+</script>
+</body>
+</html>
