@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>A Harmonic (Unit-Fraction) Reconstruction of the Sine Function</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.68;
+      color: #1e293b;
+      background: #f8fafc;
+      margin: 0;
+      padding: 32px 20px;
+    }
+    main {
+      max-width: 920px;
+      margin: 0 auto;
+      background: white;
+      padding: 48px 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.07);
+    }
+    h1, h2, h3, h4 {
+      color: #0f172a;
+    }
+    h1 {
+      text-align: center;
+      border-bottom: 3px solid #3b82f6;
+      padding-bottom: 16px;
+      margin-bottom: 2.5rem;
+    }
+    .toc {
+      background: #f1f5f9;
+      padding: 1.8rem;
+      border-radius: 10px;
+      margin: 2.5rem 0;
+    }
+    .toc ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .toc li {
+      margin: 0.6rem 0;
+    }
+    .math-block {
+      background: #f8fafc;
+      padding: 1.4rem;
+      border-radius: 8px;
+      margin: 1.8rem 0;
+      border-left: 4px solid #60a5fa;
+      font-size: 1.05em;
+    }
+    .subtext {
+      text-align: center;
+      color: #475569;
+      font-style: italic;
+      margin-top: -1.5rem;
+      margin-bottom: 2.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<main>
+
+<h1>A Harmonic (Unit-Fraction) Reconstruction of the Sine Function</h1>
+<section class="subtext">Companion to <em>A Purely Geometric Reconstruction of the Sine Function</em></section>
+
+<div class="toc">
+  <h2>Table of Contents</h2>
+  <ul>
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#theorem">4. Main Theorem and Proof</a></li>
+    <li><a href="#closed-form">5. Closed Form</a></li>
+    <li><a href="#sine-wave">6. Full 360° Sine Wave Generated from Pythagoras</a></li>
+    <li><a href="#references">References</a></li>
+    <li><a href="#history">History</a></li>
+  </ul>
+</div>
+
+<hr id="abstract">
+
+<h2>Abstract</h2>
+
+<p>
+The geometric reconstruction walks a <em>fixed</em> harmonic menu of steps
+\(\pi/2, \pi/3, \pi/4, \dots\), accepting or rejecting each once, and converges at the
+linear rate \(\pi/(n+1)\). Here we replace the fixed menu by the <em>greedy harmonic
+choice</em>: at every stage we advance by the largest admissible unit fraction of the
+half-turn, \(\pi/q\) with \(q = \lceil 1/r\rceil\), where \(r\) is the remaining fraction
+of the target. This is exactly the Fibonacci–Sylvester (Egyptian-fraction) expansion
+\(y = \sum_k 1/q_k\) applied to the angle. Two things are gained. First, convergence
+becomes <em>doubly exponential</em>: the error after \(k\) rotations is below
+\(\pi\,2^{-2^{k-1}}\), so six or seven square-root rotations exhaust double precision
+where the geometric version needs hundreds of steps for three digits. Second, for every
+<em>rational</em> \(y = a/b\) the expansion terminates in at most \(a\) steps, so the
+algorithm ceases to be a limit and becomes a <strong>closed form</strong>: a finite
+product of rotations
+\(\sin(\pi y) = \mathrm{Im}\prod_{k} e^{i\pi/q_k}\),
+exact, with each factor a sine of a unit fraction of \(\pi\) obtained from Pythagoras
+alone. We prove correctness, derive the closed form, and include live Plotly graphs
+showing the full 360° wave together with the number of rotations actually used.
+</p>
+
+<hr id="theorem">
+
+<h2>4. Main Theorem and Proof</h2>
+
+<p>
+Fix \(x \in \mathbb{R}\) and set \(y = |x| \bmod 2 \in [0,2)\). Since
+\(\sin(\pi x) = \mathrm{sgn}(x)\sin(\pi|x|)\) and \(\sin(\pi\,\cdot\,)\) is
+\(2\)-periodic, it suffices to construct \(\sin(\pi y)\); and since
+\(\sin(\pi y) = -\sin(\pi(y-1))\) for \(y\in[1,2)\), it suffices to treat
+\(t \in [0,1)\) (the endpoints \(t=0\) and \(y=1\) give \(\sin = 0\) directly).
+</p>
+
+<div class="math-block">
+<strong>Lemma (Greedy Unit-Fraction Invariant).</strong>
+Let \(t \in (0,1)\). Define \(r_0 = t\) and, for \(k \ge 0\) while \(r_k > 0\),
+\[
+q_{k+1} = \left\lceil \frac{1}{r_k} \right\rceil, \qquad
+r_{k+1} = r_k - \frac{1}{q_{k+1}}.
+\]
+Then for every \(k\) for which the process is still running:
+<ol>
+  <li>\(q_1 \ge 2\), and \(q_{k+1} \ge q_k(q_k-1) + 1 > q_k\) — the denominators grow at least like Sylvester's sequence \(2, 3, 7, 43, 1807, \dots\);</li>
+  <li>\(0 \le r_k < \dfrac{1}{q_k(q_k-1)}\);</li>
+  <li>if \(t = a/b\) is rational, the process terminates (\(r_K = 0\)) after \(K \le a\) steps, yielding the exact finite expansion \(t = \sum_{k=1}^{K} 1/q_k\);</li>
+  <li>\(r_k < 2^{-2^{k-1}}\) for \(k \ge 2\); in particular \(\theta_k := \pi\sum_{j \le k} 1/q_j \to \pi t\) doubly exponentially.</li>
+</ol>
+</div>
+
+<p>
+<em>Proof of Lemma.</em>
+Since \(0 < r_0 = t < 1\) we have \(1/r_0 > 1\), so \(q_1 \ge 2\). The ceiling
+\(q = \lceil 1/r \rceil\) satisfies \(q \ge 1/r\) and \(q - 1 < 1/r\), i.e.
+\[
+\frac{1}{q} \;\le\; r \;<\; \frac{1}{q-1},
+\]
+so the step \(1/q\) is admissible (never overshoots) and
+\[
+0 \;\le\; r' = r - \frac{1}{q} \;<\; \frac{1}{q-1} - \frac{1}{q} = \frac{1}{q(q-1)},
+\]
+which is (2). For (1): if \(r_k > 0\), then by (2), \(1/r_k > q_k(q_k-1)\), and since
+\(q_{k+1} = \lceil 1/r_k \rceil\) is an integer strictly greater than the integer
+\(q_k(q_k-1)\), we get \(q_{k+1} \ge q_k(q_k-1) + 1\); this exceeds \(q_k\) because
+\(q_k \ge 2\). (Equality throughout generates precisely Sylvester's sequence
+\(s_{k+1} = s_k^2 - s_k + 1\).)
+</p>
+
+<p>
+For (3) (Fibonacci–Sylvester): write \(r_k = a_k / b_k\) in any representation with
+positive integers. Then
+\[
+r_{k+1} = \frac{a_k q_{k+1} - b_k}{b_k q_{k+1}},
+\qquad\text{with numerator}\quad
+0 \le a_k q_{k+1} - b_k < a_k,
+\]
+where the right inequality is \(q_{k+1} < b_k/a_k + 1\), i.e. the ceiling property.
+The numerators are non-negative integers that strictly decrease, so at most
+\(a_0 = a\) steps occur before the remainder hits \(0\) exactly.
+</p>
+
+<p>
+For (4): set \(a_k = q_k - 1 \ge 1\). By (1), \(a_{k+1} \ge q_k(q_k - 1) = (a_k+1)a_k \ge a_k^2\),
+and \(a_2 \ge q_1(q_1-1) \ge 2\), hence \(a_k \ge 2^{2^{k-2}}\) for \(k \ge 2\). Then by (2),
+\[
+r_k < \frac{1}{q_k(q_k-1)} = \frac{1}{(a_k+1)a_k} < a_k^{-2} \le 2^{-2^{k-1}}.
+\qquad\blacksquare
+\]
+</p>
+
+<p>
+Contrast with the geometric version: there the step menu is fixed in advance and the
+remainder obeys only \(r_n \le \pi/(n+1)\). Here the step is <em>chosen</em> — always the
+largest unit fraction that fits — and the remainder collapses doubly exponentially.
+It is the same greedy idea applied to the harmonic family \(\{1/q\}\) rather than to a
+predetermined schedule.
+</p>
+
+<div class="math-block">
+<strong>Theorem (Harmonic Reconstruction of Sine).</strong>
+With \(q_k, r_k, \theta_k\) as in the Lemma, define the rotation pair \((s_k, c_k)\) by
+\[
+\begin{align}
+s_0 &= 0, \qquad c_0 = 1, \\[4pt]
+h_k &= \mathrm{dyadic\_sin}\!\left(\tfrac{1}{q_k}\right), \qquad
+c^h_k = \sqrt{1-h_k^2} \quad \Bigl(\text{valid since } q_k \ge 2 \Rightarrow 0 < \tfrac{\pi}{q_k} \le \tfrac{\pi}{2}\Bigr), \\[4pt]
+(s_{k}, c_{k}) &= \bigl(s_{k-1} c^h_k + c_{k-1} h_k,\ \ c_{k-1} c^h_k - s_{k-1} h_k\bigr).
+\end{align}
+\]
+Then \(s_k = \sin\theta_k\) and \(c_k = \cos\theta_k\) exactly, for every \(k\), and
+\[
+|s_k - \sin(\pi t)| \;\le\; \pi r_k \;<\; \pi\, 2^{-2^{k-1}} \quad (k \ge 2).
+\]
+Consequently \(\sin(\pi t) = \lim_{k} s_k\), the limit being attained <em>after finitely
+many steps</em> whenever \(t\) is rational.
+</div>
+
+<h3>Proof.</h3>
+
+<p>
+\(s_k = \sin\theta_k\) and \(c_k = \cos\theta_k\) hold by induction exactly as in the
+geometric version: each update is the sine/cosine angle-addition formula for
+\(\theta_{k-1} + \pi/q_k = \theta_k\). The one square root taken,
+\(c^h_k = \sqrt{1-h_k^2}\), is applied only to the <em>step</em> angle
+\(\pi/q_k \in (0, \pi/2]\), whose cosine is genuinely non-negative — the cosine of the
+accumulated angle \(\theta_k\) is never reconstructed from \(s_k\) but carried forward
+exactly, so no sign is lost after \(\theta_k\) passes \(\pi/2\). Convergence follows from
+\(|\sin a - \sin b| \le |a - b|\) and the Lemma:
+\(|s_k - \sin(\pi t)| = |\sin\theta_k - \sin(\pi t)| \le \pi r_k\). When \(t\) is rational
+the Lemma gives \(r_K = 0\) after finitely many steps, so \(s_K = \sin(\pi t)\)
+<em>exactly</em>. \(\blacksquare\)
+</p>
+
+<hr id="closed-form">
+
+<h2>5. Closed Form</h2>
+
+<p>
+Because the greedy expansion terminates on rationals, the algorithm admits a closed form
+that the geometric version does not: the limit is a finite product of explicit rotations.
+Writing each rotation as a complex number of unit modulus,
+\(e^{i\pi/q} = \cos(\pi/q) + i \sin(\pi/q)\), the recursion for \((s_k, c_k)\) is exactly
+complex multiplication, so:
+</p>
+
+<div class="math-block">
+<strong>Closed form.</strong> Let \(y = |x| \bmod 2\), \(m = \lfloor y \rfloor \in \{0,1\}\),
+\(t = y - m \in [0,1)\), and let \(t = \sum_{k=1}^{K} 1/q_k\) be the greedy unit-fraction
+expansion of the Lemma (empty when \(t = 0\); \(K < \infty\) iff \(t\) is rational). Then
+\[
+\boxed{\ \sin(\pi x) \;=\; \mathrm{sgn}(x)\,(-1)^m\;
+\mathrm{Im} \prod_{k=1}^{K} \exp\!\left(\frac{i\pi}{q_k}\right). \ }
+\]
+Expanding the product, the imaginary part is the odd-subset sum
+\[
+\mathrm{Im} \prod_{k=1}^{K} \Bigl(c^h_k + i h_k\Bigr)
+= \sum_{\substack{S \subseteq \{1,\dots,K\} \\ |S| \text{ odd}}} (-1)^{\frac{|S|-1}{2}}
+\prod_{k \in S} h_k \prod_{k \notin S} c^h_k,
+\qquad h_k = \sin\frac{\pi}{q_k},\quad c^h_k = \sqrt{1-h_k^2}.
+\]
+</div>
+
+<p>
+For rational \(x\) this is a <em>finite, exact</em> expression: the only ingredients are
+the integers \(q_k\) (produced by ceiling divisions), the sines of unit fractions
+\(\sin(\pi/q_k)\), and Pythagoras. In the implementation each \(\sin(\pi/q_k)\) is itself
+delivered by the dyadic bisection subroutine — nothing but halvings and square roots —
+so the approximation error lives entirely in those factors
+(\(\le \pi/2^{61}\) each with \(60\) bisections), not in the structure of the formula.
+</p>
+
+<h3>Worked examples</h3>
+
+<p>
+\(t = \tfrac34 = \tfrac12 + \tfrac14\) \((q_1,q_2) = (2,4)\):
+\[
+\sin\tfrac{3\pi}{4} = \mathrm{Im}\left(e^{i\pi/2} e^{i\pi/4}\right)
+= \sin\tfrac{\pi}{2}\cos\tfrac{\pi}{4} + \cos\tfrac{\pi}{2}\sin\tfrac{\pi}{4}
+= \frac{\sqrt2}{2}.
+\]
+\(t = \tfrac56 = \tfrac12 + \tfrac13\) \((q_1,q_2) = (2,3)\):
+\[
+\sin\tfrac{5\pi}{6} = \mathrm{Im}\left(e^{i\pi/2} e^{i\pi/3}\right)
+= \cos\tfrac{\pi}{3} = \tfrac12.
+\]
+\(t = \tfrac45 = \tfrac12 + \tfrac14 + \tfrac1{20}\) \((q_1,q_2,q_3) = (2,4,20)\):
+\[
+\sin\tfrac{4\pi}{5} = \mathrm{Im}\left(e^{i\pi/2} e^{i\pi/4} e^{i\pi/20}\right)
+= \cos\!\left(\tfrac{\pi}{4} + \tfrac{\pi}{20}\right) = \cos\tfrac{3\pi}{10}.
+\]
+And the infinite showcase: the greedy expansion of \(1\) by <em>proper</em> unit fractions
+is Sylvester's series \(1 = \tfrac12 + \tfrac13 + \tfrac17 + \tfrac1{43} + \tfrac1{1807} + \cdots\),
+whence the identity
+\[
+\mathrm{Im} \prod_{k=1}^{\infty} \exp\!\left(\frac{i\pi}{s_k}\right) = \sin\pi = 0,
+\qquad s_{k+1} = s_k^2 - s_k + 1,\ s_1 = 2.
+\]
+</p>
+
+<hr id="sine-wave">
+
+<h2>6. Full 360° Sine Wave Generated From Pythagoras</h2>
+
+<h3>Math.sin</h3>
+<div id="math-sin-plot" style="width:100%; height:400px;"></div>
+
+<h3>Reconstruction Of Sine Using Greedy Unit Fractions (Egyptian Expansion)</h3>
+<div id="harm-sin-plot" style="width:100%; height:400px;"></div>
+
+<h3>Rotations Used Per Point</h3>
+<p>
+The doubly exponential denominator growth means the greedy expansion is cut off once
+\(q\) would exceed \(2^{53}\) (the remainder is then below one part in \(10^{15}\) of a
+half-turn) — in practice at most seven or eight rotations per point, versus the
+\(200\) fixed steps used by the geometric companion.
+</p>
+<div id="steps-plot" style="width:100%; height:320px;"></div>
+
+<h3>Absolute Error Against Math.sin</h3>
+<div id="error-plot" style="width:100%; height:320px;"></div>
+
+<hr id="references">
+
+<h2>References</h2>
+
+<ul>
+  <li>Euclid, Elements, Book I, Proposition 47</li>
+  <li>Fibonacci (Leonardo of Pisa), Liber Abaci (1202) — the greedy unit-fraction method</li>
+  <li>Sylvester, J. J. (1880), On a Point in the Theory of Vulgar Fractions, Amer. J. Math. 3, 332–335</li>
+  <li>Volder, J. E. (1959), The CORDIC Computing Technique</li>
+</ul>
+
+<hr id="history">
+
+<h2>History</h2>
+
+<p>
+This is the harmonic companion to <em>A Purely Geometric Reconstruction of the Sine
+Function</em> (<code>sine-geometric.html</code>): the same rotation engine — carry the
+pair \((\sin\theta, \cos\theta)\), advance by angle addition, extract every step sine
+from Pythagorean bisection — driven by the greedy Egyptian-fraction choice of step
+instead of a fixed step schedule.
+
+The original geometric construction was first published by Victor Geere in 2020:
+<a href="https://victorgeere.co.za/sine/index.html">https://victorgeere.co.za/sine/index.html</a>
+</p>
+
+</main>
+
+<script>
+function dyadic_sin_base(abs_x, max_n) {
+  const pi = Math.PI;
+  const target = pi * abs_x;
+  let theta_approx = 0;
+  // Carry the pair (s, c) = (sin, cos) of theta_approx, exactly as in the
+  // geometric companion. The half-angle state is tracked through the versine
+  // v = 1 - cos(half_angle) rather than cos itself: for the tiny step angles
+  // pi/q with q ~ 2^50 that the harmonic expansion produces, 1 - cos rounds
+  // to 0 in double precision after ~27 halvings, which would zero out h and
+  // silently skip the rotation. The versine recurrence
+  //   v' = (v/2) / (1 + sqrt(1 - v/2))
+  // is algebraically identical (rationalised half-angle formula) but suffers
+  // no cancellation, and uses only arithmetic and square roots.
+  let s = 0;
+  let c = 1;
+  let h = 1;  // sin(half_angle), half_angle starts at pi/2
+  let v = 1;  // versine 1 - cos(half_angle)
+  for (let n = 0; n < max_n; n++) {
+    const half_angle = pi / Math.pow(2, n + 1);
+    if (target - theta_approx >= half_angle) {
+      const ch = 1 - v; // cos(half_angle)
+      const s_next = s * ch + c * h;
+      const c_next = c * ch - s * h;
+      s = s_next;
+      c = c_next;
+      theta_approx += half_angle;
+    }
+    // half-angle step; positive roots apply since half_angle <= pi/2
+    const ch_half = Math.sqrt(1 - v / 2);  // cos(half_angle/2)
+    v = (v / 2) / (1 + ch_half);           // 1 - cos(half_angle/2), stable
+    h = Math.sqrt(v * (2 - v));            // sin = sqrt(1 - (1-v)^2)
+  }
+  return s;
+}
+
+// Greedy Egyptian-fraction rotation: abs_x in [0,1]. Returns the pair
+// (s, c) = (sin, cos) of pi*abs_x together with the number of rotations used.
+function harmonic_rotation(abs_x, max_k) {
+  let r = abs_x;   // remaining fraction of the half-turn
+  let s = 0;       // sin(theta_approx)
+  let c = 1;       // cos(theta_approx), carried exactly as in the companion
+  let q_prev = 1;
+  let steps = 0;
+  for (let k = 0; k < max_k; k++) {
+    if (r <= 1e-15) break;
+    let q = Math.ceil(1 / r);
+    if (q <= q_prev) q = q_prev + 1;  // float guard: q must strictly increase
+    if (q > 9e15) break;              // r < 1/(q-1): below double precision
+    const h = dyadic_sin_base(1 / q, 60);
+    const ch = Math.sqrt(1 - h * h);  // q >= 2, so pi/q <= pi/2 and cos >= 0
+    const s_next = s * ch + c * h;
+    const c_next = c * ch - s * h;
+    s = s_next;
+    c = c_next;
+    r -= 1 / q;
+    q_prev = q;
+    steps++;
+  }
+  return { s: s, c: c, steps: steps };
+}
+
+function harmonic_sin_base(abs_x, max_k) {
+  if (abs_x <= 0 || abs_x >= 1) return 0; // sin(0) = sin(pi) = 0
+  return harmonic_rotation(abs_x, max_k).s;
+}
+
+function harmonic_sin(x, max_k = 64) {
+  const sign = Math.sign(x);
+  const abs_x = Math.abs(x) % 2;
+  if (abs_x > 1) {
+    return sign * -harmonic_sin_base(abs_x - 1, max_k);
+  } else {
+    return sign * harmonic_sin_base(abs_x, max_k);
+  }
+}
+
+function harmonic_steps(x, max_k = 64) {
+  const abs_x = Math.abs(x) % 2;
+  const t = abs_x > 1 ? abs_x - 1 : abs_x;
+  if (t <= 0 || t >= 1) return 0;
+  return harmonic_rotation(t, max_k).steps;
+}
+
+var xValues = [];
+var yHarm = [];
+var yMath = [];
+var ySteps = [];
+var yErr = [];
+
+var numPoints = 2000;
+for (let i = 0; i <= numPoints; i++) {
+  let val = (i / numPoints) * 4 - 2; // from -2 to 2
+  xValues.push(val);
+  const harm = harmonic_sin(val);
+  const exact = Math.sin(Math.PI * val);
+  yHarm.push(harm);
+  yMath.push(exact);
+  ySteps.push(harmonic_steps(val));
+  yErr.push(Math.max(Math.abs(harm - exact), 1e-18)); // floor for the log axis
+}
+
+var traceMath = {
+  x: xValues,
+  y: yMath,
+  type: 'scatter',
+  mode: 'lines',
+  name: 'Math.sin(πx)',
+  line: { color: '#3b82f6', width: 2 }
+};
+
+var traceHarm = {
+  x: xValues,
+  y: yHarm,
+  type: 'scatter',
+  mode: 'lines',
+  name: 'Harmonic Sin(πx)',
+  line: { color: '#ef4444', width: 2 }
+};
+
+var traceSteps = {
+  x: xValues,
+  y: ySteps,
+  type: 'scatter',
+  mode: 'lines',
+  name: 'Rotations used',
+  line: { color: '#10b981', width: 2, shape: 'hv' }
+};
+
+var traceErr = {
+  x: xValues,
+  y: yErr,
+  type: 'scatter',
+  mode: 'lines',
+  name: '|error|',
+  line: { color: '#8b5cf6', width: 1.5 }
+};
+
+var layoutMath = {
+  title: 'Math.sin(πx)',
+  xaxis: { title: 'x' },
+  yaxis: { title: 'sin(πx)', range: [-1.1, 1.1] },
+  margin: { t: 40, b: 40 }
+};
+
+var layoutHarm = {
+  title: 'Harmonic Sine Reconstruction (Greedy Unit Fractions)',
+  xaxis: { title: 'x' },
+  yaxis: { title: 'sin(πx)', range: [-1.1, 1.1] },
+  margin: { t: 40, b: 40 }
+};
+
+var layoutSteps = {
+  title: 'Rotations Used (greedy Egyptian terms per point)',
+  xaxis: { title: 'x' },
+  yaxis: { title: 'rotations', rangemode: 'tozero', dtick: 1 },
+  margin: { t: 40, b: 40 }
+};
+
+var layoutErr = {
+  title: '|Harmonic Sin(πx) − Math.sin(πx)| (log scale, floored at 1e-18)',
+  xaxis: { title: 'x' },
+  yaxis: { title: 'absolute error', type: 'log', exponentformat: 'power' },
+  margin: { t: 40, b: 40 }
+};
+
+Plotly.newPlot('math-sin-plot', [traceMath], layoutMath);
+Plotly.newPlot('harm-sin-plot', [traceHarm], layoutHarm);
+Plotly.newPlot('steps-plot', [traceSteps], layoutSteps);
+Plotly.newPlot('error-plot', [traceErr], layoutErr);
+</script>
+
+</body>
+</html>

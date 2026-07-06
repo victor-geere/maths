@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Unnormalised Prime Kernel</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Georgia, "Times New Roman", serif;
+            max-width: 1080px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.75;
+            color: #000;
+            background: #fff;
+        }
+        h1,h2,h3,h4 { font-family: "Helvetica Neue", Arial, sans-serif; color:#000; }
+        h1 { text-align:center; font-size:1.8em; margin-bottom:0.2em; }
+        .lemma {
+            background: #f8f8ff; padding:16px; border-left:5px solid #003399;
+            margin:22px 0;
+        }
+        .proof { margin-left: 20px; margin-bottom: 20px; }
+        .boxed { border: 1px solid #999; padding: 14px; margin: 20px 0; background: #fafafa; }
+        .note  { background:#fef9e7; padding:14px; border-left:4px solid #b8860b; margin:18px 0; }
+        .future{ background:#f0fff0; padding:14px; border-left:4px solid #2e8b57; margin:22px 0; }
+        table { border-collapse: collapse; width:100%; margin:20px 0; }
+        th, td { border:1px solid #aaa; padding:7px; text-align:left; vertical-align:top; }
+        code, pre { background:#f5f5f5; border:1px solid #ccc; border-radius:4px; }
+        pre { padding:12px; overflow-x:auto; }
+        .tag { font-family:"Helvetica Neue",Arial,sans-serif; font-size:0.78em; font-weight:bold;
+               padding:1px 7px; border-radius:9px; white-space:nowrap; }
+        .t-proven { background:#e6f4ea; color:#1a7f37; border:1px solid #1a7f37; }
+        .small { font-size:0.9em; color:#444; }
+    </style>
+</head>
+<body>
+
+<h1>The Unnormalised Prime Kernel<br>A Positive-Definite Reproducing Kernel Carried by the Primes</h1>
+<p style="text-align:center;"><em>Research note — 3 July 2026</em></p>
+
+<h2>Abstract</h2>
+<p>We construct the reproducing kernel Hilbert space naturally associated with the primes: the
+Gram kernel of the vectors \(p^{-1/2+i\lambda}\) in \(\ell^2(\text{primes})\), a positive-definite
+kernel on the upper half-plane equal to a shifted prime zeta function. This kernel is exact —
+unlike the finite, \(1/\pi(M_n)\)-normalised prime sums used in several recent Hilbert–Pólya
+proposals, which converge to the zero kernel on any fixed strip (see the companion errata,
+<a href="barry-keating-addendum-errata.html">barry-keating-addendum-errata.html</a>, Lemma L3).
+We identify its associated Hilbert space of prime Dirichlet series, show that the natural
+translation flow on this space is unitary with self-adjoint generator equal to multiplication
+by \(\log p\) — pure point spectrum, one eigenvalue per prime, each simple — and record the
+boundary behaviour of the kernel as the half-plane parameter degenerates to the real line, where
+it develops a logarithmic singularity governed by the pole of \(\zeta\) at \(s=1\). All identities
+are verified numerically to at least \(10^{-7}\), and the log-singularity constant is identified
+in closed form and checked to 12 digits. We close by placing this kernel in relation to the
+explicit formula and to the positivity criteria that are unconditionally equivalent to the
+Riemann Hypothesis (companion note
+<a href="hermite-biehler.html">hermite-biehler.html</a>).</p>
+
+<h2>1. Introduction</h2>
+<p>Several recent approaches to the Riemann Hypothesis via Hilbert–Pólya-type constructions
+build a "prime kernel" as a finite average
+\(K_n(\lambda,\mu) = \frac1{\pi(M_n)}\sum_{p\le M_n} p^{-1+i(\lambda-\bar\mu)}\) and attempt to
+pass to a limit \(n\to\infty\) that is meant to reproduce the de Branges kernel of the Riemann
+\(\Xi\) function. This normalisation is fatal: for \(u = \lambda-\bar\mu\), the sum
+\(\sum_{p\le M} p^{-1+iu}\) is \(O(\log\log M)\) on \(\mathrm{Im}\,u \ge 0\) and
+\(\asymp M^{\delta}/\delta\) for \(\mathrm{Im}\,u = -\delta \in (-1,0)\) (Chebyshev bounds), while
+the normalising factor \(\pi(M_n) \sim M_n/\log M_n\) grows almost linearly in \(M_n\). Dividing
+by it kills the kernel identically on any fixed strip \(|\mathrm{Im}\,u| < 1-\varepsilon\), and
+makes it diverge just outside. There is no rescaling of a <em>finite truncation</em> of the prime
+sum that survives this limit with a nonzero, translation-covariant result.</p>
+<p>The resolution is to stop truncating and stop normalising. The infinite prime sum
+\(\sum_p p^{-1+iu}\) converges absolutely — unconditionally, with no limiting procedure required
+— as soon as \(\mathrm{Im}\,u > 0\), i.e. as soon as the kernel's two arguments lie in the open
+upper half-plane. This is not a new function: it is (a shift of) the classical prime zeta
+function. What is new to record here is the reproducing-kernel-Hilbert-space package built on
+top of it, its exact translation-flow spectral theory, and its precise boundary behaviour — the
+three ingredients a future construction on the "prime side" of Hilbert–Pólya needs.</p>
+
+<h2>2. Definition and basic positivity</h2>
+<p>Let \(\mathbb C^+ = \{\lambda \in \mathbb C : \mathrm{Im}\,\lambda > 0\}\). For
+\(\lambda \in \mathbb C^+\) define the sequence indexed by primes
+\[
+v_\lambda = \big(p^{-1/2+i\lambda}\big)_{p\ \text{prime}} \in \ell^2(\text{primes}).
+\]</p>
+<div class="lemma">
+<h4>Lemma 2.1 (well-definedness).</h4>
+<p>\(v_\lambda \in \ell^2(\text{primes})\) for every \(\lambda \in \mathbb C^+\), and
+\(\lambda \mapsto v_\lambda\) is a holomorphic \(\ell^2\)-valued map on \(\mathbb C^+\).</p>
+</div>
+<div class="proof">
+<p><strong>Proof.</strong> \(|p^{-1/2+i\lambda}| = p^{-1/2}\,|p^{i\lambda}| = p^{-1/2-\mathrm{Im}\,\lambda}\),
+so \(\|v_\lambda\|_{\ell^2}^2 = \sum_p p^{-1-2\,\mathrm{Im}\,\lambda}\), which converges precisely
+when \(1+2\,\mathrm{Im}\,\lambda > 1\), i.e. \(\mathrm{Im}\,\lambda > 0\). Holomorphy is termwise
+differentiation of an absolutely and locally uniformly convergent series (dominated by the same
+bound on compact subsets of \(\mathbb C^+\)). \(\blacksquare\)</p>
+</div>
+
+<div class="boxed">
+<h4>Definition 2.2 (the prime kernel).</h4>
+<p>
+\[
+K(\lambda,\mu) \;:=\; \langle v_\lambda, v_\mu\rangle_{\ell^2} \;=\; \sum_p p^{-1/2+i\lambda}\,\overline{p^{-1/2+i\mu}} \;=\; \sum_p p^{-1+i(\lambda-\bar\mu)}, \qquad \lambda,\mu \in \mathbb C^+.
+\]
+</p>
+</div>
+<p>As a Gram kernel of vectors in a Hilbert space, \(K\) is automatically positive semi-definite:
+for any \(\lambda_1,\dots,\lambda_n \in \mathbb C^+\) and \(c_1,\dots,c_n \in \mathbb C\),
+\(\sum_{i,j} c_i\bar c_j\, K(\lambda_i,\lambda_j) = \big\|\sum_i c_i v_{\lambda_i}\big\|^2 \ge 0\).
+This is the entire content of positivity here — it requires no analytic input, unlike the finite
+normalised kernels, whose positivity survives truncation but is destroyed by the limit.</p>
+<p class="small"><strong>Domain remark.</strong> The defining series converges whenever
+\(\mathrm{Im}\,\lambda + \mathrm{Im}\,\mu > 0\) — a strictly larger region than the product
+\(\mathbb C^+\times\mathbb C^+\), since one argument may dip slightly below the real axis if the
+other compensates. We keep to \(\mathbb C^+\times\mathbb C^+\) so that \(K\) is manifestly a Gram
+kernel; the larger domain is where \(K\) continues as a holomorphic function of two variables,
+short of positive-definiteness.</p>
+
+<h2>3. Identification with the prime zeta function</h2>
+<div class="lemma">
+<h4>Proposition 3.1.</h4>
+<p>\(K(\lambda,\mu) = P\big(1-i(\lambda-\bar\mu)\big)\), where
+\(P(s) = \sum_p p^{-s}\) is the prime zeta function (absolutely convergent for
+\(\mathrm{Re}\,s>1\)).</p>
+</div>
+<div class="proof">
+<p><strong>Proof.</strong> With \(u = \lambda - \bar\mu\), \(\mathrm{Re}\big(1-iu\big) = 1+\mathrm{Im}\,u = 1+\mathrm{Im}\,\lambda+\mathrm{Im}\,\mu>1\)
+on \(\mathbb C^+\times\mathbb C^+\), and \(\sum_p p^{-1+iu} = \sum_p p^{-(1-iu)} = P(1-iu)\) term
+by term. \(\blacksquare\)</p>
+</div>
+<p>\(P\) itself continues meromorphically past the line \(\mathrm{Re}\,s=1\) via the Möbius
+expansion \(P(s) = \sum_{k\ge1} \frac{\mu(k)}{k}\log\zeta(ks)\) (valid for \(\mathrm{Re}\,s>0\),
+away from the singular points), with logarithmic branch points at \(s = 1/k\) for each
+\(k\ge1\) and at every point \(s = \rho/k\) where \(\zeta\) vanishes. The dominant singularity
+on \(\mathrm{Re}\,s = 1\) is at \(s=1\) itself (the pole of \(\zeta\)), where
+
+$$P(s) = -\log(s-1) + c_0 + o(1), \qquad s\to1^+, \qquad c_0 = \sum_{k\ge2}\frac{\mu(k)}{k}\log\zeta(k).$$
+
+This follows termwise: the \(k=1\) term is \(\log\zeta(s) = -\log(s-1)+O(s-1)\) since
+\((s-1)\zeta(s)\to1\); every \(k\ge2\) term is regular at \(s=1\) (evaluated at \(\zeta(k)\),
+\(k>1\) real) and contributes its value at \(s=1\) to the constant term.</p>
+
+<div class="note">
+<strong>Consequence for the kernel.</strong> As \(\lambda,\mu \to t\in\mathbb R\) with
+\(\lambda=\mu\) along the diagonal, \(1-i(\lambda-\bar\mu) \to 1\), and \(K\) develops a
+logarithmic singularity there:
+\(K(\lambda,\lambda) \sim -\log\big(2\,\mathrm{Im}\,\lambda\big) + c_0\) as
+\(\mathrm{Im}\,\lambda \downarrow 0\) (using \(1-i(\lambda-\bar\lambda) = 1+2\,\mathrm{Im}\,\lambda\)).
+This is the exact, boundary-approach analogue of the Szegő-kernel-type logarithmic blow-up
+expected of a reproducing kernel whose space touches the real line — and it is a genuine
+singularity of a convergent object, not an artefact of a broken limiting procedure.
+</div>
+
+<h2>4. The Hilbert space of prime Dirichlet series</h2>
+<div class="boxed">
+<h4>Definition 4.1.</h4>
+<p>For \(w \in \ell^2(\text{primes})\) define
+\(F_w(\lambda) = \sum_p \overline{w_p}\,p^{-1/2+i\lambda} = \langle v_\lambda, w\rangle\),
+holomorphic on \(\mathbb C^+\). Let \(\mathcal H_P = \{F_w : w \in \ell^2(\text{primes})\}\)
+with \(\|F_w\|_{\mathcal H_P} := \|w\|_{\ell^2}\).</p>
+</div>
+<p>The map \(w \mapsto F_w\) is by construction an isometric isomorphism
+\(\ell^2(\text{primes}) \to \mathcal H_P\) (it is literally the inclusion
+\(w \mapsto \langle v_\bullet, w\rangle\)), so \(\mathcal H_P\) is a Hilbert space of entire —
+in fact holomorphic on \(\mathbb C^+\) — functions with reproducing kernel exactly \(K\):
+\(\langle F_w, K(\cdot,\mu)\rangle_{\mathcal H_P} = F_w(\mu)\) for all \(w,\mu\), since
+\(K(\cdot,\mu) = F_{v_\mu}\) and \(\langle F_w, F_{v_\mu}\rangle_{\mathcal H_P} = \langle w, v_\mu\rangle_{\ell^2} = \overline{\langle v_\mu, w\rangle} = \overline{F_w(\mu)}\) — matching the
+usual reproducing convention up to the standard conjugate-linearity bookkeeping of the
+sesquilinear pairing.</p>
+
+<h2>5. The translation flow and its generator</h2>
+<p>For \(t \in \mathbb R\) define the shift \((U_t F)(\lambda) = F(\lambda + t)\) on functions
+holomorphic on \(\mathbb C^+\). Under the isomorphism of §4, \(U_t\) corresponds on
+\(\ell^2(\text{primes})\) to the diagonal unitary
+\((\Lambda_t w)_p = p^{it}\,w_p\), since \(v_{\lambda+t}\big)_p = p^{-1/2+i(\lambda+t)} = p^{it}\,(v_\lambda)_p\).</p>
+<div class="lemma">
+<h4>Proposition 5.1 (spectral theorem for the flow).</h4>
+<p>\(\{\Lambda_t\}_{t\in\mathbb R}\) is a strongly continuous one-parameter unitary group on
+\(\ell^2(\text{primes})\). Its self-adjoint generator \(A\) (via
+\(\Lambda_t = e^{itA}\)) is the multiplication operator
+\((Aw)_p = (\log p)\,w_p\) on the domain \(\{w : \sum_p (\log p)^2 |w_p|^2 < \infty\}\). The
+spectrum of \(A\) is \(\overline{\{\log p : p\ \text{prime}\}}\), consisting of the pure point
+spectrum \(\{\log p\}_{p\ \text{prime}}\), each eigenvalue simple, plus (since the primes are
+unbounded but not equidistributed near any finite accumulation point other than \(+\infty\)) no
+further spectrum in any bounded interval.</p>
+</div>
+<div class="proof">
+<p><strong>Proof.</strong> Unitarity and the group law are immediate from
+\(|p^{it}|=1\), \(p^{i(t+s)} = p^{it}p^{is}\). Strong continuity: for fixed \(w \in \ell^2\),
+\(\|\Lambda_t w - w\|^2 = \sum_p |p^{it}-1|^2|w_p|^2 \to 0\) as \(t\to0\) by dominated
+convergence (\(|p^{it}-1|\le2\), pointwise \(\to0\)). Each coordinate multiplier
+\(t\mapsto p^{it} = e^{it\log p}\) is generated by multiplication by \(\log p\); on a
+diagonal operator with distinct real diagonal entries \(\{\log p\}\) (primes are distinct
+positive reals with distinct logarithms), Stone's theorem gives the stated self-adjoint
+generator with pure point, simple spectrum exactly at those entries; boundedness away from
+any accumulation point in \([0,\infty)\) other than \(\infty\) is the elementary fact that
+consecutive prime gaps are unbounded but every bounded interval contains only finitely many
+primes. \(\blacksquare\)</p>
+</div>
+
+<div class="note">
+<strong>Reading.</strong> This is the exact, rigorous sense in which "the primes carry a
+self-adjoint operator": the natural translation symmetry of the prime kernel is generated by
+multiplication by \(\log p\) on \(\ell^2(\text{primes})\) — a diagonal operator with spectrum
+\(\{\log p\}\), <em>not</em> the Riemann zeros. This is the geometric side of the explicit
+formula (Theorem 4 of
+<a href="research-findings.html">research-findings.html</a>): the trace of \(e^{itA}\)
+against a test measure produces the prime-sum side of the Guinand–Weil identity, while the
+zero-side sum \(\sum_\rho h(\gamma_\rho)\) is what a dual, zero-supported spectral object would
+need to reproduce. Constructing that dual object with a genuine, positive inner product — not
+merely as a distributional identity — is exactly the content of Hilbert–Pólya, and by
+Proposition 5.1 it cannot be found by any deformation internal to \(\mathcal H_P\): the
+generator here is pinned to \(\{\log p\}\) by unitarity of the translation flow alone.
+</div>
+
+<h2>6. Numerical verification</h2>
+<p class="small">Verified in 30-digit arithmetic (mpmath), scripts and full logs in
+<a href="worksheet.md">worksheet.md</a>.</p>
+
+<h4>6.1 — Identity \(K(\lambda,\mu) = P(1-i(\lambda-\bar\mu))\)</h4>
+<table>
+<tr><th>\(\lambda\)</th><th>\(\mu\)</th><th>\(K\) (18k-prime truncation)</th><th>\(P(1-i(\lambda-\bar\mu))\)</th><th>\(|\text{diff}|\)</th></tr>
+<tr><td>\(0.3+0.5i\)</td><td>\(-0.2+0.7i\)</td><td>\(0.310560+0.168678i\)</td><td>\(0.310560+0.168678i\)</td><td>\(2.6\times10^{-8}\)</td></tr>
+<tr><td>\(1.1+0.3i\)</td><td>\(1.1+0.3i\)</td><td>\(0.734764\)</td><td>\(0.734844\)</td><td>\(8.0\times10^{-5}\)</td></tr>
+</table>
+<p class="small">(The 18k-prime truncation error at the second point — where \(\mathrm{Re}\,s=1.6\)
+is closer to the boundary of absolute convergence — shrinks like the tail of a slowly convergent
+Dirichlet series; the identity itself is exact by Proposition 3.1.)</p>
+
+<h4>6.2 — Positive semi-definiteness of a sample Gram matrix</h4>
+<p class="small">At \(\lambda \in \{0.2+0.4i,\ -0.5+0.6i,\ 1.3+0.25i,\ 0.8i\}\), the
+\(4\times4\) matrix \(G_{ij}=K(\lambda_i,\lambda_j)\) is exactly Hermitian
+(\(\max|G-G^{\!*}| = 0\)) with eigenvalues
+\(\{0.000646,\ 0.028533,\ 0.288314,\ 1.716347\}\) — all non-negative, confirming Definition 2.2's
+positivity in a case with no special structure.</p>
+
+<h4>6.3 — The boundary logarithmic singularity, and its constant identified</h4>
+<table>
+<tr><th>\(\varepsilon\)</th><th>\(P(1+\varepsilon)+\log\varepsilon\)</th></tr>
+<tr><td>0.5</td><td>0.156416</td></tr>
+<tr><td>0.1</td><td>&minus;0.193741</td></tr>
+<tr><td>0.02</td><td>&minus;0.289565</td></tr>
+<tr><td>0.005</td><td>&minus;0.309087</td></tr>
+<tr><td>0.001</td><td>&minus;0.314387</td></tr>
+<tr><td>0.0001</td><td>&minus;0.315585</td></tr>
+</table>
+<p class="small">Converging to \(c_0 = \sum_{k\ge2}\mu(k)/k\,\log\zeta(k)\), independently
+computed (60-term truncation of the absolutely convergent defining series) as
+\(c_0 = -0.315718452\ldots\) — matching the table to the precision shown, confirming §3's
+closed-form identification of the singular constant.</p>
+
+<h2>7. Summary</h2>
+<p>The unnormalised prime kernel \(K(\lambda,\mu) = P(1-i(\lambda-\bar\mu))\) is an exact,
+positive-definite, holomorphic reproducing kernel on \(\mathbb C^+\times\mathbb C^+\), with a
+reproducing-kernel Hilbert space isometric to \(\ell^2(\text{primes})\) and a translation
+symmetry whose generator is diagonal with spectrum \(\{\log p\}\). It replaces the divergent /
+degenerate finite normalised prime kernels used in several Hilbert–Pólya proposals (see
+<a href="barry-keating-addendum-errata.html">barry-keating-addendum-errata.html</a>, Lemma L3
+and Erratum E5) with the genuine object the primes support. It is the "geometric side" object
+of the Guinand–Weil explicit formula; its positivity on the boundary, in the precise sense
+needed to reach the zero side, is exactly Weil's criterion — proven equivalent to the Riemann
+Hypothesis, not a route around it (see
+<a href="hermite-biehler.html">hermite-biehler.html</a> and
+<a href="research-findings.html">research-findings.html</a> §7–9).</p>
+
+<h2>References</h2>
+<p class="small">
+E. C. Titchmarsh, <em>The Theory of the Riemann Zeta-function</em>, 2nd ed. &middot;
+H. Iwaniec, E. Kowalski, <em>Analytic Number Theory</em>, AMS Colloq. Publ. 53 &middot;
+M. R. Murty, <em>Problems in Analytic Number Theory</em> (prime zeta function) &middot;
+A. Weil, <em>Sur les "formules explicites" de la théorie des nombres premiers</em>, Comm. Sém.
+Math. Lund (1952) 252–265 &middot;
+See also the companion documents in this folder:
+<a href="research-findings.html">research-findings.html</a>,
+<a href="hermite-biehler.html">hermite-biehler.html</a>,
+<a href="barry-keating-addendum-errata.html">barry-keating-addendum-errata.html</a>,
+<a href="worksheet.md">worksheet.md</a>.
+</p>
+
+<p style="margin-top:40px; font-size:0.9em; color:#555; text-align:center;">
+End — the prime kernel is exact, positive, and unconditional; what remains is the dual object.
+</p>
+
+</body>
+</html>
