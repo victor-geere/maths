@@ -46,8 +46,17 @@ research/
     adele_trace.py                   L1 anchor: adelic place-by-place Weil trace (10^-36)
     sieve_operator.py                sieve, vacuity demo, repaired trace
     prime_graph_lab.py               bipartite divisor graph lab (F2–F9 reproduction)
+    pairing_lemma_check.py           E1/HS5 numerical controls (F01)
+    e0_density_gate.py               N0 stage builder + gate E0 harness and controls (F02)
+    wp06_bass_certify.py             exact Q-certification of the weighted Ihara–Bass
+                                     identity on stage graphs n<=6 (F03 Part A)
+    wp06_locus_check.py              2-core radii, annulus containment, census (F03 Part B)
   findings/
     PSC2-F00-template.md             finding-note template (pre-registered criteria verbatim)
+    PSC2-F01-pairing-lemma.md        E1 + HS5 proven; controls at machine precision
+    PSC2-F02-density-gate.md         E0 run: primary H^G_n killed; no-go lemma; N0 delivered
+    PSC2-F03-weighted-locus.md       G1 audit closed: Ihara–Bass identity proven; honest
+                                     weighted locus (weak annulus); WP08 re-scoped
 ```
 
 ## Running the numerics
@@ -58,6 +67,12 @@ pip install numpy mpmath
 python research/numerics/adele_trace.py      # must reproduce N00 §1 (balance ~1e-36)
 python research/numerics/sieve_operator.py   # must reproduce N00 §2 tables
 python research/numerics/prime_graph_lab.py  # must reproduce N00 §3 (F2/F3/F4 rows)
+python research/numerics/pairing_lemma_check.py         # must reproduce F01's control block
+cd research/numerics && python e0_density_gate.py       # must reproduce F02 (self-test,
+                                             # N00 regression, E0 tables, verdict)
+pip install sympy                            # needed by wp06_bass_certify.py only
+python research/numerics/wp06_bass_certify.py  # must reproduce F03 Part A (exact, ~2 min)
+python research/numerics/wp06_locus_check.py   # must reproduce F03 Part B (census, radii)
 ```
 
 Numerical verification is manual: compare output against

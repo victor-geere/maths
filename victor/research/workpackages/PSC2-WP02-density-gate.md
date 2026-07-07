@@ -1,6 +1,16 @@
 # PSC2-WP02 — the density gate (E0): first kill
 
-*Status: **open** (design law stated; computation pending). Priority: immediately after WP01.*
+*Status: **done — primary killed** (6 Jul 2026,
+[PSC2-F02](../findings/PSC2-F02-density-gate.md)). Verdict: **FAIL** against the
+pre-registered criteria below, with both must-fail controls failing as required and the
+positive harness control passing — the kill is informative, not an artifact. The falsifier
+branch executed: the E-track (WP03–WP05) is stopped pending a redesigned window; weight
+shifts to WP06–WP08, WP12. Deliverables landed: N0 builder
+(`numerics/e0_density_gate.py`, matrix elements of $D$ and $D^2$ at dps 35), the derived
+parameter-free Weyl law, and a proven no-go lemma (concave counting laws cannot pass E0)
+covering the whole fixed-basis design class. WP01's residual obligation is discharged: the
+$J$-invariant basis compatible with the sieve inventory is **constructed** ($JV_n = V_n$
+exact; E1 pairing exact by construction).*
 
 ## Objective
 

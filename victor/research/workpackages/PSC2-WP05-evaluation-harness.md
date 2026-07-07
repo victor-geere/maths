@@ -1,8 +1,12 @@
 # PSC2-WP05 — the evaluation harness (E4 + HS gates)
 
-*Status: **open** (targets are in-repo verified values). Depends on: WP02 (spectra), WP04
-(enclosures for HS7). All rules of I0 ([S06 §5](../sources/PSC2-S06-constraints-and-walls.md))
-binding.*
+*Status: **paused** (6 Jul 2026) — WP02 killed the primary $H^G_n$ at E0
+([PSC2-F02](../findings/PSC2-F02-density-gate.md)); per WP02's falsifier the E-track is
+stopped until a redesigned window is proposed. The harness design below is
+candidate-independent and stays; F02's E0 evaluator (window rule, dev metric, positive/decoy
+controls) is a first delivered component. Was: **open** (targets are in-repo verified
+values). Depends on: WP02 (spectra), WP04 (enclosures for HS7). All rules of I0
+([S06 §5](../sources/PSC2-S06-constraints-and-walls.md)) binding.*
 
 ## Components
 

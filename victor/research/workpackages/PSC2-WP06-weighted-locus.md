@@ -1,9 +1,17 @@
 # PSC2-WP06 — audit the salvaged identity; derive the honest weighted locus (G1)
 
-*Status: **open**. The previous written attempt failed audit and is quarantined
-(X10, [S06 §3](../sources/PSC2-S06-constraints-and-walls.md)); its salvageable half is
-[S05](../sources/PSC2-S05-salvaged-G1.md). Gating: F4's "no graph-Siegel zeros" and any
-Ramanujan-type statement are **undefined** until this locus exists.*
+*Status: **done** (7 Jul 2026) — [PSC2-F03](../findings/PSC2-F03-weighted-locus.md).
+Part A: audit closed, Theorem 1.1 **proven** (explicit factorisation; exact
+$\mathbb{Q}$-certification at $n \le 6$; Watanabe–Fukumizu cross-check). Part B: leaf
+reduction, balance identities, annulus and Perron inner bound **proven** and verified against
+the census — in the pre-registered **weak-locus branch**: the annulus cannot separate
+structural detachment, so WP08's theorem target is re-scoped to the measured census, per the
+falsifier below.*
+
+*Original header — Status: **open**. The previous written attempt failed audit and is
+quarantined (X10, [S06 §3](../sources/PSC2-S06-constraints-and-walls.md)); its salvageable
+half is [S05](../sources/PSC2-S05-salvaged-G1.md). Gating: F4's "no graph-Siegel zeros" and
+any Ramanujan-type statement are **undefined** until this locus exists.*
 
 ## Part A — close the audit of Theorem 1.1 (the resolvent identity)
 

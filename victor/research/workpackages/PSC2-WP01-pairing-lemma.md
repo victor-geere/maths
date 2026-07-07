@@ -1,6 +1,9 @@
 # PSC2-WP01 — the pairing lemma (E1) and the pairing-unification claim (HS5)
 
-*Status: **open** (proof expected routine — days). Priority: first; WP02 depends on it.*
+*Status: **done — proven** (6 Jul 2026, both parts:
+[PSC2-F01](../findings/PSC2-F01-pairing-lemma.md)). The $JV_n = V_n$ hypothesis is assumed,
+not constructed — the construction is WP02's N0 builder, per the falsifier below. WP02 is
+unblocked.*
 
 ## Objective
 

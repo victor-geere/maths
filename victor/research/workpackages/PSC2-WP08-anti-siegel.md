@@ -2,6 +2,16 @@
 
 *Status: **open**. Depends on WP06 Part B (a locus against which "detached" is defined).*
 
+*Gating update (7 Jul 2026, [F03](../findings/PSC2-F03-weighted-locus.md)): WP06 landed in
+its pre-registered weak branch — the proven annulus has $r_1 \ll 1/\rho$ at every stage
+(locus-detached count $0$), so it defines "graph-Siegel" in principle (F03 Def. B6) but cannot
+isolate the structural pair. Per WP06's falsifier this WP's **theorem target is re-scoped to
+the measured census** ($|\mu| > 1.02\sqrt{\mu_1}$, exactly 4 detached, 2 real, stable
+$n = 5\ldots9$); the β-sweep ordering below is unchanged. F03's recorded margins for any
+future sharpening: at $n=7$ the Perron pair sits at $|u| = 0.1894$ vs nearest non-real pair
+$0.2054$ — the separation exists empirically; the unconsumed balance identity ($\dagger$) is
+the lever.*
+
 ## Objective
 
 Upgrade F4 from measurement to theorem: relative to WP06's locus, the detached spectrum of

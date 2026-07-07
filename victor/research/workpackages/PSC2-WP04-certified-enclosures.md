@@ -1,7 +1,12 @@
 # PSC2-WP04 — certified enclosures (E3b): the tractable core of pollution control
 
-*Status: **open** (the enclosure theorem is classical — proven; our instantiation pending).
-Depends on: WP02 (needs $P_nD^2P_n$ matrix elements).*
+*Status: **paused** (6 Jul 2026) — WP02 killed the primary $H^G_n$ at E0
+([PSC2-F02](../findings/PSC2-F02-density-gate.md)); per WP02's falsifier the E-track is
+stopped until a redesigned window is proposed. Note: the $P_nD^2P_n$ matrix elements this WP
+needs **are now available** (`numerics/e0_density_gate.py`), and F02's redesign note points
+at the prolate pencil $(D, D^2)$ as the natural successor object — this WP is first in line
+if the E-track reopens. Was: **open** (the enclosure theorem is classical — proven; our
+instantiation pending). Depends on: WP02 (needs $P_nD^2P_n$ matrix elements).*
 
 ## Objective
 

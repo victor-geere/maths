@@ -1,18 +1,31 @@
 # PSC2-WP12 — the AFE-symmetric family V2 (G2): the corrected H\* attack
 
-*Status: **open** — high-risk / high-value. Depends on WP01 (HS5 fixes the family's form:
-paired spectra, even stage products).*
+*Status: **open** — high-risk / high-value. WP01 landed (6 Jul 2026): HS5 is **proven**
+([PSC2-F01](../findings/PSC2-F01-pairing-lemma.md)), fixing the family's form — paired
+spectra, even stage products. This WP is unblocked.*
 
 ## Objective
 
-Replace the eliminated family V1 (X4) by V2 obeying design law C-2, now in the spectral form
-mandated by HS5: stage determinants that are **even in $t$ by construction** (equivalently,
-exactly $s \leftrightarrow 1-s$ symmetric), built from symmetrised AFE/Riemann–Siegel-type
-kernels
+Replace the eliminated family V1 (X4) by V2 obeying design law C-2, in the spectral form
+mandated by HS5 (**proven**, [F01](../findings/PSC2-F01-pairing-lemma.md)).
+
+**Binding family definition (spectral; supersedes the kernel schematic below).** A V2 member
+is a stage family whose stage spectra are $\pm$-paired by construction — equivalently
+(F01, Thm HS5) whose stage determinants are even in $t$ / exactly
+$s \leftrightarrow 1-s$ symmetric. By F01 this single requirement delivers H\*-d (the Vitali
+identification set) automatically, the stage products are exponential-factor free (the
+target's even-Hadamard normal form at every stage), and all odd spectral moments vanish
+exactly (free integrity check, F01 C-a). The route to pairing is E1: exhibit a $J$-invariant
+stage construction (or an exact chiral/bipartite grading, F01 C-c).
+
+*Kernel schematic (heuristic starting point only, no longer the definition):* symmetrised
+AFE/Riemann–Siegel-type kernels
 $$C^{V2}_{pq}(s) = \sum_{m \in I_n,\ pq \mid m} a_p a_q
 \big[m^{-s}\varphi(s) + m^{s-1}\varphi(1-s)\big]\cdot(pq)^{\mathrm{calibration}},$$
-with $\varphi$ a smooth AFE cutoff. Re-run the F5 stability sweep and F6 asymmetry sweep
-against the baselines in [N00 §3](../numerics/PSC2-N00-verification-targets.md).
+with $\varphi$ a smooth AFE cutoff — admissible only if the resulting stage spectra are
+verified $\pm$-paired (the F01 controls give the test: symmetry defect and FE defect at
+machine precision). Re-run the F5 stability sweep and F6 asymmetry sweep against the
+baselines in [N00 §3](../numerics/PSC2-N00-verification-targets.md).
 
 ## Pre-registered gate criterion
 

@@ -39,12 +39,12 @@ evidence.**
 
 | # | Problem | WP |
 |---|---|---|
-| T1 | E1 pairing lemma (+ HS5 pairing-unification claim) | [WP01](workpackages/PSC2-WP01-pairing-lemma.md) |
-| T2 | E0 density gate: intrinsic Weyl law, zero fitted parameters; negative controls must fail | [WP02](workpackages/PSC2-WP02-density-gate.md) |
+| T1 | E1 pairing lemma (+ HS5 pairing-unification claim) | [WP01](workpackages/PSC2-WP01-pairing-lemma.md) — **done** ([F01](findings/PSC2-F01-pairing-lemma.md)) |
+| T2 | E0 density gate: intrinsic Weyl law, zero fitted parameters; negative controls must fail | [WP02](workpackages/PSC2-WP02-density-gate.md) — **done, primary killed** ([F02](findings/PSC2-F02-density-gate.md)) |
 | T3 | E2 inclusion theorem: fix the ambient (E2a), strong-resolvent inclusion (E2b) | [WP03](workpackages/PSC2-WP03-inclusion-theorem.md) |
 | T4 | E3b certified enclosures (second-order relative spectra; pollution-free by theorem) | [WP04](workpackages/PSC2-WP04-certified-enclosures.md) |
 | T5 | E4 evaluation harness + HS1 product gate, HS2 moment gate, HS6 sine decoy, HS7 genealogy | [WP05](workpackages/PSC2-WP05-evaluation-harness.md) |
-| T6 | G1: audit the salvaged Ihara–Bass identity; derive an honest weighted locus | [WP06](workpackages/PSC2-WP06-weighted-locus.md) |
+| T6 | G1: audit the salvaged Ihara–Bass identity; derive an honest weighted locus | [WP06](workpackages/PSC2-WP06-weighted-locus.md) — **done** ([F03](findings/PSC2-F03-weighted-locus.md): identity **proven**; locus delivered, weak) |
 | T7 | G3: normalised-gap census to $n \le 14$, then uniform-bound proof attempt | [WP07](workpackages/PSC2-WP07-normalised-gap.md) |
 | T8 | G4: anti-Siegel block-purity theorem; $\beta$-sweep first | [WP08](workpackages/PSC2-WP08-anti-siegel.md) |
 | T9 | truncation-rate proposition with constants, as a standalone tagged result | [WP09](workpackages/PSC2-WP09-trace-rate-proposition.md) |
@@ -75,11 +75,15 @@ as standing calibrators.
    $\approx 0.56$ (WP07).
 2. **Block-purity of detached spectrum** — exact count 4 at every measured stage (WP08).
 3. **H\*** — C1 in the strip for a coupled family (WP12); the single most valuable L3 target.
-4. **E0 Weyl law for $H^G_n$** — design argument only; **first kill, run before everything
-   else at L4** (WP02).
+4. **E0 Weyl law for $H^G_n$** — **refuted** (6 Jul 2026,
+   [F02](findings/PSC2-F02-density-gate.md)): the first kill executed as designed. Measured
+   deviation grows $3.5 \to 6.3$ over stages $n = 4\ldots12$ against a required decrease to
+   $\le 0.05$, with the harness two-sidedly validated; a proven no-go lemma extends the kill
+   to every fixed-basis compression with concave counting law. No longer a live conjecture.
 5. **Q-γ2 Asano structure** (WP13).
-6. **HS1 paired-product gate, HS2 moment gate, HS5 pairing law, HS7 genealogy** — stated in
-   [S04](sources/PSC2-S04-model-pair.md) §3–7, owned by WP05/WP01.
+6. **HS1 paired-product gate, HS2 moment gate, HS7 genealogy** — stated in
+   [S04](sources/PSC2-S04-model-pair.md) §3–7, owned by WP05. (HS5 pairing law: **proven**,
+   [F01](findings/PSC2-F01-pairing-lemma.md) — no longer a conjecture.)
 
 ## 4. Ordering
 
@@ -95,6 +99,20 @@ WP12 (V2/H*) after WP01 fixes the paired form  ·  WP13 after WP06  ·  WP14 opp
 Every WP carries its own falsifier and its own standalone value if the wall never falls. Any
 outcome — including total failure of $H^G_n$ at E0 — is a reportable finding
 ([findings/PSC2-F00](findings/PSC2-F00-template.md)).
+
+**Ordering update (6 Jul 2026).** That outcome occurred: WP02 ran and killed the primary
+([F02](findings/PSC2-F02-density-gate.md)). Per WP02's falsifier the E-track is stopped —
+WP03/WP04/WP05 carry pause notices — until a redesigned window is proposed (F02's redesign
+note: wedge-shaped phase-space support / the prolate pencil $(D, D^2)$; WP04 is first in
+line on reopening, since the $D^2$ matrix elements are already delivered). The project's
+weight shifts to WP06–WP08 and WP12, as scheduled above.
+
+**Ordering update (7 Jul 2026).** WP06 landed ([F03](findings/PSC2-F03-weighted-locus.md)):
+the G1 identity is **proven** (audit closed) and the honest locus is delivered — in the
+pre-registered *weak* branch (fat annulus; locus-detached count $0$ at every stage). Per
+WP06's falsifier, **WP08 proceeds with its theorem target re-scoped to the measured census**
+(β-sweep ordering unchanged); **WP13 is unblocked** (its input — the proven per-edge product
+form — is now safe to build on).
 
 ## 5. Do-not list (binding; from S06)
 
@@ -112,9 +130,11 @@ routes. No presenting gate progress as approaching RH.
 | L1 trace identity + verification + rate | **proven** |
 | L2 character identity; circularity | **proven** |
 | Hurwitz dictionary; Kotani–Sunada; Turán–Montgomery; F8 no-go; N1–N4; HB equivalence | **proven** |
-| Weighted Ihara–Bass identity | **verified $10^{-15}$**; proof salvaged, under audit ([S05](sources/PSC2-S05-salvaged-G1.md), WP06) |
-| E-gates, G-gates, H\*, P3.5, Q-γ2, HS1/HS2/HS7 | **open** (triaged above) |
-| HS5 pairing law | **open**, expected routine after E1 |
+| Weighted Ihara–Bass identity (multigraph form) | **proven** (6 Jul → 7 Jul 2026: explicit factorisation + exact $\mathbb Q$-certification at $n \le 6$ + Watanabe–Fukumizu cross-check, [F03](findings/PSC2-F03-weighted-locus.md); supersedes "under audit", [S05](sources/PSC2-S05-salvaged-G1.md)) |
+| Weighted locus (leaf reduction; balance identities; annulus $[r_1, r_2]$ for non-real poles; Perron inner bound) | **proven**, radii fitted-constant-free; containment **verified** $n = 4\ldots9$ + census; the annulus is **weak** — cannot separate structural detachment, WP08 re-scoped to the measured census ([F03](findings/PSC2-F03-weighted-locus.md)) |
+| E0 for the primary $H^G_n$ (N0 fixed-basis instantiation) | **failed — killed** ([F02](findings/PSC2-F02-density-gate.md)); no-go lemma for concave counting laws **proven**; E-track paused |
+| E-gates E2–E5 (paused pending redesigned window), G-gates, H\*, P3.5, Q-γ2, HS1/HS2/HS7 | **open** (triaged above) |
+| E1 pairing lemma + HS5 pairing law | **proven** ([F01](findings/PSC2-F01-pairing-lemma.md)); $J$-invariant basis **constructed** by WP02's N0 builder ([F02](findings/PSC2-F02-density-gate.md)) — residual obligation discharged |
 | HS3 Sylvester basis (in WP05 backlog) | **exploratory** |
 | X-ledger (12 routes) | **dead ends**, recorded |
 | W-ledger (6 walls) | **RH-equivalent** |

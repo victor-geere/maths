@@ -6,7 +6,7 @@ salvaged here.** Status per claim:*
 
 | Claim in gate-1.md | Verdict | Disposition |
 |---|---|---|
-| Theorem 2.1 (weighted Ihara–Bass resolvent identity) with Schur-complement proof | proof **plausibly correct**; numeric half independently verified to $10^{-15}$ (F2) | **salvaged below**; verification obligations in §3; tag stays *verified numerically / proof under audit* until WP06's audit completes |
+| Theorem 2.1 (weighted Ihara–Bass resolvent identity) with Schur-complement proof | proof **plausibly correct**; numeric half independently verified to $10^{-15}$ (F2) | **salvaged below**; verification obligations in §3; tag stays *verified numerically / proof under audit* until WP06's audit completes — **audit closed 2026-07-07: tag is now *proven*** (dated notice after §2; [PSC2-F03](../findings/PSC2-F03-weighted-locus.md)) |
 | "Weighted Locus Theorem" (annulus $r_1 \le \lvert u\rvert \le r_2$ for non-real zeros) | upper-bound derivation incoherent mid-proof (mislabeled degree quantities, patched estimates); hypothesis "weighted degree $\ge 2$" fails for the actual sieve graph (prime-power composites have degree 1) | **not salvaged** — re-derive honestly in [WP06](../workpackages/PSC2-WP06-weighted-locus.md) |
 | "Asano Compatibility" theorem | circular: invokes the locus conclusion for the enlarged graph, then concludes stability from an annulus that *grows* — a non sequitur; no actual Lee–Yang/Asano contraction argument | **not salvaged** — the honest question is [WP13](../workpackages/PSC2-WP13-asano-gluing.md) (Q-γ2) |
 
@@ -64,6 +64,21 @@ variables are eliminated through its $2 \times 2$ block of determinant $1 - u^2w
 Schur complement of those blocks is the map $M(u)$ on $\phi$. Taking determinants,
 
 $$\det(I - uB_w) = \prod_{e \in E}(1 - u^2w_e^2)\,\det M(u). \qquad\blacksquare$$
+
+> **Closure notice (2026-07-07).** The audit is complete and Theorem 1.1 is now tagged
+> **proven** — see [PSC2-F03](../findings/PSC2-F03-weighted-locus.md). All four §3
+> obligations were discharged: (1) the kernel-level Schur step above is replaced by an
+> explicit block-triangular factorisation of the $(|V|{+}2|E|)$-dimensional matrix
+> $X(u) = \begin{pmatrix} I_V & uS \\ T^\top & I + uW\tau\end{pmatrix}$, whose two Schur
+> factorisations give the two sides; (2) degenerate cases are settled (no degree hypothesis;
+> multigraph form stated and certified; loops excluded; singular $u$ by polynomial
+> continuation); (3) the identity is certified **exactly over $\mathbb Q$**,
+> coefficient-by-coefficient, on the actual stage graphs $n = 2\ldots6$
+> (`numerics/wp06_bass_certify.py`), superseding the floating-point F2 validation;
+> (4) the identity is the scalar specialisation $u_e = u_{\bar e} = uw_e$ of
+> Watanabe–Fukumizu (arXiv:1103.0605, Cor. 9), verified symbolically with independent
+> orientation weights; Mizuno–Sato 2004 lives in the different regime $u_eu_{\bar e} = u^2$,
+> consistent with the numeric refutation of the naive Bass transplant.
 
 ## 3. Verification obligations (open; owned by WP06)
 

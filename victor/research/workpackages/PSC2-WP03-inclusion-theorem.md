@@ -1,6 +1,10 @@
 # PSC2-WP03 — the inclusion theorem (E2): unconditional convergence
 
-*Status: **open** (unconditional target). Depends on: WP02's builder (for the concrete core).*
+*Status: **paused** (6 Jul 2026) — WP02 killed the primary $H^G_n$ at E0
+([PSC2-F02](../findings/PSC2-F02-density-gate.md)); per WP02's falsifier the E-track is
+stopped until a redesigned window is proposed. E2a (fixing the ambient) is window-independent
+and remains valid standalone work. Was: **open** (unconditional target). Depends on: WP02's
+builder (for the concrete core).*
 
 ## Objective
 

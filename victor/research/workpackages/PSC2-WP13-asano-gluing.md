@@ -4,6 +4,13 @@
 The quarantined "Asano Compatibility" proof (X10) is void — this WP is the honest version of
 the question it pretended to answer.*
 
+*Gating update (7 Jul 2026): WP06 landed ([F03](../findings/PSC2-F03-weighted-locus.md)) —
+the identity is **proven** (multigraph form, exact certification) and the locus exists (weak
+annulus, radii fitted-constant-free). This WP is unblocked. Useful F03 inputs: the leaf
+reduction (Prop. B1) shows a degree-1 vertex addition acts trivially on
+$\det(I - uB)$ — the gluing question lives entirely on the 2-core; the exact rationalisation
+lemmas (L1–L3 in `numerics/wp06_bass_certify.py`) make the $n \le 6$ symbolic checks cheap.*
+
 ## Objective
 
 Using the per-edge product form $\prod_e(1 - u^2w_e^2)\det M(u)$

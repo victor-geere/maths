@@ -389,7 +389,7 @@ failure of $H^G_n$ at E0, is a reportable finding.
 | L1 trace identity + $10^{-36}$ verification + rate | **proven** |
 | L2 character identity; circularity of "sieve bridge + Weil" | **proven** |
 | Hurwitz dictionary; Kotani–Sunada; Turán–Montgomery caution; F8 no-go; N1–N4; Thm 7.1 | **proven** (classical/in-folder) |
-| Weighted Ihara–Bass identity | verified $10^{-15}$; symbolic proof **open** (T6; prior attempt quarantined, X10) |
+| Weighted Ihara–Bass identity | verified $10^{-15}$; symbolic proof **open** (T6; prior attempt quarantined, X10) — **update 7 Jul 2026: proven** in the extracted project (explicit factorisation + exact $\mathbb{Q}$-certification at $n \le 6$; see `victor/research/findings/PSC2-F03-weighted-locus.md`, which also delivered T6's honest locus: weak annulus, anti-Siegel target re-scoped to the measured census) |
 | E-gates E0–E4; G-gates G1–G6; H\*; P3.5; Q-γ2 | **open** (triaged T/H above) |
 | HS1 product gate; HS2 moment gate; HS7 genealogy | **open** (new; pre-registered) |
 | HS5 pairing unification | **open**, expected routine after E1 |
