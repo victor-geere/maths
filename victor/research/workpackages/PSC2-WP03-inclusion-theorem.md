@@ -1,6 +1,33 @@
 # PSC2-WP03 — the inclusion theorem (E2): unconditional convergence
 
-*Status: **open — reopened** (7 Jul 2026) — WP02b's rewindowed primary
+*Status: **done — E2a delivered; E2b theorem proven; W1 instantiation in the falsifier
+branch, quantified** (7 Jul 2026,
+[PSC2-F09](../findings/PSC2-F09-inclusion-theorem.md)). E2a: the ambient record (normal
+form $D = -i\,d/du$ on $L^2(\mathbb R, du)$, Mellin unitarity, $J$-parity, and the M4
+four-ambient separation) is fixed once, every statement tagged. E2b: the route as worded
+below needed repair — $P_n \to I$ strongly does **not** imply strong-resolvent
+convergence of compressions (graph-norm control is the missing hypothesis; F09 Part II
+Remark 1) — and the proven replacement is the **inclusion criterion** (graph-norm stage
+density $\Rightarrow$ $r_n(\lambda) \to 0$ $\Rightarrow$ spectral inclusion,
+quantitative), plus the honest s.r.c. version (Prop 2′), the finite-place prototype
+realising the chain verbatim (S00 Prop 6.1(1)), and coarse inclusion on W1 with explicit
+constants ($9.18/11.5$; no gap $> 18.4$ in the covered bulk). For W1 on fixed windows
+the falsifier fired in quantified form: certified quasi-mode floors
+$r_n \ge 0.73$ on $[0,50]$ at every fine-grid stage (grid minima $\approx 0.98$,
+stage-stable), $\mathrm{dist}(\varphi_{\mathrm{far}}, V_n) = 1.0000$, and a permanent
+spectral hole below $9.34$ — not a domain pathology but the wedge's fixed aperture (the
+F08 fingerprint as an exact lower envelope). Per the falsifier text this constrains the
+window design (prolate-pencil escalation stands pre-registered), not the theorem. The
+script's mechanical branch rule returned INDETERMINATE via a disclosed
+operationalisation artifact (vacuous $n=12$ coarse-grid Lipschitz margin); the $n=12$
+fine-grid floor is filed via the labelled post-hoc supplement ($c_{12} = 0.7331$ —
+floors certified at all five stages). **WP05 next**, its E4b
+resolution budget now binding (F08 (a) + F09 (b)/(c)). Previously: **open — first in
+line** (7 Jul 2026) — WP04 landed
+([PSC2-F08](../findings/PSC2-F08-certified-enclosures.md): E3b gate passed; certified
+radii saturate at a floor $\approx 1.72$ on $[0,50]$ — a resolution caveat this WP's E2b
+core inherits as context), so per the charter ordering this WP now runs next, then WP05.
+Previously: **open — reopened** (7 Jul 2026) — WP02b's rewindowed primary
 $H^{G,\mathrm{w}}_n$ (W1 wedge builder) passed E0b
 ([PSC2-F07](../findings/PSC2-F07-density-rewindow.md)); per the pre-registration the E-track
 pause is lifted, WP04 first in line. The concrete core for E2b is now the W1 family

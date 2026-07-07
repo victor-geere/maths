@@ -1,17 +1,19 @@
 # PSC2-WP04 — certified enclosures (E3b): the tractable core of pollution control
 
-*Status: **open — reopened, first in line** (7 Jul 2026) — WP02b's rewindowed primary
-$H^{G,\mathrm{w}}_n$ (W1 wedge builder) passed E0b
-([PSC2-F07](../findings/PSC2-F07-density-rewindow.md)); per the pre-registration the E-track
-pause is lifted and this WP runs first, exactly as F02's ordering note anticipated. Its
-pencil input $(P_nDP_n, P_nD^2P_n)$ is **delivered** for the W1 family by
-`numerics/wp02b_rewindow.py` (complex closed forms at dps 35, `svd_c`-certified; the older
-N0 elements in `e0_density_gate.py` remain available as a comparison family). O6 caveat
-carried over: the E0b pass is not evidence about zeros — enclosures here are statements
-about the family, pending E4b. Was: **paused** (6 Jul 2026, WP02 falsifier —
-[PSC2-F02](../findings/PSC2-F02-density-gate.md)); before that **open** (the enclosure
-theorem is classical — proven; our instantiation pending). Depends on: WP02b (matrix
-elements).*
+*Status: **done — passed, with a saturation caveat** (7 Jul 2026,
+[PSC2-F08](../findings/PSC2-F08-certified-enclosures.md)). Verdict: **PASS** against the
+pre-registered criteria (median radius strictly decreasing over all five stages
+$1.7411 \to 1.7241 \to 1.7221 \to 1.7220 \to 1.7219$; harness valid two-sidedly;
+machinery certified to $7.5\times10^{-13}$ against `mpmath.eig` and $4.2\times10^{-10}$
+against independent quadrature). The measured **rate**, however, is $\alpha \approx 0.01$:
+the radii saturate at a positive floor $\approx 1.72$ on $[0,50]$ — the fixed-aperture
+limit of the wedge on the window, exactly the band-limit-dual fingerprint the falsifier
+text named, arriving through a passing gate. The caveat travels with the HS7 genealogy
+feed to WP05; E-track proceeds WP03 next, then WP05. Was: **open — reopened, first in
+line** (7 Jul 2026, E0b passed, [PSC2-F07](../findings/PSC2-F07-density-rewindow.md));
+before that **paused** (6 Jul 2026, WP02 falsifier —
+[PSC2-F02](../findings/PSC2-F02-density-gate.md)); before that **open**. Depends on:
+WP02b (matrix elements — delivered by `numerics/wp02b_rewindow.py`).*
 
 ## Objective
 

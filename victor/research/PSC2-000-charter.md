@@ -41,15 +41,16 @@ evidence.**
 |---|---|---|
 | T1 | E1 pairing lemma (+ HS5 pairing-unification claim) | [WP01](workpackages/PSC2-WP01-pairing-lemma.md) — **done** ([F01](findings/PSC2-F01-pairing-lemma.md)) |
 | T2 | E0 density gate: intrinsic Weyl law, zero fitted parameters; negative controls must fail | [WP02](workpackages/PSC2-WP02-density-gate.md) — **done, primary killed** ([F02](findings/PSC2-F02-density-gate.md)); rewindow [WP02b](workpackages/PSC2-WP02b-density-gate-rewindow.md) — **done, passed** ([F07](findings/PSC2-F07-density-rewindow.md): W1 wedge family clears E0b; E-track reopened; per O6 not evidence about zeros) |
-| T3 | E2 inclusion theorem: fix the ambient (E2a), strong-resolvent inclusion (E2b) | [WP03](workpackages/PSC2-WP03-inclusion-theorem.md) |
-| T4 | E3b certified enclosures (second-order relative spectra; pollution-free by theorem) | [WP04](workpackages/PSC2-WP04-certified-enclosures.md) |
-| T5 | E4 evaluation harness + HS1 product gate, HS2 moment gate, HS6 sine decoy, HS7 genealogy | [WP05](workpackages/PSC2-WP05-evaluation-harness.md) |
+| T3 | E2 inclusion theorem: fix the ambient (E2a), strong-resolvent inclusion (E2b) | [WP03](workpackages/PSC2-WP03-inclusion-theorem.md) — **done** ([F09](findings/PSC2-F09-inclusion-theorem.md): E2a ambient record delivered, all tagged; E2b **proven** as the inclusion criterion + prototype + coarse-inclusion theorems, with the WP's s.r.c. route repaired; W1 instantiation in the **falsifier branch, quantified** — certified quasi-mode floors $r_n \ge 0.73$ on $[0,50]$, hole below $9.34$; constrains the window, feeds WP05's E4b budget) |
+| T4 | E3b certified enclosures (second-order relative spectra; pollution-free by theorem) | [WP04](workpackages/PSC2-WP04-certified-enclosures.md) — **done, passed** ([F08](findings/PSC2-F08-certified-enclosures.md): gate met, machinery certified; measured rate $\alpha \approx 0.01$ — radii saturate at floor $\approx 1.72$ on $[0,50]$, the wedge's fixed-aperture band-limit; caveat travels to WP03/WP05) |
+| T5 | E4 evaluation harness + HS1 product gate, HS2 moment gate, HS6 sine decoy, HS7 genealogy | [WP05](workpackages/PSC2-WP05-evaluation-harness.md) — **done** ([F10](findings/PSC2-F10-e4a-trace-consistency.md)–[F14](findings/PSC2-F14-hs7-genealogy.md): harness delivered and **valid** two-sidedly; E4a fails by persistent excess $=$ the sub-$\gamma_1$ counting surplus, quantified; E4b letter-passes on a sub-resolution drift ($0.128 < 0.73$), **not certified**, and W1 does not beat the density-matched decoy — the pre-registered **counting-law-only closure fires**; HS1 refuted for W1; HS2 fires $\gamma$-free; HS7 genealogy persistent 15/17. Escalation chartered: [WP15](workpackages/PSC2-WP15-prolate-pencil.md)) |
 | T6 | G1: audit the salvaged Ihara–Bass identity; derive an honest weighted locus | [WP06](workpackages/PSC2-WP06-weighted-locus.md) — **done** ([F03](findings/PSC2-F03-weighted-locus.md): identity **proven**; locus delivered, weak) |
 | T7 | G3: normalised-gap census to $n \le 14$, then uniform-bound proof attempt | [WP07](workpackages/PSC2-WP07-normalised-gap.md) — **base theorem done** ([F04](findings/PSC2-F04-normalised-gap.md): census stable to $n=15$; uniform gap **proven**, explicit $c$; sharp constant + routes α/β remain open) |
 | T8 | G4: anti-Siegel block-purity theorem; $\beta$-sweep first | [WP08](workpackages/PSC2-WP08-anti-siegel.md) — **done, falsifier branch** ([F05](findings/PSC2-F05-anti-siegel.md): "exactly 4" refuted — hierarchy grows; real census clean everywhere; edge-purity theorem **proven** for all $n \ge 4$, all $\beta$) |
 | T9 | truncation-rate proposition with constants, as a standalone tagged result | [WP09](workpackages/PSC2-WP09-trace-rate-proposition.md) |
 | T10 | restricted-support Weil positivity; first new instance: places $\{\infty, 2\}$ | [WP10](workpackages/PSC2-WP10-weil-positivity-restricted.md) |
 | T11 | Li coefficients: unconditional finite-range computation/asymptotics | [WP11](workpackages/PSC2-WP11-li-coefficients.md) |
+| T12 | Prolate pencil: E-track candidate 2 (the pre-registered escalation after the W1 closure) | [WP15](workpackages/PSC2-WP15-prolate-pencil.md) — chartered 7 Jul 2026 by the WP05 escalation |
 
 **H — hard but valid** (open research, below the wall):
 
@@ -103,9 +104,16 @@ as standing calibrators.
    multiplier), but it preserves no zero locus — strict Perron injection at every
    same-component core step, proven and measured 45/45 at $n \le 6$. The pre-registered
    falsifier fired; **route γ closed entirely** (X13). No longer a live conjecture.
-6. **HS1 paired-product gate, HS2 moment gate, HS7 genealogy** — stated in
-   [S04](sources/PSC2-S04-model-pair.md) §3–7, owned by WP05. (HS5 pairing law: **proven**,
-   [F01](findings/PSC2-F01-pairing-lemma.md) — no longer a conjecture.)
+6. **HS1 paired-product gate, HS2 moment gate, HS7 genealogy** — delivered and executed
+   (7 Jul 2026, WP05). HS1's conjectured implication (E0 ∧ E3b ⇒ $\Xi_n \to \Xi$) is
+   **refuted for the W1 instantiation** ([F12](findings/PSC2-F12-hs1-product-gate.md):
+   hypotheses held — F07/F08 — and the divergence is monotone, $M1: 1.46 \to 3.14$); the
+   restated form with arithmetic-gate hypotheses is **open**. HS2 fired as designed, a
+   $\gamma$-free pollution detector ([F13](findings/PSC2-F13-hs2-moment-gate.md)). HS7
+   executed: genealogy persistent, the pollution structural
+   ([F14](findings/PSC2-F14-hs7-genealogy.md)); the gate stays **exploratory** apparatus.
+   (HS5 pairing law: **proven**, [F01](findings/PSC2-F01-pairing-lemma.md) — no longer a
+   conjecture.)
 
 ## 4. Ordering
 
@@ -166,6 +174,75 @@ gate can only kill, and what it killed (N0) stays dead; F02's no-go lemma is unt
 (W1 is outside its hypothesis class by the convexity check run mechanically at every
 stage).
 
+**Ordering update (7 Jul 2026, WP04 landed).** WP04 executed on the reopened E-track and
+**passed** ([F08](findings/PSC2-F08-certified-enclosures.md)): the second-order pencil
+machinery is certified end-to-end (`mpmath.eig` $7.5\times10^{-13}$; independent
+quadrature $4.2\times10^{-10}$), the certified-interval genealogy on $[0,50]$ is delivered
+(the WP05/HS7 feed), and the median radius decreases strictly at all five stages, meeting
+the pre-registered bar. The measured **rate** carries a binding caveat forward: radii
+saturate at a positive floor $\approx 1.72$ (fit $\alpha \approx 0.01$) — the
+fixed-aperture band-limit of the wedge on the window, precisely the falsifier's predicted
+fingerprint arriving through a passing gate; four adjacent eigenvalue pairs already share
+one certified interval at $n = 12$. Per the ordering: **WP03 next** (E2 inclusion), then
+WP05, whose E4b design must state in advance what displacement resolution it needs against
+this floor; the pre-registered escalation if it needs more is the genuinely quadratic
+prolate pencil (F02 redesign note / WP02b falsifier branch). O6 unchanged: none of this is
+evidence about zeros.
+
+**Ordering update (7 Jul 2026, WP03 landed).** WP03 executed next per the F08 ordering
+and delivered both objectives ([F09](findings/PSC2-F09-inclusion-theorem.md)). E2a: the
+ambient is fixed once — archimedean normal form $D = -i\,d/du$ on $L^2(\mathbb R, du)$,
+$\mathrm{spec}(D) = \mathbb R$ purely a.c. (proven), with the M4 four-ambient separation
+(semi-local proven / global Hilbert RH-equivalent / Meyer nuclear unconditional)
+recorded in one tagged table; charter H9 stays deferred. E2b: the WP's own chain
+"$P_n \to I$ strongly $\Rightarrow$ s.r.c." was found incomplete and repaired; the
+**proven** deliverables are the inclusion criterion (graph-norm stage density
+$\Rightarrow$ spectral inclusion, quantitative via the stage resolution $r_n$), the
+honest s.r.c. version, the finite-place prototype (verbatim realisation), and W1 coarse
+inclusion with explicit constants. The W1 instantiation landed in the **falsifier
+branch, quantified**: certified floors $r_n \ge 0.73$ on $[0,50]$ at every fine-grid
+stage (grid minima $\approx 0.98$, stage-stable to $10^{-4}$), $P_n \to I$ failing
+outright at the sub-wedge witness, 17 index-stable eigenvalues on $(0,50]$ with a
+permanent hole below $9.34$ — the same fixed-aperture fingerprint as F08, now as an
+exact lower envelope; graph-norm stage density fails on fixed windows, so the strict E2b
+conclusion is unavailable for W1 there (moving-window resolution improves with energy,
+not with stage). Per the WP's falsifier text this constrains the **window design**, not
+the theorem: **WP05 next**, its E4b design bound by the combined resolution budget
+(F08 radii floor $\approx 1.72$; F09 quasi-mode floor $\ge 0.73$; the hole below
+$9.34$); the pre-registered escalation remains the prolate pencil. The run's mechanical
+branch rule returned INDETERMINATE through a disclosed operationalisation artifact
+(vacuous $n = 12$ coarse-grid Lipschitz margin), reported verbatim in F09 with a
+labelled post-hoc fine-grid supplement (landed: $c_{12} = 0.7331$ — floors certified at
+all five stages). O6 unchanged: none of this is evidence about zeros.
+
+**Ordering update (7 Jul 2026, WP05 landed — the W1 family closes).** WP05 executed next
+per the F09 ordering, with the E4b resolution budget stated in advance against the
+F08+F09 floors, and delivered the full harness
+([F10](findings/PSC2-F10-e4a-trace-consistency.md)–[F14](findings/PSC2-F14-hs7-genealogy.md)):
+E4a, E4b, HS1, HS2, HS7 plus the complete E4c/HS6 control battery, **valid two-sidedly**
+(positive h.o. control converges to $6\times10^{-11}$; sine decoy passes both internal
+identities and fails every arithmetic test; legacy and graph negatives fail; the
+bare-wedge decoy passes E0's shape and fails E4b; one earlier run was invalidated by its
+own decoy-control line and the decoy redesigned to a nested grid — disclosed in F10).
+The verdicts, mechanical: **E4a fails by persistent excess** ($+2.73\times10^{-2}$ at
+$t = 0.05$, stage-stable, outside the proven envelope from $n = 12$; 100.2% attributable
+to the two stage eigenvalues below $\gamma_1$ — the wedge counting law's
+$T/2\pi$ surplus); **E4b letter-rule passes on a sub-resolution drift** (median
+$0.808 \to 0.680$, cumulative $0.128$ against the certified floor $0.73$) and is **not
+certified**, with W1 and the density-matched decoy indistinguishable
+($0.680$ vs $0.695$); HS1 diverges (refuting its conjectured implication for W1); HS2
+fires $\gamma$-free; HS7 shows the pollution is structural (persistent chains, drift
+$0.026$). Per the WP's own closure line and the manuscript Phase-B pre-registered
+decision point, **the W1 family closes as "counting law only"** — wedge support + sieve
+inventory carries no measurable arithmetic beyond its derived counting law on the
+evaluation window. The banked W1 assets (F07 builder and closed forms, F08 enclosure
+machinery, F09 inclusion criterion, the calibrated harness) stand. **The E-track
+candidate moves to the prolate pencil: [WP15](workpackages/PSC2-WP15-prolate-pencil.md)
+chartered** (T12), exactly the escalation pre-registered in F02's redesign note, WP02b's
+falsifier branch, F08 and F09. The harness is candidate-independent and is reused
+verbatim by WP15. O6 unchanged and binding: none of this — including the closure — is
+evidence about zeros; RH is open.
+
 ## 5. Do-not list (binding; from S06)
 
 No unfolding/fitting/calibration against $N(T)$ or the $\gamma$-list (evaluation-only
@@ -191,7 +268,18 @@ routes. No presenting gate progress as approaching RH.
 | E0b for the rewindowed primary $H^{G,\mathrm{w}}_n$ (W1 wedge instantiation, [WP02b](workpackages/PSC2-WP02b-density-gate-rewindow.md)) | **passed — verified** (7 Jul 2026, [F07](findings/PSC2-F07-density-rewindow.md); dev $0.118 \to 0.020$, harness valid; builder + derived convex Weyl law + $D/D^2$ closed forms **proven**); E-track **reopened**; per O6 not evidence about zeros |
 | Sieve-step gluing law $p_{G+x} = p_G\Psi_x$ (Schur/Green form; $d=2$ transfer quadratic; multi-affine lift + GWS reduction) | **proven** (7 Jul 2026, [F06](findings/PSC2-F06-asano-gluing.md); exact $\mathbb{Q}$ certification at all 95 stage additions $n \le 6$; six MCP cross-checks) |
 | Q-γ2 Asano/Lee–Yang gluing (a preserved zero locus for the sieve step); route γ | **dead end — closed** ([F06](findings/PSC2-F06-asano-gluing.md), pre-registered falsifier: strict Perron injection 45/45; factor-zero invasion; no Asano-reachable region to $n = 9$; X13 — do not reopen). Graded Asano/GWS chain (sound, efficiency $0.44\to0.70$): **exploratory** |
-| E-gates E2–E4 (reopened 7 Jul 2026 on the W1 family; WP04 first), E5 (wall), G-gates, H\*, P3.5, HS1/HS2/HS7 | **open** (triaged above) |
+| E3b certified enclosures on the W1 family ([WP04](workpackages/PSC2-WP04-certified-enclosures.md)) | **passed — verified** (7 Jul 2026, [F08](findings/PSC2-F08-certified-enclosures.md); enclosure theorem classical **proven**; quasi-mode identity **proven**; machinery **certified**; median radius strictly decreasing $1.7411 \to 1.7219$, gate met); saturation floor $\approx 1.72$ on $[0,50]$ as a limit claim: **heuristic** — resolution caveat binding on WP05's E4b design |
+| E2a ambient record (archimedean normal form; Mellin unitarity; $J$-parity; M4 four-ambient separation, H9 deferred) | **proven** (7 Jul 2026, [F09](findings/PSC2-F09-inclusion-theorem.md)) |
+| E2b inclusion criterion (graph-norm stage density $\Rightarrow$ spectral inclusion, quantitative; s.r.c. route repaired), finite-place prototype realisation, W1 coarse inclusion (explicit constants $9.18/11.5/18.4$) | **proven** (7 Jul 2026, [F09](findings/PSC2-F09-inclusion-theorem.md); single-state residual identity cross-checked symbolically via the sympy-verifier) |
+| E2b strict inclusion for W1 on fixed windows (graph-density hypothesis) | **failed — falsifier branch, quantified** ([F09](findings/PSC2-F09-inclusion-theorem.md): certified quasi-mode floors $r_n \ge 0.73$ on $[0,50]$ at every fine-grid stage, grid minima $\approx 0.98$ stage-stable; $\mathrm{dist}(\varphi_{\mathrm{far}}, V_n) = 1.0000$; permanent spectral hole below $9.34$; mechanical branch rule INDETERMINATE via disclosed vacuous $n{=}12$ margin, post-hoc fine-grid supplement filed: $c_{12} = 0.7331$, floors certified at all five stages); $n \to \infty$ persistence **verified (extrapolation)**; aperture trade-off **heuristic** |
+| E4 evaluation harness (E4a/E4b + E4c/HS6 controls) on the W1 family ([WP05](workpackages/PSC2-WP05-evaluation-harness.md)) | **done — delivered and valid** (7 Jul 2026, [F10](findings/PSC2-F10-e4a-trace-consistency.md)/[F11](findings/PSC2-F11-e4b-matched-displacement.md); envelope constant derivation **proven**; measurements **verified**; run-1 decoy-control artifact disclosed, decoy redesigned nested) |
+| E4a trace gate on W1 | **failed — persistent excess** ([F10](findings/PSC2-F10-e4a-trace-consistency.md): $+2.73\times10^{-2}$ at $t=0.05$, stage-stable, outside the proven $C(t)M_n^{-1/2}$ envelope from $n=12$; excess $=$ sub-$\gamma_1$ counting surplus to 0.2%, **verified**) |
+| E4b matched displacement on W1; the family decision | **not certified — counting-law-only closure fired** ([F11](findings/PSC2-F11-e4b-matched-displacement.md): letter rule true on drift $0.128 < 0.73$ floor; W1 $0.680$ vs density-matched decoy $0.695$ — indistinguishable at certified resolution; closure **verified** at computed stages, $n \to \infty$ persistence per F09 extrapolation) |
+| HS1 paired-product gate (conjectured implication E0 ∧ E3b ⇒ $\Xi_n \to \Xi$) | **refuted for W1** ([F12](findings/PSC2-F12-hs1-product-gate.md): monotone divergence $1.46 \to 3.14$ with hypotheses held); restated arithmetic-gate form **open** |
+| HS2 moment gate ($\gamma$-free secondary-zeta targets) | **delivered, fired** ([F13](findings/PSC2-F13-hs2-moment-gate.md): errors increasing/flat at every $m$; $\sigma_n(2) = 2.2\times$ target) — **verified** |
+| HS7 enclosure genealogy | **delivered, executed** ([F14](findings/PSC2-F14-hs7-genealogy.md): 15/17 chains persist all stages, breaks localise the $n=4\to6$ re-assignments, median drift $0.026$ — pollution structural); gate remains **exploratory** apparatus |
+| W1 wedge family as E-track primary | **closed — counting law only** (pre-registered branch; banked assets stand: F07 builder, F08 machinery, F09 criterion, the harness); successor candidate: [WP15](workpackages/PSC2-WP15-prolate-pencil.md) prolate pencil, **open** |
+| E-gates E5 (wall), G-gates, H\*, P3.5 | **open** (triaged above) |
 | E1 pairing lemma + HS5 pairing law | **proven** ([F01](findings/PSC2-F01-pairing-lemma.md)); $J$-invariant basis **constructed** by WP02's N0 builder ([F02](findings/PSC2-F02-density-gate.md)) — residual obligation discharged |
 | HS3 Sylvester basis (in WP05 backlog) | **exploratory** |
 | X-ledger (12 routes) | **dead ends**, recorded |
