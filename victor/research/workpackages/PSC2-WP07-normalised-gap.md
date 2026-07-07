@@ -1,6 +1,14 @@
 # PSC2-WP07 — the normalised-gap theorem (G3), with the α/β gap-rung extensions
 
-*Status: **open, tractable**. Census first — it is the cheap falsifier.*
+*Status: **base theorem done** (7 Jul 2026) — [PSC2-F04](../findings/PSC2-F04-normalised-gap.md).
+Census extended to $n = 15$ in the binding order (flat at $\approx 0.566$; pre-registered
+verdict SURVIVES), then the uniform gap was **proven** by an elementary hub-minorization
+argument (every prime couples to $p=2$ through the multiples of $2p$ inside $I_n$; explicit
+row-sum bound $d_p \le 45\cdot2^np^{-3/2}$; two-step Doeblin), giving explicit
+$c = 1.2\times10^{-7}$ for $n \ge 10$ — existence settled without Brun–Titchmarsh/large
+sieve. The **sharp constant** ($\approx 0.56$) and the α/β extensions below remain open.*
+
+*Original header — Status: **open, tractable**. Census first — it is the cheap falsifier.*
 
 ## Objective
 

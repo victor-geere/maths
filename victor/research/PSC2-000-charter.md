@@ -45,7 +45,7 @@ evidence.**
 | T4 | E3b certified enclosures (second-order relative spectra; pollution-free by theorem) | [WP04](workpackages/PSC2-WP04-certified-enclosures.md) |
 | T5 | E4 evaluation harness + HS1 product gate, HS2 moment gate, HS6 sine decoy, HS7 genealogy | [WP05](workpackages/PSC2-WP05-evaluation-harness.md) |
 | T6 | G1: audit the salvaged Ihara–Bass identity; derive an honest weighted locus | [WP06](workpackages/PSC2-WP06-weighted-locus.md) — **done** ([F03](findings/PSC2-F03-weighted-locus.md): identity **proven**; locus delivered, weak) |
-| T7 | G3: normalised-gap census to $n \le 14$, then uniform-bound proof attempt | [WP07](workpackages/PSC2-WP07-normalised-gap.md) |
+| T7 | G3: normalised-gap census to $n \le 14$, then uniform-bound proof attempt | [WP07](workpackages/PSC2-WP07-normalised-gap.md) — **base theorem done** ([F04](findings/PSC2-F04-normalised-gap.md): census stable to $n=15$; uniform gap **proven**, explicit $c$; sharp constant + routes α/β remain open) |
 | T8 | G4: anti-Siegel block-purity theorem; $\beta$-sweep first | [WP08](workpackages/PSC2-WP08-anti-siegel.md) |
 | T9 | truncation-rate proposition with constants, as a standalone tagged result | [WP09](workpackages/PSC2-WP09-trace-rate-proposition.md) |
 | T10 | restricted-support Weil positivity; first new instance: places $\{\infty, 2\}$ | [WP10](workpackages/PSC2-WP10-weil-positivity-restricted.md) |
@@ -71,8 +71,11 @@ as standing calibrators.
 
 ## 3. Live conjectures (decreasing evidential support)
 
-1. **Uniform normalised gap** $g_{\mathrm{sym}}(n) \ge c > 0$ — measured stable
-   $\approx 0.56$ (WP07).
+1. **Uniform normalised gap** $g_{\mathrm{sym}}(n) \ge c > 0$ — **proven** (7 Jul 2026,
+   [F04](findings/PSC2-F04-normalised-gap.md)): hub-minorization theorem gives explicit
+   $c = 1.2\times10^{-7}$ for $n \ge 10$, Perron–Frobenius below; census extended to
+   $n = 15$, flat at $\approx 0.566$. No longer a conjecture in base form; the *sharp
+   constant* ($\approx 0.56$) and the α/β gap-rung extensions stay open (WP07 §ext).
 2. **Block-purity of detached spectrum** — exact count 4 at every measured stage (WP08).
 3. **H\*** — C1 in the strip for a coupled family (WP12); the single most valuable L3 target.
 4. **E0 Weyl law for $H^G_n$** — **refuted** (6 Jul 2026,
@@ -132,6 +135,7 @@ routes. No presenting gate progress as approaching RH.
 | Hurwitz dictionary; Kotani–Sunada; Turán–Montgomery; F8 no-go; N1–N4; HB equivalence | **proven** |
 | Weighted Ihara–Bass identity (multigraph form) | **proven** (6 Jul → 7 Jul 2026: explicit factorisation + exact $\mathbb Q$-certification at $n \le 6$ + Watanabe–Fukumizu cross-check, [F03](findings/PSC2-F03-weighted-locus.md); supersedes "under audit", [S05](sources/PSC2-S05-salvaged-G1.md)) |
 | Weighted locus (leaf reduction; balance identities; annulus $[r_1, r_2]$ for non-real poles; Perron inner bound) | **proven**, radii fitted-constant-free; containment **verified** $n = 4\ldots9$ + census; the annulus is **weak** — cannot separate structural detachment, WP08 re-scoped to the measured census ([F03](findings/PSC2-F03-weighted-locus.md)) |
+| Uniform normalised gap $g_{\mathrm{sym}}(n) \ge c > 0$ (G3 base theorem) | **proven** (hub minorization, explicit $c = 1.2\times10^{-7}$ for $n \ge 10$; census flat $\approx 0.566$ to $n = 15$, [F04](findings/PSC2-F04-normalised-gap.md)); sharp constant + routes α/β **open** |
 | E0 for the primary $H^G_n$ (N0 fixed-basis instantiation) | **failed — killed** ([F02](findings/PSC2-F02-density-gate.md)); no-go lemma for concave counting laws **proven**; E-track paused |
 | E-gates E2–E5 (paused pending redesigned window), G-gates, H\*, P3.5, Q-γ2, HS1/HS2/HS7 | **open** (triaged above) |
 | E1 pairing lemma + HS5 pairing law | **proven** ([F01](findings/PSC2-F01-pairing-lemma.md)); $J$-invariant basis **constructed** by WP02's N0 builder ([F02](findings/PSC2-F02-density-gate.md)) — residual obligation discharged |

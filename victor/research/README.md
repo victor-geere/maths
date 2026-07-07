@@ -51,12 +51,16 @@ research/
     wp06_bass_certify.py             exact Q-certification of the weighted Ihara–Bass
                                      identity on stage graphs n<=6 (F03 Part A)
     wp06_locus_check.py              2-core radii, annulus containment, census (F03 Part B)
+    wp07_gap_census.py               normalised-gap census n<=15 + uniform-gap theorem
+                                     ingredient checks (F04)
   findings/
     PSC2-F00-template.md             finding-note template (pre-registered criteria verbatim)
     PSC2-F01-pairing-lemma.md        E1 + HS5 proven; controls at machine precision
     PSC2-F02-density-gate.md         E0 run: primary H^G_n killed; no-go lemma; N0 delivered
     PSC2-F03-weighted-locus.md       G1 audit closed: Ihara–Bass identity proven; honest
                                      weighted locus (weak annulus); WP08 re-scoped
+    PSC2-F04-normalised-gap.md       G3 base theorem proven (uniform gap, explicit c);
+                                     census flat ~0.566 to n=15; sharp constant open
 ```
 
 ## Running the numerics
@@ -73,6 +77,7 @@ cd research/numerics && python e0_density_gate.py       # must reproduce F02 (se
 pip install sympy                            # needed by wp06_bass_certify.py only
 python research/numerics/wp06_bass_certify.py  # must reproduce F03 Part A (exact, ~2 min)
 python research/numerics/wp06_locus_check.py   # must reproduce F03 Part B (census, radii)
+python research/numerics/wp07_gap_census.py    # must reproduce F04 (census + ingredients)
 ```
 
 Numerical verification is manual: compare output against
