@@ -128,3 +128,11 @@ M(u)_{xy} = \frac{-u\,w_{xy}}{1 - u^2 w_{xy}^2}.$$
 | G6 | Asano gluing on the per-edge product (route γ2) | **open**, machine-checkable → WP13 |
 | P3.5 | $c/\log M_n$ gap from sieve inequalities → dlVP rung via P2.4 | **open, tractable** → WP07 |
 | route γ full | uniform Ramanujan with C1 | **= RH** by P2.3 — wall, not scheduled |
+
+> **Closure notice (2026-07-07).** G6 executed as WP13 and landed in the pre-registered
+> falsifier branch ([PSC2-F06](../findings/PSC2-F06-asano-gluing.md)): the sieve step's exact
+> gluing law is **proven** ($p_{G+x} = p_G\Psi_x$, Green-quadratic multiplier, GWS-reducible
+> Asano hypothesis), and that law decides the gate negatively — no zero locus survives the
+> composition (strict Perron injection at every same-component core step; no Asano-reachable
+> region to $n = 9$). **Route γ2 is closed (X13)**; with X5 (γ1) route γ is closed entirely.
+> The "route γ full" row is unaffected: it is the W3 wall, not a schedulable gate.

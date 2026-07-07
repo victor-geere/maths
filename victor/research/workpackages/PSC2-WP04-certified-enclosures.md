@@ -1,12 +1,17 @@
 # PSC2-WP04 — certified enclosures (E3b): the tractable core of pollution control
 
-*Status: **paused** (6 Jul 2026) — WP02 killed the primary $H^G_n$ at E0
-([PSC2-F02](../findings/PSC2-F02-density-gate.md)); per WP02's falsifier the E-track is
-stopped until a redesigned window is proposed. Note: the $P_nD^2P_n$ matrix elements this WP
-needs **are now available** (`numerics/e0_density_gate.py`), and F02's redesign note points
-at the prolate pencil $(D, D^2)$ as the natural successor object — this WP is first in line
-if the E-track reopens. Was: **open** (the enclosure theorem is classical — proven; our
-instantiation pending). Depends on: WP02 (needs $P_nD^2P_n$ matrix elements).*
+*Status: **open — reopened, first in line** (7 Jul 2026) — WP02b's rewindowed primary
+$H^{G,\mathrm{w}}_n$ (W1 wedge builder) passed E0b
+([PSC2-F07](../findings/PSC2-F07-density-rewindow.md)); per the pre-registration the E-track
+pause is lifted and this WP runs first, exactly as F02's ordering note anticipated. Its
+pencil input $(P_nDP_n, P_nD^2P_n)$ is **delivered** for the W1 family by
+`numerics/wp02b_rewindow.py` (complex closed forms at dps 35, `svd_c`-certified; the older
+N0 elements in `e0_density_gate.py` remain available as a comparison family). O6 caveat
+carried over: the E0b pass is not evidence about zeros — enclosures here are statements
+about the family, pending E4b. Was: **paused** (6 Jul 2026, WP02 falsifier —
+[PSC2-F02](../findings/PSC2-F02-density-gate.md)); before that **open** (the enclosure
+theorem is classical — proven; our instantiation pending). Depends on: WP02b (matrix
+elements).*
 
 ## Objective
 

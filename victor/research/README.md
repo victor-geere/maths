@@ -21,6 +21,9 @@ research/
   README.md                          this file
   PSC2-000-charter.md                THE PLAN — unified picture, inventory, triage, ordering
   PSC2-001-conventions.md            rigour tags · evidence hygiene I0 · naming · declaration bar
+  manuscript.md                      the program manuscript: abstract, all four levels,
+                                     findings F01-F07, relation to RH, adjacent concepts,
+                                     further research, alternative routes, PSC3 sketch
   sources/
     PSC2-S00-verified-foundation.md  proven compendium: sieve, trace identity, adelic Weil
                                      trace (10^-36), truncation rate, Meyer, Connes–Moscovici,
@@ -41,6 +44,8 @@ research/
   workpackages/
     PSC2-WP01 … PSC2-WP14            one open problem each: objective, inputs, method,
                                      falsifier, pre-registered criteria, status
+    PSC2-WP02b-density-gate-rewindow.md  the E0 rewindow: W1 wedge builder (F02's redesign
+                                     note, pre-registered) — done, passed (F07)
   numerics/
     PSC2-N00-verification-targets.md regression numbers every run must reproduce
     adele_trace.py                   L1 anchor: adelic place-by-place Weil trace (10^-36)
@@ -48,6 +53,8 @@ research/
     prime_graph_lab.py               bipartite divisor graph lab (F2–F9 reproduction)
     pairing_lemma_check.py           E1/HS5 numerical controls (F01)
     e0_density_gate.py               N0 stage builder + gate E0 harness and controls (F02)
+    wp02b_rewindow.py                W1 wedge builder + gate E0b (rewindowed density gate,
+                                     harness reused from e0_density_gate) (F07)
     wp06_bass_certify.py             exact Q-certification of the weighted Ihara–Bass
                                      identity on stage graphs n<=6 (F03 Part A)
     wp06_locus_check.py              2-core radii, annulus containment, census (F03 Part B)
@@ -55,6 +62,8 @@ research/
                                      ingredient checks (F04)
     wp08_beta_sweep.py               detached-census beta-sweep (n<=12) + edge-purity
                                      theorem ingredient checks (F05)
+    wp13_asano_gluing.py             sieve-step gluing law (exact Q certification n<=6),
+                                     Asano/GWS chain, locus coverage, controls (F06)
   findings/
     PSC2-F00-template.md             finding-note template (pre-registered criteria verbatim)
     PSC2-F01-pairing-lemma.md        E1 + HS5 proven; controls at machine precision
@@ -66,6 +75,11 @@ research/
     PSC2-F05-anti-siegel.md          G4: edge-purity theorem proven (all n, all beta);
                                      beta-sweep fired the falsifier — "exactly 4 detached"
                                      is a window artifact; real census clean everywhere
+    PSC2-F06-asano-gluing.md         G6/Q-γ2: sieve-step gluing law proven (Green-quadratic
+                                     multiplier); no zero locus survives — falsifier fired,
+                                     route γ closed (X13)
+    PSC2-F07-density-rewindow.md     E0b run: wedge-windowed H^{G,w}_n passes; E-track
+                                     reopened; per O6 not evidence about zeros
 ```
 
 ## Running the numerics
@@ -86,6 +100,10 @@ python research/numerics/wp07_gap_census.py    # must reproduce F04 (census + in
 pip install scipy                            # optional: wp08's n=12 anchor point only
 python research/numerics/wp08_beta_sweep.py    # must reproduce F05 (sweep, incl. the six
                                              # DEVIATION rows — they are data, not defects)
+python research/numerics/wp13_asano_gluing.py  # must reproduce F06 (lemmas, exact chain
+                                             # certification, injection census, controls)
+cd research/numerics && python wp02b_rewindow.py  # must reproduce F07 (self-test, N00
+                                             # regression, E0b tables, controls, verdict)
 ```
 
 Numerical verification is manual: compare output against

@@ -81,6 +81,11 @@ control spectra (pollution); *norm*-resolvent is the mode that does (Reed–Simo
 | X10 | gate-1.md locus + Asano proofs as written | audit failures itemised in [S05](PSC2-S05-salvaged-G1.md) header |
 | X11 | statistics/ensemble agreement as Hilbert–Pólya progress | §2.4; F9 null |
 | X12 | the discarded `barry-keating-hp-*` proof series | refuted at three independent provable points; audit trail in the parent snapshot's `flawed/` and `berry-keating/worksheet.md` |
+| X13 | stage-to-stage Asano/Lee–Yang gluing (route γ2) — and with X5 the whole of route γ below the W3 wall | WP13's pre-registered falsifier fired ([F06](../findings/PSC2-F06-asano-gluing.md)): the sieve step's exact gluing law is **proven**, and that law shows the multiplier vanishes inside every centered candidate region (strict Perron injection, 45/45 core steps $n \le 6$); no Asano-reachable region survives to $n = 9$ |
+
+> **Addendum (7 Jul 2026).** Row X13 appended per the audit-trail convention when WP13 landed
+> in the falsifier branch; the table above is otherwise unchanged. W3 (route γ at *full*
+> Ramanujan strength, with C1) is untouched — it remains an RH-equivalent wall, not a dead end.
 
 ## 4. Walls (W-ledger) — proven RH-equivalent; priced, never attacked
 

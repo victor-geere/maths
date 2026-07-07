@@ -1,12 +1,18 @@
 # PSC2-WP05 — the evaluation harness (E4 + HS gates)
 
-*Status: **paused** (6 Jul 2026) — WP02 killed the primary $H^G_n$ at E0
-([PSC2-F02](../findings/PSC2-F02-density-gate.md)); per WP02's falsifier the E-track is
-stopped until a redesigned window is proposed. The harness design below is
-candidate-independent and stays; F02's E0 evaluator (window rule, dev metric, positive/decoy
-controls) is a first delivered component. Was: **open** (targets are in-repo verified
-values). Depends on: WP02 (spectra), WP04 (enclosures for HS7). All rules of I0
-([S06 §5](../sources/PSC2-S06-constraints-and-walls.md)) binding.*
+*Status: **open — reopened** (7 Jul 2026) — WP02b's rewindowed primary
+$H^{G,\mathrm{w}}_n$ (W1 wedge builder) passed E0b
+([PSC2-F07](../findings/PSC2-F07-density-rewindow.md)); per the pre-registration the E-track
+pause is lifted (WP04 first). **This WP is where the W1 family's arithmetic content is
+actually decided** (O6): the bare-wedge/prolate decoy of E4c — wedge phase-space support
+with no sieve inventory — must pass E0's shape and must fail E4b, or the harness is
+invalid; W1 itself must beat that decoy at E4b or the family closes as "counting law only".
+The harness design below is candidate-independent and stays; F02's E0 evaluator (window
+rule, dev metric, positive/decoy controls) is a first delivered component, reused verbatim
+by F07. Was: **paused** (6 Jul 2026, WP02 falsifier —
+[PSC2-F02](../findings/PSC2-F02-density-gate.md)); before that **open** (targets are
+in-repo verified values). Depends on: WP02b (spectra), WP04 (enclosures for HS7). All rules
+of I0 ([S06 §5](../sources/PSC2-S06-constraints-and-walls.md)) binding.*
 
 ## Components
 

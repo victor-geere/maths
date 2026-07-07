@@ -1,9 +1,13 @@
 # PSC2-WP03 — the inclusion theorem (E2): unconditional convergence
 
-*Status: **paused** (6 Jul 2026) — WP02 killed the primary $H^G_n$ at E0
-([PSC2-F02](../findings/PSC2-F02-density-gate.md)); per WP02's falsifier the E-track is
-stopped until a redesigned window is proposed. E2a (fixing the ambient) is window-independent
-and remains valid standalone work. Was: **open** (unconditional target). Depends on: WP02's
+*Status: **open — reopened** (7 Jul 2026) — WP02b's rewindowed primary
+$H^{G,\mathrm{w}}_n$ (W1 wedge builder) passed E0b
+([PSC2-F07](../findings/PSC2-F07-density-rewindow.md)); per the pre-registration the E-track
+pause is lifted, WP04 first in line. The concrete core for E2b is now the W1 family
+(`numerics/wp02b_rewindow.py`). O6 caveat carried over: the E0b pass is not evidence about
+zeros. Was: **paused** (6 Jul 2026, WP02 falsifier —
+[PSC2-F02](../findings/PSC2-F02-density-gate.md)); before that **open** (unconditional
+target). E2a (fixing the ambient) was window-independent throughout. Depends on: WP02b's
 builder (for the concrete core).*
 
 ## Objective

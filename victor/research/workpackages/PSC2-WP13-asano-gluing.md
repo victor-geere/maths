@@ -1,8 +1,20 @@
 # PSC2-WP13 — Asano gluing on the per-edge product (Q-γ2 / G6)
 
-*Status: **open**, machine-checkable. Depends on WP06 (the identity and an honest locus).
-The quarantined "Asano Compatibility" proof (X10) is void — this WP is the honest version of
-the question it pretended to answer.*
+*Status: **done — falsifier branch** (7 Jul 2026,
+[F06](../findings/PSC2-F06-asano-gluing.md)). The atomic sieve step obeys an exact gluing law
+$p_{G+x} = p_G\,\Psi_x$ (**proven**: Schur/Green-block form, $d=2$ transfer quadratic,
+multi-affine lift with the Grace–Walsh–Szegő reduction; certified exactly over $\mathbb{Q}$ at
+all 95 stage vertex additions $n \le 6$) — but the multiplier provably vanishes inside every
+centered candidate region along the chain (strict Perron injection at 45/45 same-component
+core steps), the per-edge factor zeros invade the zero-free disk at $n \le 5$, and no
+Asano-reachable (radially symmetric) region survives the measured coverage to $n = 9$. **The
+pre-registered falsifier below fired: route γ is closed entirely** (X13; γ1 was X5). The
+graded Asano/GWS chain (sound, efficiency $0.44 \to 0.70$ vs the true radius) is banked as
+exploratory. Original WP text follows unchanged.*
+
+*Previous status: **open**, machine-checkable. Depends on WP06 (the identity and an honest
+locus). The quarantined "Asano Compatibility" proof (X10) is void — this WP is the honest
+version of the question it pretended to answer.*
 
 *Gating update (7 Jul 2026): WP06 landed ([F03](../findings/PSC2-F03-weighted-locus.md)) —
 the identity is **proven** (multigraph form, exact certification) and the locus exists (weak

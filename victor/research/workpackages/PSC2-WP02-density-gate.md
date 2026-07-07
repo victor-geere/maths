@@ -12,6 +12,13 @@ covering the whole fixed-basis design class. WP01's residual obligation is disch
 $J$-invariant basis compatible with the sieve inventory is **constructed** ($JV_n = V_n$
 exact; E1 pairing exact by construction).*
 
+> **Notice (7 Jul 2026).** The redesigned window this falsifier demanded has landed:
+> [WP02b](PSC2-WP02b-density-gate-rewindow.md) (W1 wedge builder, instantiating this WP's
+> F02 redesign note) **passed E0b** ([PSC2-F07](../findings/PSC2-F07-density-rewindow.md))
+> and the E-track is reopened. Nothing in this WP's verdict changes: the N0 instantiation
+> stays killed and the no-go lemma stands — W1 sits outside its hypothesis class (convex
+> counting law, checked mechanically).
+
 ## Objective
 
 Build the stage family $H^G_n = P_nDP_n$ (N0 builder: $J$-invariant basis = sieve prime-power
