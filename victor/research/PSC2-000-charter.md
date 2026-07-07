@@ -46,7 +46,7 @@ evidence.**
 | T5 | E4 evaluation harness + HS1 product gate, HS2 moment gate, HS6 sine decoy, HS7 genealogy | [WP05](workpackages/PSC2-WP05-evaluation-harness.md) |
 | T6 | G1: audit the salvaged Ihara–Bass identity; derive an honest weighted locus | [WP06](workpackages/PSC2-WP06-weighted-locus.md) — **done** ([F03](findings/PSC2-F03-weighted-locus.md): identity **proven**; locus delivered, weak) |
 | T7 | G3: normalised-gap census to $n \le 14$, then uniform-bound proof attempt | [WP07](workpackages/PSC2-WP07-normalised-gap.md) — **base theorem done** ([F04](findings/PSC2-F04-normalised-gap.md): census stable to $n=15$; uniform gap **proven**, explicit $c$; sharp constant + routes α/β remain open) |
-| T8 | G4: anti-Siegel block-purity theorem; $\beta$-sweep first | [WP08](workpackages/PSC2-WP08-anti-siegel.md) |
+| T8 | G4: anti-Siegel block-purity theorem; $\beta$-sweep first | [WP08](workpackages/PSC2-WP08-anti-siegel.md) — **done, falsifier branch** ([F05](findings/PSC2-F05-anti-siegel.md): "exactly 4" refuted — hierarchy grows; real census clean everywhere; edge-purity theorem **proven** for all $n \ge 4$, all $\beta$) |
 | T9 | truncation-rate proposition with constants, as a standalone tagged result | [WP09](workpackages/PSC2-WP09-trace-rate-proposition.md) |
 | T10 | restricted-support Weil positivity; first new instance: places $\{\infty, 2\}$ | [WP10](workpackages/PSC2-WP10-weil-positivity-restricted.md) |
 | T11 | Li coefficients: unconditional finite-range computation/asymptotics | [WP11](workpackages/PSC2-WP11-li-coefficients.md) |
@@ -76,7 +76,17 @@ as standing calibrators.
    $c = 1.2\times10^{-7}$ for $n \ge 10$, Perron–Frobenius below; census extended to
    $n = 15$, flat at $\approx 0.566$. No longer a conjecture in base form; the *sharp
    constant* ($\approx 0.56$) and the α/β gap-rung extensions stay open (WP07 §ext).
-2. **Block-purity of detached spectrum** — exact count 4 at every measured stage (WP08).
+2. **Block-purity of detached spectrum** — restated (7 Jul 2026,
+   [F05](findings/PSC2-F05-anti-siegel.md)): the count form ("exactly 4 at every stage")
+   is **refuted** — the WP08 β-sweep fired the pre-registered falsifier ($\beta = 0.30$:
+   persistent fifth from $n = 8$; anchor $\beta = \tfrac12$: crosses at $n = 11$). What
+   is **proven** (all $n \ge 4$, all $\beta$): edge purity — only $\pm\rho$, simple, on
+   the peripheral circle; count-4 censuses forced into Perron + mirror + imaginary pair.
+   What is **verified** and survives as the live conjecture: *no real detached eigenvalue
+   besides the Perron pair* (no graph-Siegel avatar) — clean at all 66 grid points +
+   $n = 12$, margin improving in $n$; the non-real detached set is a growing hub-mirror
+   hierarchy (dictionary **heuristic**). Remaining theorem target: Bordenave-type
+   real-sector bulk bound (shared engine with WP07 route β).
 3. **H\*** — C1 in the strip for a coupled family (WP12); the single most valuable L3 target.
 4. **E0 Weyl law for $H^G_n$** — **refuted** (6 Jul 2026,
    [F02](findings/PSC2-F02-density-gate.md)): the first kill executed as designed. Measured
@@ -117,6 +127,13 @@ WP06's falsifier, **WP08 proceeds with its theorem target re-scoped to the measu
 (β-sweep ordering unchanged); **WP13 is unblocked** (its input — the proven per-edge product
 form — is now safe to build on).
 
+**Ordering update (7 Jul 2026, later).** WP08 executed in the binding order (β-sweep first)
+and landed in the **falsifier branch** ([F05](findings/PSC2-F05-anti-siegel.md)): the count
+census is a window artifact, the real census is clean everywhere, and the edge-purity
+theorem is proven for every stage and every β. The G-track's remaining open theorem on this
+axis (a real-sector bulk bound) shares its engine with WP07 route β; the project's weight
+moves to WP12 (H\*) and the independent WP09–WP11, as scheduled.
+
 ## 5. Do-not list (binding; from S06)
 
 No unfolding/fitting/calibration against $N(T)$ or the $\gamma$-list (evaluation-only
@@ -136,6 +153,8 @@ routes. No presenting gate progress as approaching RH.
 | Weighted Ihara–Bass identity (multigraph form) | **proven** (6 Jul → 7 Jul 2026: explicit factorisation + exact $\mathbb Q$-certification at $n \le 6$ + Watanabe–Fukumizu cross-check, [F03](findings/PSC2-F03-weighted-locus.md); supersedes "under audit", [S05](sources/PSC2-S05-salvaged-G1.md)) |
 | Weighted locus (leaf reduction; balance identities; annulus $[r_1, r_2]$ for non-real poles; Perron inner bound) | **proven**, radii fitted-constant-free; containment **verified** $n = 4\ldots9$ + census; the annulus is **weak** — cannot separate structural detachment, WP08 re-scoped to the measured census ([F03](findings/PSC2-F03-weighted-locus.md)) |
 | Uniform normalised gap $g_{\mathrm{sym}}(n) \ge c > 0$ (G3 base theorem) | **proven** (hub minorization, explicit $c = 1.2\times10^{-7}$ for $n \ge 10$; census flat $\approx 0.566$ to $n = 15$, [F04](findings/PSC2-F04-normalised-gap.md)); sharp constant + routes α/β **open** |
+| Edge purity of $B_w$ (G4 at the spectral edge): peripheral spectrum $= \{\pm\rho\}$, simple, all $n \ge 4$, all $\beta$; count-4 censuses forced into Perron + mirror + imaginary pair | **proven** (7 Jul 2026, [F05](findings/PSC2-F05-anti-siegel.md); NB-irreducibility lemma classical with citation, machine-verified at $n = 4\ldots11$) |
+| Detached-census count ("exactly 4 at every stage", F4) | **refuted** as an $n$-uniform law ([F05](findings/PSC2-F05-anti-siegel.md), pre-registered falsifier: persistent fifth at $\beta = 0.30$ from $n = 8$; anchor $\beta = \tfrac12$ crosses at $n = 11, 12$); real-detached census $= \{\pm\mu_1\}$ **verified** at every sweep point, margin improving; hub-hierarchy dictionary **heuristic** |
 | E0 for the primary $H^G_n$ (N0 fixed-basis instantiation) | **failed — killed** ([F02](findings/PSC2-F02-density-gate.md)); no-go lemma for concave counting laws **proven**; E-track paused |
 | E-gates E2–E5 (paused pending redesigned window), G-gates, H\*, P3.5, Q-γ2, HS1/HS2/HS7 | **open** (triaged above) |
 | E1 pairing lemma + HS5 pairing law | **proven** ([F01](findings/PSC2-F01-pairing-lemma.md)); $J$-invariant basis **constructed** by WP02's N0 builder ([F02](findings/PSC2-F02-density-gate.md)) — residual obligation discharged |

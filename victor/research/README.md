@@ -53,6 +53,8 @@ research/
     wp06_locus_check.py              2-core radii, annulus containment, census (F03 Part B)
     wp07_gap_census.py               normalised-gap census n<=15 + uniform-gap theorem
                                      ingredient checks (F04)
+    wp08_beta_sweep.py               detached-census beta-sweep (n<=12) + edge-purity
+                                     theorem ingredient checks (F05)
   findings/
     PSC2-F00-template.md             finding-note template (pre-registered criteria verbatim)
     PSC2-F01-pairing-lemma.md        E1 + HS5 proven; controls at machine precision
@@ -61,6 +63,9 @@ research/
                                      weighted locus (weak annulus); WP08 re-scoped
     PSC2-F04-normalised-gap.md       G3 base theorem proven (uniform gap, explicit c);
                                      census flat ~0.566 to n=15; sharp constant open
+    PSC2-F05-anti-siegel.md          G4: edge-purity theorem proven (all n, all beta);
+                                     beta-sweep fired the falsifier — "exactly 4 detached"
+                                     is a window artifact; real census clean everywhere
 ```
 
 ## Running the numerics
@@ -78,6 +83,9 @@ pip install sympy                            # needed by wp06_bass_certify.py on
 python research/numerics/wp06_bass_certify.py  # must reproduce F03 Part A (exact, ~2 min)
 python research/numerics/wp06_locus_check.py   # must reproduce F03 Part B (census, radii)
 python research/numerics/wp07_gap_census.py    # must reproduce F04 (census + ingredients)
+pip install scipy                            # optional: wp08's n=12 anchor point only
+python research/numerics/wp08_beta_sweep.py    # must reproduce F05 (sweep, incl. the six
+                                             # DEVIATION rows — they are data, not defects)
 ```
 
 Numerical verification is manual: compare output against

@@ -92,13 +92,24 @@ stages is the advantage over partial sums; **family choice is load-bearing.**
 | F1 | control column at the proven Euler-tail rate; strip stall measured | **verified** (pipeline trustworthy) |
 | F2 | weighted Ihara–Bass **resolvent form** validates to $10^{-15}$ on the actual stage graph; naive weighted Bass refuted at $10^{-1}$ | **verified**; symbolic proof = [PSC2-S05](PSC2-S05-salvaged-G1.md) / [WP06](../workpackages/PSC2-WP06-weighted-locus.md) |
 | F3 | raw gap ($\approx 0.80$) is Perron-scaling artefact; **normalised** gap stable $g_{\mathrm{sym}} \approx 0.54$–$0.57$ for $n = 6\ldots9$; NB-Ramanujan ratio grows | measured; uniform bound = WP07 |
-| F4 | exactly 4 detached eigenvalues at every stage — Perron, mirror, one conjugate pair; **no arithmetic exceptionals** | **verified**; theorem target = WP08 |
+| F4 | exactly 4 detached eigenvalues at every stage — Perron, mirror, one conjugate pair; **no arithmetic exceptionals** | **verified** at $n \le 9$, $\beta = \tfrac12$; theorem target = WP08 — **correction 2026-07-07, see notice below** |
 | F5 | coupled family V1: no strip convergence at any tested $\theta$ | **verified negative** — V1 eliminated |
 | F6 | V1 coupling monotonically **destroys** FE symmetry (baseline asymmetry 1.17; $\theta = 1$: 32.7) | **verified negative**; design law C-2: AFE symmetry by construction |
 | F7 | consecutive stage spectra containment $\approx 0.17$ — no naive lift structure | **verified negative**; route γ1 closed |
 | F8 | quantum-graph no-go (unitary mixing vs $\Lambda$-support) | **proven** (S00 §10) |
 | F9 | spectral statistics: neither CUE nor Poisson at this calibration | **verified null** |
 | F10 | D1/D2 defects fixed; correction notices in place | audit trail |
+
+> **Correction notice (2026-07-07).** WP08's pre-registered β-sweep
+> ([PSC2-F05](../findings/PSC2-F05-anti-siegel.md)) fired the falsifier on F4's count:
+> "exactly 4 at every stage" is a finite-window artifact of $n \le 10$, $\beta \ge 0.4$ —
+> at $\beta = 0.30$ a fifth eigenvalue detaches persistently from $n = 8$, and at
+> $\beta = \tfrac12$ the census becomes $6$ at $n = 11, 12$; the detached set is a growing
+> hierarchy of imaginary pairs (leading member = the $(2,3)$-hub mirror). The F4 numbers at
+> $n \le 9$, $\beta = \tfrac12$ remain correct as measured. The **no-arithmetic-exceptionals
+> half survives and strengthens**: the real-detached census is exactly the Perron pair at
+> every sweep point, and F05's edge-purity theorem proves (all $n \ge 4$, all $\beta$) that
+> no eigenvalue — real or not — shares the peripheral circle with the Perron pair.
 
 The stage polynomial identity (F2), verified numerically:
 $$\det(I - uB_w) = \prod_{e \in E}(1 - u^2 w_e^2)\cdot\det M(u),\qquad

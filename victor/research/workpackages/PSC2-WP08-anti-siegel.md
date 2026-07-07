@@ -1,6 +1,21 @@
 # PSC2-WP08 — block-purity of the detached spectrum (G4): the anti-Siegel theorem
 
-*Status: **open**. Depends on WP06 Part B (a locus against which "detached" is defined).*
+*Status: **done — falsifier branch** (7 Jul 2026) —
+[PSC2-F05](../findings/PSC2-F05-anti-siegel.md). The binding β-sweep ran first and fired
+the pre-registered falsifier: at $\beta = 0.30$ a fifth eigenvalue detaches persistently
+($n = 8\ldots11$), and the anchor $\beta = \tfrac12$ itself crosses at $n = 11$ (confirmed
+at $n = 12$) — **"exactly 4 detached" was a finite-window artifact**; the detached census
+is a growing hierarchy of imaginary pairs (led by the $(2,3)$-hub mirror, within 5%). What
+survives, strengthened: the **real**-detached census is exactly the Perron pair at every
+one of the 66 grid points ($+$ the $n=12$ anchor) with margin improving in $n$, and the
+**edge-purity theorem is proven** for every $n \ge 4$ and every $\beta$: nothing shares the
+peripheral circle with the Perron pair (simple), detached sets are $\pm$/conjugation-closed,
+and any count-4 census is forced into the shape Perron + mirror + imaginary pair. Open
+residue: a proven bulk/real-sector bound (Bordenave-type; shared with WP07 route β) that
+would upgrade "no second positive detached eigenvalue" from verified to theorem.*
+
+*Original header — Status: **open**. Depends on WP06 Part B (a locus against which
+"detached" is defined).*
 
 *Gating update (7 Jul 2026, [F03](../findings/PSC2-F03-weighted-locus.md)): WP06 landed in
 its pre-registered weak branch — the proven annulus has $r_1 \ll 1/\rho$ at every stage
